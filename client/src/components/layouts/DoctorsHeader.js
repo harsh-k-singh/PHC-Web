@@ -68,15 +68,6 @@ const DoctorsHeader = () => {
               <li className='nav-item'>
                 <button
                   className='nav-link'
-                  onClick={() => navigate("/doctor/patientsList")}
-                  style={{ borderWidth: "0px", backgroundColor: "transparent" }}
-                >
-                  Patients
-                </button>
-              </li>
-              <li className='nav-item'>
-                <button
-                  className='nav-link'
                   onClick={() => navigate("/doctor/inventory")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
                 >

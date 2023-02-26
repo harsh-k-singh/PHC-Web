@@ -4,11 +4,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AuthState from "./context/auth/AuthState";
 import AdminState from "./context/admin/AdminState";
 
-import PrivateRoute from "./components/routing/PrivateRoute";
-
 import Home from "./components/pages/Home";
 import About from "./components/pages/About";
-import Dashboard from "./components/pages/Dashboard";
 
 import Doctor from "./components/pages/Doctor";
 import DoctorsDashboard from "./components/layouts/DoctorsDashboard";
@@ -18,9 +15,20 @@ import PatientsList from "./components/layouts/PatientsList";
 import Inventory from "./components/layouts/Inventory";
 import PatientsHistory from "./components/layouts/PatientsHistory";
 
+
+import Compounder from "./components/pages/Compounder";
+import CompoundersProfile from "./components/layouts/CompoundersProfile";
+import CompoundersSchedule from "./components/layouts/CompoundersSchedule";
+import CompoundersDashboard from "./components/layouts/CompoundersDashboard";
+
 import Admin from "./components/pages/Admin";
+import AdminsDashboard from "./components/layouts/AdminsDashboard";
+import AddActor from "./components/layouts/AddActor";
+import AdminsProfile from "./components/layouts/AdminsProfile";
 
 import Patient from "./components/pages/Patient";
+import PatientsProfile from "./components/layouts/PatientsProfile";
+import CheckDoctorsSchedule from "./components/layouts/CheckDoctorsSchedule";
 
 const App = () => {
   return (
@@ -40,8 +48,28 @@ const App = () => {
               <Route path='patientsHistory' element={<PatientsHistory />} />
             </Route>
 
-            <Route path='/admin' element={<Admin />} />
-            <Route path='/patient' element={<Patient />} />
+            <Route path='compounder' element={<Compounder/>}>
+              <Route path='/compounder' element={<CompoundersDashboard/>} />
+              <Route path='schedule' element={<CompoundersSchedule />} />
+              <Route path='profile' element={<CompoundersProfile/>} />
+              <Route path='patientsList' element={<PatientsList />} />
+              <Route path='inventory' element={<Inventory/>} />
+              <Route path='patientsHistory' element={<PatientsHistory />} />
+            </Route>
+
+            <Route path='admin' element={<Admin/>}>
+              <Route path='/admin' element={<AdminsDashboard/>} />
+              <Route path='addActor' element={<AddActor/>} />
+              <Route path='profile' element={<AdminsProfile/>} />
+              <Route path='inventory' element={<Inventory/>} />
+            </Route>
+
+            <Route path='patient' element={<Patient/>}>
+              <Route path='/patient' element={<PatientsHistory/>} />
+              <Route path='profile' element={<PatientsProfile/>} />
+              <Route path='doctorsSchedule' element={<CheckDoctorsSchedule/>} />
+            </Route>
+
           </Routes>
         </Router>
       </AdminState>

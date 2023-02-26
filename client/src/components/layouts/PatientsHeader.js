@@ -8,7 +8,9 @@ const PatientsHeader = () => {
   const { logout } = authContext;
   const handleLogout = () => {
     logout();
-  }
+  };
+
+  const navigate = useNavigate();
   return (
     <div>
       <nav class="navbar fixed-top navbar-expand-lg bg-body-tertiary">
@@ -21,17 +23,46 @@ const PatientsHeader = () => {
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/patient">Home</a>
+              <button
+                  className='nav-link active'
+                  aria-current='page'
+                  onClick={() => navigate("/patient")}
+                  style={{ borderWidth: "0px", backgroundColor: "transparent" }}
+                >
+                  Dashboard
+                </button>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/patient/doctorsSchedule">Doctors</a>
+              <button
+                  className='nav-link active'
+                  aria-current='page'
+                  onClick={() => navigate("/patient/doctorsSchedule")}
+                  style={{ borderWidth: "0px", backgroundColor: "transparent" }}
+                >
+                  Doctors
+                </button>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/patient/profile">Profile</a>
+              <button
+                  className='nav-link active'
+                  aria-current='page'
+                  onClick={() => navigate("/patient/profile")}
+                  style={{ borderWidth: "0px", backgroundColor: "transparent" }}
+                >
+                  Profile
+                </button>
               </li>
             </ul>
             <ul className="navbar-nav mx-2 ms-auto">
-              <li className="nav-item"><button type="button" class="btn btn-primary" onClick={handleLogout}>Sign Out</button></li>
+              <li className="nav-item">
+              <button
+                  type='button'
+                  class='btn btn-primary'
+                  onClick={handleLogout}
+                >
+                  Sign Out
+                </button>
+              </li>
             </ul>
           </div>
         </div>

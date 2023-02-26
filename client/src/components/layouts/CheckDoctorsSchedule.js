@@ -1,6 +1,4 @@
-import React, { useEffect, useContext } from "react";
-import AuthContext from "../../context/auth/AuthContext";
-import DoctorsDP from "../../images/DoctorsDP.png";
+import React from "react";
 const CheckDoctorsSchedule = () => {
   return (
     <>

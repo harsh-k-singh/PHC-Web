@@ -2,14 +2,14 @@ import React, { useContext } from 'react'
 import { useNavigate } from "react-router-dom"
 import AuthContext from '../../context/auth/AuthContext';
 import InstituteLogo from '../../images/InstituteLogo.jpg';
-const DoctorsHeader = () => {
+
+const CompoundersHeader = () => {
   const authContext = useContext(AuthContext);
   const { logout } = authContext;
+  const navigate = useNavigate();
   const handleLogout = () => {
     logout();
-  };
-
-  const navigate = useNavigate();
+  }
   return (
     <div>
       <nav className="navbar fixed-top navbar-expand-lg bg-light">
@@ -32,57 +32,46 @@ const DoctorsHeader = () => {
           <div className="collapse navbar-collapse" id="navbarNavDropdown">
             <ul className="navbar-nav">
               <li className="nav-item">
-              <button
+                <button
                   className='nav-link active'
                   aria-current='page'
-                  onClick={() => navigate("/admin")}
+                  onClick={() => navigate("/compounder")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
                 >
                   Dashboard
                 </button>
               </li>
+              <li className="nav-item">
+                <button
+                  className='nav-link'
+                  onClick={() => navigate("/compounder/profile")}
+                  style={{ borderWidth: "0px", backgroundColor: "transparent" }}
+                >
+                  My Profile
+                </button>
+              </li>
+              <li className="nav-item">
+                <button
+                  className='nav-link'
+                  onClick={() => navigate("/compounder/schedule")}
+                  style={{ borderWidth: "0px", backgroundColor: "transparent" }}
+                >
+                  My Schedule
+                </button>
+              </li>
+              <li className="nav-item">
+                <button
+                  className='nav-link'
+                  onClick={() => navigate("/compounder/inventory")}
+                  style={{ borderWidth: "0px", backgroundColor: "transparent" }}
+                >
+                  Peek in inventory
+                </button>
+              </li>
 
-              <li className="nav-item">
-              <button
-                  className='nav-link active'
-                  aria-current='page'
-                  onClick={() => navigate("/admin/addActor")}
-                  style={{ borderWidth: "0px", backgroundColor: "transparent" }}
-                >
-                  Add actor
-                </button>
-              </li>
-              <li className="nav-item">
-              <button
-                  className='nav-link active'
-                  aria-current='page'
-                  onClick={() => navigate("/admin/profile")}
-                  style={{ borderWidth: "0px", backgroundColor: "transparent" }}
-                >
-                  Profile
-                </button>
-              </li>
-              <li className="nav-item">
-              <button
-                  className='nav-link active'
-                  aria-current='page'
-                  onClick={() => navigate("/admin/inventory")}
-                  style={{ borderWidth: "0px", backgroundColor: "transparent" }}
-                >
-                  Inventory
-                </button>
-              </li>
             </ul>
             <ul className="navbar-nav mx-2 ms-auto">
-              <li className="nav-item">
-              <button
-                  type='button'
-                  class='btn btn-primary'
-                  onClick={handleLogout}
-                >
-                  Sign Out
-                </button>
-                </li>
+              <li className="nav-item"><button type="button" class="btn btn-primary" onClick={handleLogout}>Sign Out</button></li>
             </ul>
           </div>
         </div>
@@ -91,4 +80,4 @@ const DoctorsHeader = () => {
   )
 }
 
-export default DoctorsHeader
+export default CompoundersHeader

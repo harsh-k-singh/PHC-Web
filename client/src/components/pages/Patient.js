@@ -1,29 +1,44 @@
-import React, { useContext, useEffect } from "react";
-import PatientsHeader from "../layouts/PatientsHeader.js";
-import "../../CSSFiles/ActorsBody.css";
-import { Routes, Route, useNavigate } from "react-router-dom";
-import PatientsHistory from "../layouts/PatientsHistory";
-import PatientsProfile from "../layouts/PatientsProfile";
-import CheckDoctorsSchedule from "../layouts/CheckDoctorsSchedule";
-import PatientsSP from "../layouts/PatientsSP.js";
-import AuthContext from "../../context/auth/AuthContext.js";
+import PatientsHeader from "../layouts/PatientsHeader";
+import PatientsSP from "../layouts/PatientsSP";
 
-const PatientPage = () => {
+import "../../CSSFiles/ActorsBody.css";
+
+import { Outlet, useNavigate, redirect } from "react-router-dom";
+import { useContext, useEffect } from "react";
+
+import AuthContext from "../../context/auth/AuthContext";
+
+const Patient = () => {
   const authContext = useContext(AuthContext);
-  const { isAuthenicated, loadUser, user } = authContext;
+  const { isAuthenicated, user, loadUser } = authContext;
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isAuthenicated) {
+      navigate("/");
+    } else {
+      if (!user) {
+        loadUser();
+      }
+    }
+  }, [isAuthenicated, user]);
+
+  useEffect(() => {
+    if (user) {
+      if (user.role !== "patient") {
+        navigate("/");
+      }
+    }
+  }, [user]);
+
   return (
     <>
-      <PatientsHeader />
-      <PatientsSP />
+      <PatientsHeader/>
+      <PatientsSP/>
       <div className='actorsBody'>
-        <Routes>
-          <Route path='/' element={<PatientsHistory />} />
-          <Route path='/doctorsSchedule' element={<CheckDoctorsSchedule />} />
-          <Route path='/profile' element={<PatientsProfile />} />
-        </Routes>
+        <Outlet />
       </div>
     </>
   );
 };
-export default PatientPage;
+export default Patient;

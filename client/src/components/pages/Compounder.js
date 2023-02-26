@@ -1,12 +1,12 @@
-import AdminsHeader from "../layouts/AdminsHeader.js";
+import CompoundersHeader from "../layouts/CompoundersHeader.js";
 import "../../CSSFiles/ActorsBody.css";
-import AdminsSP from "../layouts/AdminsSP";
+import CompoundersSP from "../layouts/CompoundersSP";
 import { Outlet, useNavigate, redirect } from "react-router-dom";
 import { useContext, useEffect } from "react";
 
 import AuthContext from "../../context/auth/AuthContext";
 
-const Admin = () => {
+const Compounder = () => {
   const authContext = useContext(AuthContext);
   const { isAuthenicated, user, loadUser } = authContext;
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ const Admin = () => {
 
   useEffect(() => {
     if (user) {
-      if (user.role !== "admin") {
+      if (user.role !== "compounder") {
         navigate("/");
       }
     }
@@ -31,12 +31,12 @@ const Admin = () => {
 
   return (
     <>
-      <AdminsHeader />
-      <AdminsSP/>
+      <CompoundersHeader/>
+      <CompoundersSP/>
       <div className='actorsBody'>
         <Outlet />
       </div>
     </>
   );
 };
-export default Admin;
+export default Compounder;

@@ -2,7 +2,7 @@ import React from 'react';
 import DoctorsDP from '../../images/DoctorsDP.png';
 import '../../CSSFiles/SideProfile.css'
 
-const SideProfile = () => {
+const DoctorSP = () => {
   return (
     <div className="sideProfile card px-2 py-2 mx-2 shadow-sm">
     <ul className="nav flex-column text-center" style={{fontSize:20}}>
@@ -27,4 +27,4 @@ const SideProfile = () => {
   )
 }
 
-export default SideProfile
+export default DoctorSP

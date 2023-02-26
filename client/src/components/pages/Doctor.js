@@ -1,12 +1,12 @@
 import DoctorsHeader from "../layouts/DoctorsHeader.js";
+import DoctorSP from "../layouts/DoctorsSP.js";
 import "../../CSSFiles/ActorsBody.css";
-import SideProfile from "../layouts/SideProfile";
 import { Outlet, useNavigate, redirect } from "react-router-dom";
 import { useContext, useEffect } from "react";
 
 import AuthContext from "../../context/auth/AuthContext";
 
-const DoctorsPage = () => {
+const Doctor = () => {
   const authContext = useContext(AuthContext);
   const { isAuthenicated, user, loadUser } = authContext;
   const navigate = useNavigate();
@@ -32,11 +32,11 @@ const DoctorsPage = () => {
   return (
     <>
       <DoctorsHeader />
-      <SideProfile />
+      <DoctorSP/>
       <div className='actorsBody'>
         <Outlet />
       </div>
     </>
   );
 };
-export default DoctorsPage;
+export default Doctor;
