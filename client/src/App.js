@@ -30,13 +30,19 @@ import Patient from "./components/pages/Patient";
 import PatientsProfile from "./components/layouts/PatientsProfile";
 import CheckDoctorsSchedule from "./components/layouts/CheckDoctorsSchedule";
 
+import HomeBody from './components/layouts/HomeBody';
+import SignUpPatient from "./components/layouts/SignUpPatient";
+
 const App = () => {
   return (
     <AuthState>
       <AdminState>
         <Router>
           <Routes>
-            <Route exact path='/' element={<Home />} />
+            <Route path='' element={<Home />}>
+              <Route path='/' element={<HomeBody/>} />
+              <Route path='signup' element={<SignUpPatient/>} />
+            </Route>
             <Route exact path='about' element={<About />} />
 
             <Route path='doctor' element={<Doctor />}>

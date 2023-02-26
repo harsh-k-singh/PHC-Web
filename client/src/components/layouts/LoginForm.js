@@ -64,7 +64,7 @@ const LoginForm = () => {
       />
       <form>
         <h3 className='text-center mb-4'>
-          <b>Sign In to PHC</b>
+          <b>Login to PHC</b>
         </h3>
         <div className='form-outline mb-4'>
           {err.msg !== null ? (
@@ -155,7 +155,7 @@ const LoginForm = () => {
         </div>
       </form>
     </div>
-  );
-};
+  )
+}
 
 export default LoginForm;

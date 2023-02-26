@@ -21,15 +21,21 @@ const RegisterForm = () => {
     type: null,
     msg: null,
   });
-
+  
+  // const [closeModal, setCloseModal]   = useState(false);
   const onChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
+ 
+    const onSubmit = (e) => {
+      e.preventDefault();
+      // console.log(form);
+      register(form);
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    console.log(form);
-    register(form);
+    // document.getElementById("exampleModal").classList.remove("show", "d-block");
+    // document.querySelectorAll(".modal-backdrop")
+    //         .forEach(el => el.classList.remove("modal-backdrop"));
+    // setCloseModal(true);
   };
 
   return (
@@ -195,7 +201,7 @@ const RegisterForm = () => {
                 Close
               </button>
               <button
-                type='button'
+                type="button"
                 onClick={onSubmit}
                 className='btn btn-success'
               >

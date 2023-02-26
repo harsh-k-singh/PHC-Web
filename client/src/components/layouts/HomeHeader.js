@@ -1,7 +1,9 @@
 import React from 'react'
-import RegisterForm from './RegisterForm';
+// import RegisterForm from './RegisterForm';
+import { useNavigate } from "react-router-dom";
 import InstituteLogo from '../../images/InstituteLogo.jpg';
 const HomeHeader = () => {
+  const navigate = useNavigate();
   return (
     <div>
       <nav className="navbar navbar-expand-lg bg-light">
@@ -24,29 +26,66 @@ const HomeHeader = () => {
           <div className="collapse navbar-collapse" id="navbarNavDropdown">
             <ul className="navbar-nav">
               <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="#">
-                  Sign In
-                </a>
+              <button
+                  className='nav-link active'
+                  aria-current='page'
+                  onClick={() => navigate("/")}
+                  style={{ borderWidth: "0px", backgroundColor: "transparent" }}
+                >
+                  Login
+                </button>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">
-                  Doctors
-                </a>
+              <button
+                  className='nav-link active'
+                  aria-current='page'
+                  onClick={() => navigate("/signup")}
+                  style={{ borderWidth: "0px", backgroundColor: "transparent" }}
+                >
+                  Signup
+                </button>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">
+              <button
+                  className='nav-link active'
+                  aria-current='page'
+                  onClick={() => navigate("/doctorsSchedule")}
+                  style={{ borderWidth: "0px", backgroundColor: "transparent" }}
+                >
+                  Doctor
+                </button>
+              </li>
+              <li className="nav-item">
+              <button
+                  className='nav-link active'
+                  aria-current='page'
+                  onClick={() => navigate("/ambulance")}
+                  style={{ borderWidth: "0px", backgroundColor: "transparent" }}
+                >
                   Ambulance
-                </a>
+                </button>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">
-                  About Us
-                </a>
+              <button
+                  className='nav-link active'
+                  aria-current='page'
+                  onClick={() => navigate("/about")}
+                  style={{ borderWidth: "0px", backgroundColor: "transparent" }}
+                >
+                  About
+                </button>
               </li>
-
             </ul>
-            <ul className="navbar-nav mx-2 ms-auto">
-              <li className="nav-item"><RegisterForm /></li>
+            <ul className='navbar-nav mx-2 ms-auto'>
+              <li className='nav-item'>
+                <button
+                  type='button'
+                  class='btn btn-primary'
+                  onClick={() => navigate("/signup")}
+                >
+                  Patient Sign Up
+                </button>
+              </li>
             </ul>
           </div>
         </div>
