@@ -36,7 +36,7 @@ const validateadmin = (admin) => {
     name: Joi.string().min(3).max(30).required(),
     email: Joi.string().email().required(),
     password: Joi.string().min(6).max(30).required(),
-    phone: Joi.string.length(10),
+    phone: Joi.string().length(10),
     designation: Joi.string(),
   });
   return schema.validate(admin);

@@ -4,6 +4,8 @@ import AdminReducer from './AdminReducer'
 import axios from 'axios';
 import * as types from '../types';
 
+axios.defaults.withCredentials = true;
+
 const AdminState = props => {
     const initialState = {
         isAuthenicated: null,
@@ -16,92 +18,39 @@ const AdminState = props => {
     const actors = [null, 'addDoctor', 'addCompounder', 'addAdmin'];
 
 
-    const addDoctor = async (formData) => {
-        console.log('addDoctor called...');
+    const addActor = async (formData) => {
+        console.log('addActor called...');
         const config = {
             headers: {
                 'Content-Type': 'application/json'
             }
         }
+
         try {
-            const res = await axios.post(`/admin/${actors[formData.role]}`, formData, config);
+            // remove role from formData
+            const role = actors[formData.role];
+            const newFormData = { name: formData.name, email: formData.email, password: formData.password };
+            console.log(newFormData);
+            const res = await axios.post(`/api/admin/${role}`, newFormData, config);
             console.log(res);
-            dispatch({ type: types.ADD_DOCTOR_SUCCESS });
+            dispatch({ type: types.ADD_ACTOR_SUCCESS });
 
         } catch (error) {
             console.log('err', error);
-            dispatch({ type: types.ADD_DOCTOR_FAILURE, payload: error.response.data })
+            dispatch({ type: types.ADD_ACTOR_FAILURE, payload: error.response.data })
             console.log(error.response.data);
             setTimeout(clearError, 2000);
         }
     }
-    const register = async (formData) => {
-        const config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
-        try {
-            await axios.post('/api/register', formData, config);
-            dispatch({ type: types.REGISTER_SUCCESS, payload: 4 });
-            console.log(formData);
-            console.log('registerd');
-
-        } catch (error) {
-            dispatch({ type: types.REGISTER_FAILURE, payload: error.response.data })
-            console.log(error.response.data);
-            setTimeout(clearError, 2000);
-        }
-    }
-
-    const loadUser = async () => {
-        console.log('loaduser called...');
-        try {
-            const res = await axios.get('/api/auth');
-            dispatch({ type: types.LOAD_SUCCESS, payload: res.data })
-        } catch (error) {
-            dispatch({ type: types.LOAD_ERROR, payload: error.response.data })
-            setTimeout(clearError, 2000);
-        }
-    }
-
     const clearError = () => {
         dispatch({ type: types.CLEAR_ERROR })
     }
 
-    const login = async (formData) => {
-        const config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
-        console.log(formData);
-        try {
-            await axios.post('api/auth', formData, config);
-            dispatch({ type: types.LOGIN_SUCCESS, payload: formData.role });
-            console.log('loggged in');
-
-        } catch (error) {
-            console.log(error);
-            dispatch({ type: types.LOGIN_FAILURE, payload: error.response.data });
-            setTimeout(clearError, 2000);
-        }
-    }
-
-    const logout = async () => {
-        try {
-            console.log('here here');
-            await axios.delete('/api/auth');
-            dispatch({ type: types.LOGOUT_SUCCESS })
-        } catch (error) {
-            console.log(error);
-        }
-    }
 
     return <AdminContext.Provider
         value={{
             error: state.error,
-            addDoctor
+            addActor
         }}
     >
         {props.children};
