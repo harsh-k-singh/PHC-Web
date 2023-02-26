@@ -5,7 +5,10 @@ import AuthState from "./context/auth/AuthState";
 import AdminState from "./context/admin/AdminState";
 
 import Home from "./components/pages/Home";
-import About from "./components/pages/About";
+import HomeBody from './components/layouts/HomeBody';
+import SignUpPatient from "./components/layouts/SignUpPatient";
+import Ambulance from "./components/layouts/Ambulance";
+import About from "./components/layouts/About";
 
 import Doctor from "./components/pages/Doctor";
 import DoctorsDashboard from "./components/layouts/DoctorsDashboard";
@@ -30,8 +33,6 @@ import Patient from "./components/pages/Patient";
 import PatientsProfile from "./components/layouts/PatientsProfile";
 import CheckDoctorsSchedule from "./components/layouts/CheckDoctorsSchedule";
 
-import HomeBody from './components/layouts/HomeBody';
-import SignUpPatient from "./components/layouts/SignUpPatient";
 
 const App = () => {
   return (
@@ -39,11 +40,13 @@ const App = () => {
       <AdminState>
         <Router>
           <Routes>
-            <Route path='' element={<Home />}>
+            <Route path='' element={<Home/>}>
               <Route path='/' element={<HomeBody/>} />
               <Route path='signup' element={<SignUpPatient/>} />
+              <Route path='doctorsSchedule' element={<CheckDoctorsSchedule/>} />
+              <Route path='ambulance' element={<Ambulance/>} />
+              <Route path='about' element={<About/>} />
             </Route>
-            <Route exact path='about' element={<About />} />
 
             <Route path='doctor' element={<Doctor />}>
               <Route path='/doctor' element={<DoctorsDashboard />} />

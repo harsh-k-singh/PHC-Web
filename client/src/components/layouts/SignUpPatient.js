@@ -1,10 +1,10 @@
-import React,{useState,useContext} from 'react'
+import React,{useState,useContext,useEffect} from 'react'
 import {useNavigate } from "react-router-dom";
 import AuthContext from "../../context/auth/AuthContext";
 
 const SignUpPatient = () => {
   const authContext = useContext(AuthContext);
-  const { isAuthenicated, error, register, loading, loadUser } = authContext;
+  const { isAuthenicated, error, register, loading, loadUser,user} = authContext;
   const navigate = useNavigate();
   const [form, setForm] = useState({
     name: "",
@@ -25,6 +25,29 @@ const SignUpPatient = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
   
+  useEffect(() => {
+    // If user is authenticated, redirect to dashboard
+    const redirectToDashboard = async () => {
+      await loadUser();
+      if (user) {
+        navigate("/" + user.role);
+      }
+    };
+
+    if (isAuthenicated) {
+      redirectToDashboard();
+    }
+    // // If error is not null, display error
+    // if (error) {
+    //   if (error.errors.length > 0) {
+    //     alert(error.errors[0].msg);
+    //   }
+    // }
+    // // Clear errors
+    // clearErrors();
+
+    // eslint-disable-next-line
+  }, [error, isAuthenicated, user]);
   const onSubmit = (e) => {
     e.preventDefault();
     console.log(form);

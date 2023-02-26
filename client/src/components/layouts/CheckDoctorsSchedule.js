@@ -1,7 +1,7 @@
 import React from "react";
 const CheckDoctorsSchedule = () => {
   return (
-    <>
+    <div className="container">
       <h2 class="text-center">Doctors Schedule</h2>
       <table class="table my-3 text-center" style={{ width: "80%", margin: "auto" }}>
         <thead class="table-dark">
@@ -44,7 +44,7 @@ const CheckDoctorsSchedule = () => {
           </tr>
         </tbody>
       </table>
-    </>
+    </div>
   );
 };
 

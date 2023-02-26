@@ -1,11 +1,11 @@
 import HomeHeader from '../layouts/HomeHeader'
-import { Outlet } from 'react-router-dom';
+import HomeBody from '../layouts/HomeBody';
 
 const Home = () => {
     return (
         <>
-            <HomeHeader/>
-            <Outlet/>
+            <HomeHeader />
+            <HomeBody />
         </>
     );
 }
