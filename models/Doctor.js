@@ -22,7 +22,7 @@ const doctorSchema = mongoose.Schema({
     type: String,
   },
   birth: {
-    type: Date,
+    type: Date
   },
   gender: {
     type: String,

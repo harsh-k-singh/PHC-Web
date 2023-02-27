@@ -6,11 +6,11 @@ import InstituteLogo from '../../images/InstituteLogo.jpg';
 const PatientsHeader = () => {
   const authContext = useContext(AuthContext);
   const { logout } = authContext;
+  const navigate= useNavigate();
   const handleLogout = () => {
     logout();
   };
 
-  const navigate = useNavigate();
   return (
     <div>
       <nav class="navbar fixed-top navbar-expand-lg bg-body-tertiary">

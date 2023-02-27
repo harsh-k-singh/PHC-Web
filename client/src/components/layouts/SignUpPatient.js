@@ -11,7 +11,7 @@ const SignUpPatient = () => {
     email: "",
     roll_number: "",
     phone: "",
-    gender: "male",
+    gender: "Male",
     password: "",
     cnf_password: "",
     birth: "",
@@ -55,7 +55,7 @@ const SignUpPatient = () => {
    };
   return (
     <div class='container-xl px-4'>
-    <h3 className='text-center'>Create New account</h3>
+    <h3 className='text-center'>Patient Signup</h3>
     <div class='row mt-3'>
       <div class='col-xl-8' style={{ margin: "auto" }}>
         <div class='card mb-4'>
@@ -122,7 +122,7 @@ const SignUpPatient = () => {
                       <option>Female</option>
                       <option>Other</option>
                     </select>
-                  </div>
+                   </div>
                   <div class='col-md-4'>
                     <label class='small mb-1' for='inputBirthday'>
                       Birthday

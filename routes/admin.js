@@ -91,7 +91,7 @@ router.post("/addCompounder", middleware, async (req, res) => {
 });
 
 router.post("/addAdmin", middleware, async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, phone } = req.body;
 
   const { error } = validateadmin(req.body);
   if (error) return res.status(400).send(error.details[0].message);
@@ -103,6 +103,7 @@ router.post("/addAdmin", middleware, async (req, res) => {
     let admin = new Admin({
       name,
       email,
+      phone,
       password: hashedPass,
     });
     await admin.save();

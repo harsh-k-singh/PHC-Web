@@ -13,7 +13,7 @@ import About from "./components/layouts/About";
 import Doctor from "./components/pages/Doctor";
 import DoctorsDashboard from "./components/layouts/DoctorsDashboard";
 import DoctorsSchedule from "./components/layouts/DoctorsSchedule";
-import Profile from "./components/layouts/Profile";
+import DoctorsProfile from "./components/layouts/DoctorsProfile";
 import PatientsList from "./components/layouts/PatientsList";
 import Inventory from "./components/layouts/Inventory";
 import PatientsHistory from "./components/layouts/PatientsHistory";
@@ -51,7 +51,7 @@ const App = () => {
             <Route path='doctor' element={<Doctor />}>
               <Route path='/doctor' element={<DoctorsDashboard />} />
               <Route path='schedule' element={<DoctorsSchedule />} />
-              <Route path='profile' element={<Profile />} />
+              <Route path='profile' element={<DoctorsProfile/>} />
               <Route path='patientsList' element={<PatientsList />} />
               <Route path='inventory' element={<Inventory />} />
               <Route path='patientsHistory' element={<PatientsHistory />} />
