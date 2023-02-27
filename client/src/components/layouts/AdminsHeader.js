@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { useNavigate } from "react-router-dom"
+import { useNavigate,useLocation} from "react-router-dom"
 import AuthContext from '../../context/auth/AuthContext';
 import InstituteLogo from '../../images/InstituteLogo.jpg';
 const DoctorsHeader = () => {
@@ -10,6 +10,7 @@ const DoctorsHeader = () => {
   };
 
   const navigate = useNavigate();
+  const location=useLocation();
   return (
     <div>
       <nav className="navbar fixed-top navbar-expand-lg bg-light">
@@ -33,7 +34,7 @@ const DoctorsHeader = () => {
             <ul className="navbar-nav">
               <li className="nav-item">
               <button
-                  className='nav-link active'
+                  className={`nav-link ${location.pathname==="/admin"?"active fw-bold":""}`}
                   aria-current='page'
                   onClick={() => navigate("/admin")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
@@ -44,7 +45,7 @@ const DoctorsHeader = () => {
 
               <li className="nav-item">
               <button
-                  className='nav-link active'
+                  className={`nav-link ${location.pathname==="/admin/addActor"?"active fw-bold":""}`}
                   aria-current='page'
                   onClick={() => navigate("/admin/addActor")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
@@ -54,7 +55,7 @@ const DoctorsHeader = () => {
               </li>
               <li className="nav-item">
               <button
-                  className='nav-link active'
+                  className={`nav-link ${location.pathname==="/admin/profile"?"active fw-bold":""}`}
                   aria-current='page'
                   onClick={() => navigate("/admin/profile")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
@@ -64,7 +65,7 @@ const DoctorsHeader = () => {
               </li>
               <li className="nav-item">
               <button
-                  className='nav-link active'
+                  className={`nav-link ${location.pathname==="/admin/inventory"?"active fw-bold":""}`}
                   aria-current='page'
                   onClick={() => navigate("/admin/inventory")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}

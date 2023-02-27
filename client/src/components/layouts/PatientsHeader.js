@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation } from 'react-router-dom';
 import AuthContext from '../../context/auth/AuthContext';
 import InstituteLogo from '../../images/InstituteLogo.jpg';
 
@@ -7,6 +7,7 @@ const PatientsHeader = () => {
   const authContext = useContext(AuthContext);
   const { logout } = authContext;
   const navigate= useNavigate();
+  const location = useLocation();
   const handleLogout = () => {
     logout();
   };
@@ -24,7 +25,7 @@ const PatientsHeader = () => {
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
               <button
-                  className='nav-link active'
+                  className={`nav-link ${location.pathname==="/patient"?"active fw-bold":""}`}
                   aria-current='page'
                   onClick={() => navigate("/patient")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
@@ -34,7 +35,7 @@ const PatientsHeader = () => {
               </li>
               <li class="nav-item">
               <button
-                  className='nav-link active'
+                  className={`nav-link ${location.pathname==="/patient/doctorsSchedule"?"active fw-bold":""}`}
                   aria-current='page'
                   onClick={() => navigate("/patient/doctorsSchedule")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
@@ -44,7 +45,7 @@ const PatientsHeader = () => {
               </li>
               <li class="nav-item">
               <button
-                  className='nav-link active'
+                  className={`nav-link ${location.pathname==="/patient/profile"?"active fw-bold":""}`}
                   aria-current='page'
                   onClick={() => navigate("/patient/profile")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}

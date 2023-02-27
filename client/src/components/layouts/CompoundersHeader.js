@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { useNavigate } from "react-router-dom"
+import { useNavigate ,useLocation} from "react-router-dom"
 import AuthContext from '../../context/auth/AuthContext';
 import InstituteLogo from '../../images/InstituteLogo.jpg';
 
@@ -7,6 +7,7 @@ const CompoundersHeader = () => {
   const authContext = useContext(AuthContext);
   const { logout } = authContext;
   const navigate = useNavigate();
+  const location = useLocation();
   const handleLogout = () => {
     logout();
   }
@@ -33,7 +34,7 @@ const CompoundersHeader = () => {
             <ul className="navbar-nav">
               <li className="nav-item">
                 <button
-                  className='nav-link active'
+                  className={`nav-link ${location.pathname==="/compounder"?"active fw-bold":""}`}
                   aria-current='page'
                   onClick={() => navigate("/compounder")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
@@ -41,9 +42,18 @@ const CompoundersHeader = () => {
                   Dashboard
                 </button>
               </li>
+              <li className='nav-item'>
+                <button
+                  className={`nav-link ${location.pathname==="/compounder/patientsList"?"active fw-bold ":""}`}
+                  onClick={() => navigate("/compounder/patientsList")}
+                  style={{ borderWidth: "0px", backgroundColor: "transparent" }}
+                >
+                  My Patients
+                </button>
+              </li>
               <li className="nav-item">
                 <button
-                  className='nav-link'
+                  className={`nav-link ${location.pathname==="/compounder/profile"?"active fw-bold":""}`}
                   onClick={() => navigate("/compounder/profile")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
                 >
@@ -52,7 +62,7 @@ const CompoundersHeader = () => {
               </li>
               <li className="nav-item">
                 <button
-                  className='nav-link'
+                  className={`nav-link ${location.pathname==="/compounder/schedule"?"active fw-bold":""}`}
                   onClick={() => navigate("/compounder/schedule")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
                 >
@@ -61,7 +71,7 @@ const CompoundersHeader = () => {
               </li>
               <li className="nav-item">
                 <button
-                  className='nav-link'
+                  className={`nav-link ${location.pathname==="/compounder/inventory"?"active fw-bold":""}`}
                   onClick={() => navigate("/compounder/inventory")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
                 >

@@ -1,9 +1,10 @@
 import React from 'react'
 // import RegisterForm from './RegisterForm';
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import InstituteLogo from '../../images/InstituteLogo.jpg';
 const HomeHeader = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   return (
     <div>
       <nav className="navbar navbar-expand-lg bg-light">
@@ -27,7 +28,7 @@ const HomeHeader = () => {
             <ul className="navbar-nav">
               <li className="nav-item">
               <button
-                  className='nav-link active'
+                  className={`nav-link ${location.pathname==="/"?"active fw-bold":""}`}
                   aria-current='page'
                   onClick={() => navigate("/")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
@@ -37,7 +38,7 @@ const HomeHeader = () => {
               </li>
               <li className="nav-item">
               <button
-                  className='nav-link active'
+                  className={`nav-link ${location.pathname==="/signup"?"active fw-bold":""}`}
                   aria-current='page'
                   onClick={() => navigate("/signup")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
@@ -47,7 +48,7 @@ const HomeHeader = () => {
               </li>
               <li className="nav-item">
               <button
-                  className='nav-link active'
+                  className={`nav-link ${location.pathname==="/doctorsSchedule"?"active fw-bold":""}`}
                   aria-current='page'
                   onClick={() => navigate("/doctorsSchedule")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
@@ -57,7 +58,7 @@ const HomeHeader = () => {
               </li>
               <li className="nav-item">
               <button
-                  className='nav-link active'
+                  className={`nav-link ${location.pathname==="/ambulance"?"active fw-bold":""}`}
                   aria-current='page'
                   onClick={() => navigate("/ambulance")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
@@ -67,7 +68,7 @@ const HomeHeader = () => {
               </li>
               <li className="nav-item">
               <button
-                  className='nav-link active'
+                  className={`nav-link ${location.pathname==="/about"?"active fw-bold":""}`}
                   aria-current='page'
                   onClick={() => navigate("/about")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}

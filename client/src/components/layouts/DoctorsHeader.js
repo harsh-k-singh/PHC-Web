@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import AuthContext from "../../context/auth/AuthContext";
 import InstituteLogo from "../../images/InstituteLogo.jpg";
 
@@ -9,7 +9,7 @@ const DoctorsHeader = () => {
   const handleLogout = () => {
     logout();
   };
-
+  const location = useLocation();
   const navigate = useNavigate();
   return (
     <div>
@@ -39,7 +39,7 @@ const DoctorsHeader = () => {
             <ul className='navbar-nav'>
               <li className='nav-item'>
                 <button
-                  className='nav-link active'
+                  className={`nav-link ${location.pathname==="/doctor"?"active fw-bold":""}`}
                   aria-current='page'
                   onClick={() => navigate("/doctor")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
@@ -49,7 +49,16 @@ const DoctorsHeader = () => {
               </li>
               <li className='nav-item'>
                 <button
-                  className='nav-link'
+                  className={`nav-link ${location.pathname==="/doctor/patientsList"?"active fw-bold ":""}`}
+                  onClick={() => navigate("/doctor/patientsList")}
+                  style={{ borderWidth: "0px", backgroundColor: "transparent" }}
+                >
+                  My Patients
+                </button>
+              </li>
+              <li className='nav-item'>
+                <button
+                  className={`nav-link ${location.pathname==="/doctor/profile"?"active fw-bold":""}`}
                   onClick={() => navigate("/doctor/profile")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
                 >
@@ -58,7 +67,7 @@ const DoctorsHeader = () => {
               </li>
               <li className='nav-item'>
                 <button
-                  className='nav-link'
+                  className={`nav-link ${location.pathname==="/doctor/schedule"?"active fw-bold":""}`}
                   onClick={() => navigate("/doctor/schedule")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
                 >
@@ -67,7 +76,7 @@ const DoctorsHeader = () => {
               </li>
               <li className='nav-item'>
                 <button
-                  className='nav-link'
+                  className={`nav-link ${location.pathname==="/doctor/inventory"?"active fw-bold":""}`}
                   onClick={() => navigate("/doctor/inventory")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
                 >
