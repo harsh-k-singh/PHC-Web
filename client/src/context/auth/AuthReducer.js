@@ -5,6 +5,7 @@ const AuthReducer = (state, action) => {
     action.type === types.REGISTER_SUCCESS ||
     action.type === types.LOGIN_SUCCESS
   ) {
+    localStorage.setItem("isAuthenicated", true);
     return {
       ...state,
       isAuthenicated: true,
@@ -30,6 +31,8 @@ const AuthReducer = (state, action) => {
       user: action.payload,
     };
   } else if (action.type === types.LOGOUT_SUCCESS) {
+    console.log("logouting from authreducer");
+    localStorage.removeItem("isAuthenicated");
     return {
       ...state,
       isAuthenicated: false,

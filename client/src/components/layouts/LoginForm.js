@@ -30,7 +30,7 @@ const LoginForm = () => {
       }
     };
 
-    if (isAuthenicated) {
+    if (isAuthenicated || localStorage.getItem("isAuthenicated")) {
       redirectToDashboard();
     }
     // // If error is not null, display error
@@ -155,7 +155,7 @@ const LoginForm = () => {
         </div>
       </form>
     </div>
-  )
-}
+  );
+};
 
 export default LoginForm;

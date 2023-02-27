@@ -69,7 +69,7 @@ const AuthState = (props) => {
 
   const logout = async () => {
     try {
-      console.log("here here");
+      console.log("logout called from authstates");
       await axios.delete("/api/auth");
       dispatch({ type: types.LOGOUT_SUCCESS });
     } catch (error) {
