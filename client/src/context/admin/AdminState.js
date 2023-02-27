@@ -53,7 +53,7 @@ const AdminState = props => {
             addActor
         }}
     >
-        {props.children};
+        {props.children}
     </AdminContext.Provider>
 };
 

@@ -7,7 +7,7 @@ const Home = () => {
       <HomeHeader />
       <Outlet />
     </>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

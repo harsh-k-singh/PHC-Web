@@ -47,7 +47,6 @@ const App = () => {
               <Route path='ambulance' element={<Ambulance/>} />
               <Route path='about' element={<About/>} />
             </Route>
-
             <Route path='doctor' element={<Doctor />}>
               <Route path='/doctor' element={<DoctorsDashboard />} />
               <Route path='schedule' element={<DoctorsSchedule />} />
@@ -78,12 +77,11 @@ const App = () => {
               <Route path='profile' element={<PatientsProfile/>} />
               <Route path='doctorsSchedule' element={<CheckDoctorsSchedule/>} />
             </Route>
-
           </Routes>
         </Router>
       </AdminState>
     </AuthState>
-  );
-};
+  )
+}
 
-export default App;
+export default App

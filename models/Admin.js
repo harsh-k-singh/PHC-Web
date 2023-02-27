@@ -53,4 +53,4 @@ const validateadmin = (admin) => {
 module.exports = {
   Admin: mongoose.model("admin", adminSchema),
   validateadmin,
-};
+}

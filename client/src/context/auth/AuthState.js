@@ -91,7 +91,7 @@ const AuthState = (props) => {
         logout,
       }}
     >
-      {props.children};
+      {props.children}
     </AuthContext.Provider>
   );
 };
