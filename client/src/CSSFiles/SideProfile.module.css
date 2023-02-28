@@ -1,0 +1,18 @@
+.accordian {
+  grid-column: 2;
+}
+
+.sideProfile{
+  height: clamp(375px, 85vh, 800px);
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+@media (min-width: 1024px) {
+  .accordian{
+    grid-column: auto;
+  }
+  .sideProfile{
+    max-height: auto;
+  }
+}

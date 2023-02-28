@@ -1,5 +1,5 @@
 import AdminsHeader from "../layouts/AdminsHeader.js";
-import "../../CSSFiles/ActorsBody.css";
+import styles from "../../CSSFiles/Actor.module.css";
 import AdminsSP from "../layouts/AdminsSP";
 import { Outlet, useNavigate, redirect } from "react-router-dom";
 import { useContext, useEffect } from "react";
@@ -33,7 +33,7 @@ const Admin = () => {
     <>
       <AdminsHeader />
       <AdminsSP/>
-      <div className='actorsBody'>
+      <div className={`${styles.content}`}>
         <Outlet />
       </div>
     </>

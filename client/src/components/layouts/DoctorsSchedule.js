@@ -32,7 +32,7 @@ const DoctorsSchedule = () => {
   const onChange = (e) => {
     setSche({ ...sche, [e.target.name]: e.target.value });
   }
- 
+  console.log(sche);
   useEffect(() => {
     if(user) {
       setSche(user.timing);

@@ -1,6 +1,7 @@
 import DoctorsHeader from "../layouts/DoctorsHeader.js";
 import DoctorSP from "../layouts/DoctorsSP.js";
-import "../../CSSFiles/ActorsBody.css";
+import NewSP from "../layouts/NewSP.js";
+import styles from "../../CSSFiles/Actor.module.css";
 import { Outlet, useNavigate, redirect } from "react-router-dom";
 import { useContext, useEffect } from "react";
 
@@ -32,9 +33,11 @@ const Doctor = () => {
   return (
     <>
       <DoctorsHeader />
-      <DoctorSP/>
-      <div className='actorsBody'>
-        <Outlet />
+      <div className={`${styles.main_area}`}>
+        <DoctorSP/>
+        <div className={`${styles.content}`}>
+          <Outlet />
+        </div>
       </div>
     </>
   );

@@ -1,5 +1,5 @@
 import CompoundersHeader from "../layouts/CompoundersHeader.js";
-import "../../CSSFiles/ActorsBody.css";
+import styles from "../../CSSFiles/Actor.module.css";
 import CompoundersSP from "../layouts/CompoundersSP";
 import { Outlet, useNavigate, redirect } from "react-router-dom";
 import { useContext, useEffect } from "react";
@@ -33,7 +33,7 @@ const Compounder = () => {
     <>
       <CompoundersHeader/>
       <CompoundersSP/>
-      <div className='actorsBody'>
+      <div className={`${styles.content}`}>
         <Outlet />
       </div>
     </>

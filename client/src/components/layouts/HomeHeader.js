@@ -7,7 +7,7 @@ const HomeHeader = () => {
   const location = useLocation();
   return (
     <div>
-      <nav className="navbar navbar-expand-lg bg-light">
+      <nav className="navbar fixed-top navbar-expand-lg bg-light">
         <div className="container-fluid">
           <a className="navbar-brand" href="#">
             <img src={InstituteLogo} width="37%" height="30" class="d-inline-block align-text-top mx-2" />

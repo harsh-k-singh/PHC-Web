@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import "./App.css";
 
 import AuthState from "./context/auth/AuthState";
 import AdminState from "./context/admin/AdminState";
