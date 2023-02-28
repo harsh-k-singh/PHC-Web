@@ -1,16 +1,16 @@
 /**
  * Imports
  */
-const express = require('express');
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
-const path = require('path');
-const compression = require('compression');
+const express = require("express");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const path = require("path");
+const compression = require("compression");
 
 /**
  * Database
  */
-const connectDB = require('./config/db');
+const connectDB = require("./config/db");
 connectDB();
 
 /**
@@ -34,19 +34,22 @@ app.use(compression({ level: 5 }));
 /**
  * Routes
  */
-app.use('/api/register', require('./routes/register'));
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/admin', require('./routes/admin'));
+app.use("/api/register", require("./routes/register"));
+app.use("/api/auth", require("./routes/auth"));
+app.use("/api/admin", require("./routes/admin"));
+app.use("/api/doctor", require("./routes/doctor"));
+app.use("/api/compounder", require("./routes/compounder"));
+app.use("/api/patient", require("./routes/patient"));
 
 /**
  * Serve static assets in production
  */
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static('client/build'));
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
 
-    app.get('*', (req, res) =>
-        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
-    );
+  app.get("*", (req, res) =>
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"))
+  );
 }
 
 /**
