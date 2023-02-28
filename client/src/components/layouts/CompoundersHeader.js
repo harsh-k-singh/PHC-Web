@@ -34,7 +34,7 @@ const CompoundersHeader = () => {
             <ul className="navbar-nav">
               <li className="nav-item">
                 <button
-                  className={`nav-link ${location.pathname==="/compounder"?"active fw-bold":""}`}
+                  className={`nav-link ${location.pathname==="/compounder"?"fw-bolder text-primary active":""}`}
                   aria-current='page'
                   onClick={() => navigate("/compounder")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
@@ -44,7 +44,7 @@ const CompoundersHeader = () => {
               </li>
               <li className='nav-item'>
                 <button
-                  className={`nav-link ${location.pathname==="/compounder/patientsList"?"active fw-bold ":""}`}
+                  className={`nav-link ${location.pathname==="/compounder/patientsList"?"fw-bolder text-primary active ":""}`}
                   onClick={() => navigate("/compounder/patientsList")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
                 >
@@ -53,7 +53,7 @@ const CompoundersHeader = () => {
               </li>
               <li className="nav-item">
                 <button
-                  className={`nav-link ${location.pathname==="/compounder/profile"?"active fw-bold":""}`}
+                  className={`nav-link ${location.pathname==="/compounder/profile"?"fw-bolder text-primary active":""}`}
                   onClick={() => navigate("/compounder/profile")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
                 >
@@ -62,7 +62,7 @@ const CompoundersHeader = () => {
               </li>
               <li className="nav-item">
                 <button
-                  className={`nav-link ${location.pathname==="/compounder/schedule"?"active fw-bold":""}`}
+                  className={`nav-link ${location.pathname==="/compounder/schedule"?"fw-bolder text-primary active":""}`}
                   onClick={() => navigate("/compounder/schedule")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
                 >
@@ -71,7 +71,7 @@ const CompoundersHeader = () => {
               </li>
               <li className="nav-item">
                 <button
-                  className={`nav-link ${location.pathname==="/compounder/inventory"?"active fw-bold":""}`}
+                  className={`nav-link ${location.pathname==="/compounder/inventory"?"fw-bolder text-primary active":""}`}
                   onClick={() => navigate("/compounder/inventory")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
                 >

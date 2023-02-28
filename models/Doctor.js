@@ -31,7 +31,38 @@ const doctorSchema = mongoose.Schema({
     type: String,
   },
   timing: {
-    type: [[[Number]]],
+    type:{
+      monAT: String,
+      monDT: String,
+      tueAT: String,
+      tueDT: String,
+      wedAT: String,
+      wedDT: String,
+      thuAT: String,
+      thuDT: String,
+      friAT: String,
+      friDT: String,
+      satAT: String,
+      satDT: String,
+      sunAT: String,
+      sunDT: String,
+    },
+    default: {
+      monAT: '00:00',
+      monDT: '00:00',
+      tueAT: '00:00',
+      tueDT: '00:00',
+      wedAT: '00:00',
+      wedDT: '00:00',
+      thuAT: '00:00',
+      thuDT: '00:00',
+      friAT: '00:00',
+      friDT: '00:00',
+      satAT: '00:00',
+      satDT: '00:00',
+      sunAT: '00:00',
+      sunDT: '00:00',
+    }
   },
   role: {
     type: String,
@@ -53,13 +84,29 @@ const validatedoctor = (doctor) => {
     birth: Joi.date(),
     gender: Joi.string(),
     employment_details: Joi.string(),
-    timing: Joi.array()
-      .length(7)
-      .items(
-        Joi.array()
-          .length(2)
-          .items(Joi.array().length(2).items(Joi.number().max(61)))
-      ),
+    timing: Joi.object({
+      monAT: Joi.string(),
+      monDT: Joi.string(),
+      tueAT: Joi.string(),
+      tueDT: Joi.string(),
+      wedAT: Joi.string(),
+      wedDT: Joi.string(),
+      thuAT: Joi.string(),
+      thuDT: Joi.string(),
+      friAT: Joi.string(),
+      friDT: Joi.string(),
+      satAT: Joi.string(),
+      satDT: Joi.string(),
+      sunAT: Joi.string(),
+      sunDT: Joi.string(),
+    }),
+    // timing: Joi.array()
+    //   .length(7)
+    //   .items(
+    //     Joi.array()
+    //       .length(2)
+    //       .items(Joi.array().length(2).items(Joi.number().max(61)))
+    //   ),
   });
   return schema.validate(doctor);
 };

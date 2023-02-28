@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState, useContext } from "react";
-import InstituteLogo from "../../images/InstituteLogo.jpg";
+import PHClogo from "../../images/PHClogo.png";
 import { Link, useNavigate } from "react-router-dom";
 import AuthContext from "../../context/auth/AuthContext";
 
@@ -58,15 +58,15 @@ const LoginForm = () => {
     <div className='container containerStyle'>
       <img
         className='rounded mx-auto d-block my-3'
-        src={InstituteLogo}
+        src={PHClogo}
         alt='Institute Logo'
-        style={{ width: 120, height: 120 }}
+        style={{ width: 140, height: 140 }}
       />
       <form>
         <h3 className='text-center mb-4'>
           <b>Login to PHC</b>
         </h3>
-        <div className='form-outline mb-4'>
+        <div className='form-outline mb-4'>  
           {err.msg !== null ? (
             <div
               class='alert alert-danger'

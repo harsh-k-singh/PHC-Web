@@ -25,7 +25,7 @@ const PatientsHeader = () => {
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
               <button
-                  className={`nav-link ${location.pathname==="/patient"?"active fw-bold":""}`}
+                  className={`nav-link ${location.pathname==="/patient"?"fw-bolder text-primary active":""}`}
                   aria-current='page'
                   onClick={() => navigate("/patient")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
@@ -35,7 +35,7 @@ const PatientsHeader = () => {
               </li>
               <li class="nav-item">
               <button
-                  className={`nav-link ${location.pathname==="/patient/doctorsSchedule"?"active fw-bold":""}`}
+                  className={`nav-link ${location.pathname==="/patient/doctorsSchedule"?"fw-bolder text-primary active":""}`}
                   aria-current='page'
                   onClick={() => navigate("/patient/doctorsSchedule")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
@@ -45,7 +45,7 @@ const PatientsHeader = () => {
               </li>
               <li class="nav-item">
               <button
-                  className={`nav-link ${location.pathname==="/patient/profile"?"active fw-bold":""}`}
+                  className={`nav-link ${location.pathname==="/patient/profile"?"fw-bolder text-primary active":""}`}
                   aria-current='page'
                   onClick={() => navigate("/patient/profile")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}

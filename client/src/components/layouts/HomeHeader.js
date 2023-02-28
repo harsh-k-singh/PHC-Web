@@ -28,7 +28,7 @@ const HomeHeader = () => {
             <ul className="navbar-nav">
               <li className="nav-item">
               <button
-                  className={`nav-link ${location.pathname==="/"?"active fw-bold":""}`}
+                  className={`nav-link ${location.pathname==="/"?"fw-bolder text-primary active":""}`}
                   aria-current='page'
                   onClick={() => navigate("/")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
@@ -38,7 +38,7 @@ const HomeHeader = () => {
               </li>
               <li className="nav-item">
               <button
-                  className={`nav-link ${location.pathname==="/signup"?"active fw-bold":""}`}
+                  className={`nav-link ${location.pathname==="/signup"?"fw-bolder text-primary active":""}`}
                   aria-current='page'
                   onClick={() => navigate("/signup")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
@@ -48,7 +48,7 @@ const HomeHeader = () => {
               </li>
               <li className="nav-item">
               <button
-                  className={`nav-link ${location.pathname==="/doctorsSchedule"?"active fw-bold":""}`}
+                  className={`nav-link ${location.pathname==="/doctorsSchedule"?"fw-bolder text-primary active":""}`}
                   aria-current='page'
                   onClick={() => navigate("/doctorsSchedule")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
@@ -58,7 +58,7 @@ const HomeHeader = () => {
               </li>
               <li className="nav-item">
               <button
-                  className={`nav-link ${location.pathname==="/ambulance"?"active fw-bold":""}`}
+                  className={`nav-link ${location.pathname==="/ambulance"?"fw-bolder text-primary active":""}`}
                   aria-current='page'
                   onClick={() => navigate("/ambulance")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
@@ -68,7 +68,7 @@ const HomeHeader = () => {
               </li>
               <li className="nav-item">
               <button
-                  className={`nav-link ${location.pathname==="/about"?"active fw-bold":""}`}
+                  className={`nav-link ${location.pathname==="/about"?"fw-bolder text-primary active":""}`}
                   aria-current='page'
                   onClick={() => navigate("/about")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
