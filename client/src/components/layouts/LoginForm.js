@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState, useContext } from "react";
-import PHClogo from "../../images/PHClogo.png";
+import PHClogo from "../../images/PHClogo1.png";
 import { Link, useNavigate } from "react-router-dom";
 import AuthContext from "../../context/auth/AuthContext";
 
@@ -60,7 +60,7 @@ const LoginForm = () => {
         className='rounded mx-auto d-block my-3'
         src={PHClogo}
         alt='Institute Logo'
-        style={{ width: 140, height: 140 }}
+        style={{ width: 150, height: 140 }}
       />
       <form>
         <h3 className='text-center mb-4'>
@@ -81,6 +81,7 @@ const LoginForm = () => {
             aria-label='Select Your Role'
             onChange={onChange}
             name='role'
+            style={{height:"32px"}}
           >
             <option value='' disabled selected hidden>
               Select Your Role
@@ -99,6 +100,7 @@ const LoginForm = () => {
             className='form-control'
             placeholder='Email address'
             onChange={onChange}
+            style={{height:"32px"}}
           />
         </div>
         <div className='form-outline mb-4'>
@@ -113,10 +115,11 @@ const LoginForm = () => {
               aria-label='password'
               aria-describedby='basic-addon1'
               onChange={onChange}
+              style={{height:"32px"}}
             />
             <div class='input-group-append'>
-              <span class='input-group-text' onClick={() => setShow(!show)}>
-                <i class='fas fa-eye' id='show_eye'></i>
+              <span class='input-group-text' onClick={()=>setShow(!show)}>
+                <i class='fas fa-eye' id='show_eye' style={{height:"17px"}}></i>
               </span>
             </div>
           </div>
