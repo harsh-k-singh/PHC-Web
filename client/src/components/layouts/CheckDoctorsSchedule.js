@@ -1,5 +1,19 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
+
+import GlobalContext from "../../context/global/GlobalContext";
+
 const CheckDoctorsSchedule = () => {
+  const globalContext = useContext(GlobalContext);
+  const { getSchedule, schedule } = globalContext;
+  const [data, setData] = useState(null);
+  useEffect(() => {
+    const fetchData = async () => {
+      await getSchedule();
+      setData(schedule);
+    };
+    fetchData();
+  }, []);
+  console.log("data", data);
   return (
     <div className='container'>
       <h2 class='text-center'>Doctors Schedule</h2>
@@ -10,7 +24,7 @@ const CheckDoctorsSchedule = () => {
         <thead class='table-dark'>
           <tr>
             <th scope='col'>S.No</th>
-            <th scope='col'>Name</th>
+            <th scope='col'>Phc user</th>
             <th scope='col'>Schedule</th>
             <th scope='col'>Presently</th>
             <th scope='col'>Visit Profile</th>

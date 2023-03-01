@@ -1,3 +1,5 @@
+export const SET_SCHEDULE = "SET_SCHEDULE";
+
 export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
 export const REGISTER_FAILURE = "REGISTER_FAILURE";
 export const LOAD_ERROR = "LOAD_ERROR";
