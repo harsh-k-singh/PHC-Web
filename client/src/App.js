@@ -6,6 +6,7 @@ import AuthState from "./context/auth/AuthState";
 import AdminState from "./context/admin/AdminState";
 import DoctorState from "./context/doctor/DoctorState";
 import CompounderState from "./context/compounder/CompounderState";
+import GlobalReducer from "./context/global/GlobalReducer";
 
 import Home from "./components/pages/Home";
 import HomeBody from "./components/layouts/HomeBody";
@@ -34,9 +35,11 @@ import AdminsProfile from "./components/layouts/AdminsProfile";
 import Patient from "./components/pages/Patient";
 import PatientsProfile from "./components/layouts/PatientsProfile";
 import CheckDoctorsSchedule from "./components/layouts/CheckDoctorsSchedule";
+import GlobalState from "./context/global/GlobalState";
 
 const App = () => {
   return (
+    <GlobalState>
     <AuthState>
       <AdminState>
         <DoctorState>
@@ -95,6 +98,7 @@ const App = () => {
         </DoctorState>
       </AdminState>
     </AuthState>
+    </GlobalState>
   );
 };
 

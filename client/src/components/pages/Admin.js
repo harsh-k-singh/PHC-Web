@@ -1,7 +1,9 @@
 import AdminsHeader from "../layouts/AdminsHeader.js";
-import styles from "../../CSSFiles/Actor.module.css";
 import AdminsSP from "../layouts/AdminsSP";
-import { Outlet, useNavigate, redirect } from "react-router-dom";
+
+import styles from "../../CSSFiles/Actor.module.css";
+
+import { Outlet, useNavigate,  } from "react-router-dom";
 import { useContext, useEffect } from "react";
 
 import AuthContext from "../../context/auth/AuthContext";
@@ -32,9 +34,11 @@ const Admin = () => {
   return (
     <>
       <AdminsHeader />
-      <AdminsSP/>
-      <div className={`${styles.content}`}>
-        <Outlet />
+      <div className={`${styles.main_area}`}>
+        <AdminsSP/>
+        <div className={`${styles.content}`}>
+          <Outlet />
+        </div>
       </div>
     </>
   );

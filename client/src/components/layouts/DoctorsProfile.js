@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import AuthContext from "../../context/auth/AuthContext";
 import DoctorContext from "../../context/doctor/DoctorContext";
+import { useNavigate } from "react-router-dom";
 
 const DoctorsProfile = () => {
   const authContext = useContext(AuthContext);
   const doctorContext = useContext(DoctorContext);
   const { user, loadUser } = authContext;
   const { updateProfile } = doctorContext;
+  const navigate= useNavigate();
 
   const [edit, setEdit] = useState(false);
 
@@ -33,6 +35,7 @@ const DoctorsProfile = () => {
     };
     updateAndRefetch();
     setEdit(false);
+    navigate("/doctor/profile");
   };
 
   useEffect(() => {
@@ -47,7 +50,7 @@ const DoctorsProfile = () => {
       });
     }
   }, [user]);
-
+  // console.log("form",form)
   return (
     <div class='container-xl px-4'>
       <div class='row'>
@@ -212,7 +215,7 @@ const DoctorsProfile = () => {
                       class='form-control'
                       id='inputNewPassword'
                       aria-label='New Password'
-                      placeholder='New Password'
+                      placeholder='New Paswword'
                       name='new_password'
                       onChange={onChange}
                       disabled={edit ? 0 : 1}

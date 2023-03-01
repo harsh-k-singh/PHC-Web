@@ -1,8 +1,9 @@
 import DoctorsHeader from "../layouts/DoctorsHeader.js";
-import DoctorSP from "../layouts/DoctorsSP.js";
-import NewSP from "../layouts/NewSP.js";
+import DoctorsSP from "../layouts/DoctorsSP.js";
+
 import styles from "../../CSSFiles/Actor.module.css";
-import { Outlet, useNavigate, redirect } from "react-router-dom";
+
+import { Outlet, useNavigate} from "react-router-dom";
 import { useContext, useEffect } from "react";
 
 import AuthContext from "../../context/auth/AuthContext";
@@ -34,7 +35,7 @@ const Doctor = () => {
     <>
       <DoctorsHeader />
       <div className={`${styles.main_area}`}>
-        <DoctorSP/>
+        <DoctorsSP/>
         <div className={`${styles.content}`}>
           <Outlet />
         </div>

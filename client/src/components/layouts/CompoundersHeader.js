@@ -2,18 +2,21 @@ import React, { useContext } from 'react'
 import { useNavigate ,useLocation} from "react-router-dom"
 import AuthContext from '../../context/auth/AuthContext';
 import InstituteLogo from '../../images/InstituteLogo.jpg';
+import GlobalContext from "../../context/global/GlobalContext";
 
 const CompoundersHeader = () => {
   const authContext = useContext(AuthContext);
   const { logout } = authContext;
-  const navigate = useNavigate();
-  const location = useLocation();
+  const globalContext = useContext(GlobalContext);
+  const {isMobile} = globalContext;
   const handleLogout = () => {
     logout();
   }
+  const navigate = useNavigate();
+  const location = useLocation();
   return (
     <div>
-      <nav className="navbar fixed-top navbar-expand-lg bg-light">
+      <nav className={`navbar ${!isMobile?'fixed-top':''} navbar-expand-lg bg-light`}>
         <div className="container-fluid">
           <a className="navbar-brand" href="#">
             <img src={InstituteLogo} width="30" height="30" class="d-inline-block align-text-top mx-2" />

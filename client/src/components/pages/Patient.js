@@ -34,9 +34,11 @@ const Patient = () => {
   return (
     <>
       <PatientsHeader/>
-      <PatientsSP/>
-      <div className={`${styles.content}`}>
-        <Outlet />
+      <div className={`${styles.main_area}`}>
+        <PatientsSP/>
+        <div className={`${styles.content}`}>
+          <Outlet />
+        </div>
       </div>
     </>
   );
