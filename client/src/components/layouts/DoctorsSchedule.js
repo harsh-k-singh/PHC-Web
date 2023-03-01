@@ -1,17 +1,14 @@
 import React, { useContext, useState, useEffect } from "react";
 import AuthContext from "../../context/auth/AuthContext";
+import DoctorContext from "../../context/doctor/DoctorContext";
 
 const DoctorsSchedule = () => {
   const authContext = useContext(AuthContext);
-  const { user } = authContext;
+  const doctorContext = useContext(DoctorContext);
+  const { user, loadUser } = authContext;
+  const { updateSchedule } = doctorContext;
 
   const [edit, setEdit] = useState(false);
-  const onEdit = () => {
-    setEdit(true);
-  };
-  const onSave = () => {
-    setEdit(false);
-  };
 
   const [sche, setSche] = useState({
     monAT: "",
@@ -29,14 +26,43 @@ const DoctorsSchedule = () => {
     sunAT: "",
     sunDT: "",
   });
+
+  const onEdit = () => {
+    setEdit(true);
+  };
+
   const onChange = (e) => {
-    console.log(e.target.name, e.target.value);
     setSche({ ...sche, [e.target.name]: e.target.value });
+  };
+
+  const onSave = () => {
+    console.log("sche", sche);
+    const updateAndRefetch = async () => {
+      await updateSchedule(sche);
+      await loadUser();
+    };
+    updateAndRefetch();
+    setEdit(false);
   };
 
   useEffect(() => {
     if (user) {
-      setSche(user.timing);
+      setSche({
+        monAT: user.timing.monAT,
+        monDT: user.timing.monDT,
+        tueAT: user.timing.tueAT,
+        tueDT: user.timing.tueDT,
+        wedAT: user.timing.wedAT,
+        wedDT: user.timing.wedDT,
+        thuAT: user.timing.thuAT,
+        thuDT: user.timing.thuDT,
+        friAT: user.timing.friAT,
+        friDT: user.timing.friDT,
+        satAT: user.timing.satAT,
+        satDT: user.timing.satDT,
+        sunAT: user.timing.sunAT,
+        sunDT: user.timing.sunDT,
+      });
     }
   }, [user]);
 

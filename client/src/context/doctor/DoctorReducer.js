@@ -15,6 +15,10 @@ const DoctorReducer = (state, action) => {
       ...state,
       error: null,
     };
+  } else if (action.type === types.UPDATE_SCHEDULE_SUCCESS) {
+    return { ...state };
+  } else if (action.type === types.UPDATE_SCHEDULE_SUCCESS) {
+    return { ...state };
   } else {
     return state;
   }
