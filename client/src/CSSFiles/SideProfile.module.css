@@ -14,5 +14,6 @@
   }
   .sideProfile{
     max-height: auto;
+    height: 85vh;
   }
 }
