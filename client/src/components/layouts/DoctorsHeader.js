@@ -2,10 +2,12 @@ import React, { useContext } from "react";
 import { useNavigate,useLocation } from "react-router-dom";
 import AuthContext from "../../context/auth/AuthContext";
 import InstituteLogo from "../../images/InstituteLogo.jpg";
-
+import GlobalContext from "../../context/global/GlobalContext";
 const DoctorsHeader = () => {
   const authContext = useContext(AuthContext);
   const { logout } = authContext;
+  const globalContext = useContext(GlobalContext);
+  const {isMobile} = globalContext;
   const handleLogout = () => {
     logout();
   };
@@ -13,7 +15,7 @@ const DoctorsHeader = () => {
   const navigate = useNavigate();
   return (
     <div>
-      <nav className='navbar fixed-top navbar-expand-lg bg-light'>
+      <nav className={`navbar ${!isMobile?'fixed-top':''} navbar-expand-lg bg-light`}>
         <div className='container-fluid'>
           <a className='navbar-brand' href='#'>
             <img
@@ -30,7 +32,7 @@ const DoctorsHeader = () => {
             data-bs-toggle='collapse'
             data-bs-target='#navbarNavDropdown'
             aria-controls='navbarNavDropdown'
-            aria-expanded='false'
+            aria-expanded='true'
             aria-label='Toggle navigation'
           >
             <span className='navbar-toggler-icon'></span>
@@ -43,6 +45,8 @@ const DoctorsHeader = () => {
                   aria-current='page'
                   onClick={() => navigate("/doctor")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
+                  data-bs-toggle='collapse'
+                  data-bs-target='#navbarNavDropdown'
                 >
                   Dashboard
                 </button>
@@ -52,6 +56,8 @@ const DoctorsHeader = () => {
                   className={`nav-link ${location.pathname==="/doctor/patientsList"?"fw-bolder text-primary active ":""}`}
                   onClick={() => navigate("/doctor/patientsList")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
+                  data-bs-toggle='collapse'
+                  data-bs-target='#navbarNavDropdown'
                 >
                   My Patients
                 </button>
@@ -61,6 +67,8 @@ const DoctorsHeader = () => {
                   className={`nav-link ${location.pathname==="/doctor/profile"?"fw-bolder text-primary active":""}`}
                   onClick={() => navigate("/doctor/profile")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
+                  data-bs-toggle='collapse'
+                  data-bs-target='#navbarNavDropdown'
                 >
                   My Profile
                 </button>
@@ -70,6 +78,8 @@ const DoctorsHeader = () => {
                   className={`nav-link ${location.pathname==="/doctor/schedule"?"fw-bolder text-primary active":""}`}
                   onClick={() => navigate("/doctor/schedule")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
+                  data-bs-toggle='collapse'
+                  data-bs-target='#navbarNavDropdown'
                 >
                   My Schedule
                 </button>
@@ -79,6 +89,8 @@ const DoctorsHeader = () => {
                   className={`nav-link ${location.pathname==="/doctor/inventory"?"fw-bolder text-primary active":""}`}
                   onClick={() => navigate("/doctor/inventory")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
+                  data-bs-toggle='collapse'
+                  data-bs-target='#navbarNavDropdown'
                 >
                   Peek in inventory
                 </button>
@@ -90,6 +102,8 @@ const DoctorsHeader = () => {
                   type='button'
                   class='btn btn-primary'
                   onClick={handleLogout}
+                  data-bs-toggle='collapse'
+                  data-bs-target='#navbarNavDropdown'
                 >
                   Sign Out
                 </button>

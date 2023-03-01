@@ -1,7 +1,9 @@
 import CompoundersHeader from "../layouts/CompoundersHeader.js";
-import "../../CSSFiles/ActorsBody.css";
 import CompoundersSP from "../layouts/CompoundersSP";
-import { Outlet, useNavigate, redirect } from "react-router-dom";
+
+import styles from "../../CSSFiles/Actor.module.css";
+
+import { Outlet, useNavigate} from "react-router-dom";
 import { useContext, useEffect } from "react";
 
 import AuthContext from "../../context/auth/AuthContext";
@@ -32,9 +34,11 @@ const Compounder = () => {
   return (
     <>
       <CompoundersHeader/>
-      <CompoundersSP/>
-      <div className='actorsBody'>
-        <Outlet />
+      <div className={`${styles.main_area}`}>
+        <CompoundersSP/>
+        <div className={`${styles.content}`}>
+          <Outlet />
+        </div>
       </div>
     </>
   );
