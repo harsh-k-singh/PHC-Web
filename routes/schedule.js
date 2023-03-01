@@ -11,22 +11,9 @@ router.get("/all", async (req, res) => {
     return {
       name: doctor.name,
       degree: doctor.degree,
-      timing: {
-        monAT: timing.monAT,
-        monDT: timing.monDT,
-        tueAT: timing.tueAT,
-        tueDT: timing.tueDT,
-        wedAT: timing.wedAT,
-        wedDT: timing.wedDT,
-        thuAT: timing.thuAT,
-        thuDT: timing.thuDT,
-        friAT: timing.friAT,
-        friDT: timing.friDT,
-        satAT: timing.satAT,
-        satDT: timing.satDT,
-        sunAT: timing.sunAT,
-        sunDT: timing.sunDT,
-      },
+      timing: [[timing.monAT, timing.monDT], [timing.tueAT, timing.tueDT], [timing.wedAT, timing.wedDT],
+              [timing.thuAT, timing.thuDT], [timing.friAT, timing.friDT], [timing.satAT, timing.satDT], 
+              [timing.sunAT, timing.sunDT]],
     };
   });
 
