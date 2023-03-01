@@ -45,8 +45,6 @@ const DoctorsHeader = () => {
                   aria-current='page'
                   onClick={() => navigate("/doctor")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
-                  data-bs-toggle='collapse'
-                  data-bs-target='#navbarNavDropdown'
                 >
                   Dashboard
                 </button>
@@ -56,8 +54,6 @@ const DoctorsHeader = () => {
                   className={`nav-link ${location.pathname==="/doctor/patientsList"?"fw-bolder text-primary active ":""}`}
                   onClick={() => navigate("/doctor/patientsList")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
-                  data-bs-toggle='collapse'
-                  data-bs-target='#navbarNavDropdown'
                 >
                   My Patients
                 </button>
@@ -67,8 +63,6 @@ const DoctorsHeader = () => {
                   className={`nav-link ${location.pathname==="/doctor/profile"?"fw-bolder text-primary active":""}`}
                   onClick={() => navigate("/doctor/profile")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
-                  data-bs-toggle='collapse'
-                  data-bs-target='#navbarNavDropdown'
                 >
                   My Profile
                 </button>
@@ -78,8 +72,6 @@ const DoctorsHeader = () => {
                   className={`nav-link ${location.pathname==="/doctor/schedule"?"fw-bolder text-primary active":""}`}
                   onClick={() => navigate("/doctor/schedule")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
-                  data-bs-toggle='collapse'
-                  data-bs-target='#navbarNavDropdown'
                 >
                   My Schedule
                 </button>
@@ -89,8 +81,6 @@ const DoctorsHeader = () => {
                   className={`nav-link ${location.pathname==="/doctor/inventory"?"fw-bolder text-primary active":""}`}
                   onClick={() => navigate("/doctor/inventory")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
-                  data-bs-toggle='collapse'
-                  data-bs-target='#navbarNavDropdown'
                 >
                   Peek in inventory
                 </button>
@@ -102,8 +92,6 @@ const DoctorsHeader = () => {
                   type='button'
                   class='btn btn-primary'
                   onClick={handleLogout}
-                  data-bs-toggle='collapse'
-                  data-bs-target='#navbarNavDropdown'
                 >
                   Sign Out
                 </button>
