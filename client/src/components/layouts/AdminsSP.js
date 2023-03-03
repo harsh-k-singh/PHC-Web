@@ -16,11 +16,11 @@ const AdminsSP = () => {
         </h2>
         <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
           <div class="accordion-body">
-             {isMobile?<AdminsContentSP/>:''}
+             {isMobile?<AdminsContentSP isMobile={isMobile}/>:''}
           </div>
         </div>
       </div>
-          {!isMobile?<AdminsContentSP/>:''}
+          {!isMobile?<AdminsContentSP isMobile={isMobile}/>:''}
     </div>
   );
 };

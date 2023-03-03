@@ -105,7 +105,7 @@ const DoctorsProfile = () => {
                   </div>
                   <div class='col-md-6'>
                     <label class='small mb-1' for='inputOrgName'>
-                      Degree
+                      Suffix
                     </label>
                     <input
                       class='form-control'

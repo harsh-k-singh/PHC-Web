@@ -17,11 +17,11 @@ const PatientsSP = () => {
         </h2>
         <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
           <div class="accordion-body">
-             {isMobile?<PatientsContentSP/>:''}
+             {isMobile?<PatientsContentSP isMobile={isMobile}/>:''}
           </div>
         </div>
       </div>
-          {!isMobile?<PatientsContentSP/>:''}
+          {!isMobile?<PatientsContentSP isMobile={isMobile}/>:''}
     </div>
   );
 };

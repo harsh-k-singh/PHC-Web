@@ -4,12 +4,13 @@ import styles from "../../CSSFiles/SideProfile.module.css";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../../context/auth/AuthContext";
 
-const AdminContentSP = () => {
+const AdminContentSP = (props) => {
     const authContext = useContext(AuthContext);
     const { user } = authContext;
+    const { isMobile } = props;
     const navigate = useNavigate();
   return (
-    <div className={`${styles.sideProfile} card px-2 py-2 mx-2 shadow-sm border-0`}>
+    <div className={`${styles.sideProfile} card px-2 py-2 mx-2 shadow-sm  ${isMobile?'border-0':''}`}>
     <ul className='nav flex-column text-center' style={{ fontSize: 20 }}>
       <div className='card px-2 py-2 mx-2 my-2 mt-4 shadow-sm'>
         <li>

@@ -16,11 +16,11 @@ const CompoundersSP = () => {
         </h2>
         <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
           <div class="accordion-body">
-             {isMobile?<CompoundersContentSP/>:''}
+             {isMobile?<CompoundersContentSP isMobile={isMobile}/>:''}
           </div>
         </div>
       </div>
-          {!isMobile?<CompoundersContentSP/>:''}
+          {!isMobile?<CompoundersContentSP isMobile={isMobile}/>:''}
     </div>
   );
 };

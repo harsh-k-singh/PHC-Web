@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect,useState } from "react";
 import { useNavigate,useLocation } from "react-router-dom";
 import AuthContext from "../../context/auth/AuthContext";
 import InstituteLogo from "../../images/InstituteLogo.jpg";
@@ -13,6 +13,12 @@ const DoctorsHeader = () => {
   };
   const location = useLocation();
   const navigate = useNavigate();
+
+  const [available,setAvailable] = useState(false);
+  useEffect(() => {
+    setAvailable(available);
+  }, [available]);
+
   return (
     <div>
       <nav className={`navbar ${!isMobile?'fixed-top':''} navbar-expand-lg bg-light`}>
@@ -87,7 +93,16 @@ const DoctorsHeader = () => {
               </li>
             </ul>
             <ul className='navbar-nav mx-2 ms-auto'>
-              <li className='nav-item'>
+              <li>
+               <h5>
+               <div class="form-check form-switch mx-2 mt-2">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" onClick={()=>setAvailable(!available)}/>
+                {available?<label class="form-check-label text-success" for="flexSwitchCheckDefault">Available</label>
+                 :<label class="form-check-label text-danger" for="flexSwitchCheckDefault">Unavailable</label>}
+               </div>
+               </h5>
+              </li>
+              <li className='nav-item mx-2'>
                 <button
                   type='button'
                   class='btn btn-primary'

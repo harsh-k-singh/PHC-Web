@@ -54,7 +54,7 @@ const CheckDoctorsSchedule = () => {
             <tr>
               <th scope='col'>S.No</th>
               <th scope='col'>Name</th>
-              <th scope='col'>Degree</th>
+              <th scope='col'>Suffix</th>
               <th scope='col'>Arrival Time</th>
               <th scope='col'>Departure Time</th>
             </tr>

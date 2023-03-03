@@ -4,10 +4,11 @@ import styles from "../../CSSFiles/SideProfile.module.css";
 import AuthContext from "../../context/auth/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-const PatientsContentSP = () => {
+const PatientsContentSP = (props) => {
     const [age, setAge] = useState("Age here");
     const authContext = useContext(AuthContext);
     const { user } = authContext;
+    const { isMobile } = props;
     const navigate = useNavigate();
     useEffect(() => {
         const getAge = (dateString) => {
@@ -23,7 +24,7 @@ const PatientsContentSP = () => {
         user ? setAge(getAge(user.birth)) : setAge("Age here");
       }, [user]);
   return (
-    <div className={`${styles.sideProfile} card px-2 py-2 mx-2 shadow-sm border-0`}>
+    <div className={`${styles.sideProfile} card px-2 py-2 mx-2 shadow-sm  ${isMobile?'border-0':''}`}>
     <ul className='nav flex-column text-center' style={{ fontSize: 20 }}>
       <div className='card px-2 py-2 mx-2 my-2 mt-4 shadow-sm'>
         <li>
