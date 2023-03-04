@@ -41,6 +41,7 @@ const GlobalState = (props) => {
       dispatch({ type: types.SET_HEIGHT });
     }
   };
+
   useEffect(() => {
     window.addEventListener("resize", updateDimensions);
     return () => window.removeEventListener("resize", updateDimensions);
@@ -58,7 +59,7 @@ const GlobalState = (props) => {
       value={{
         doctorSchedule: state.doctorSchedule,
         compounderSchedule: state.compounderSchedule,
-        isMobile: state.compounderSchedule,
+        isMobile: state.isMobile,
         width: state.width,
         height: state.height,
         getDoctorSchedule,

@@ -13,13 +13,13 @@ router.get("/doctors", async (req, res) => {
       name: doctor.name,
       degree: doctor.degree,
       timing: [
+        [timing.sunAT, timing.sunDT],
         [timing.monAT, timing.monDT],
         [timing.tueAT, timing.tueDT],
         [timing.wedAT, timing.wedDT],
         [timing.thuAT, timing.thuDT],
         [timing.friAT, timing.friDT],
         [timing.satAT, timing.satDT],
-        [timing.sunAT, timing.sunDT],
       ],
     };
   });
@@ -37,13 +37,13 @@ router.get("/compounders", async (req, res) => {
       name: compounder.name,
       degree: compounder.degree,
       timing: [
+        [timing.sunAT, timing.sunDT],
         [timing.monAT, timing.monDT],
         [timing.tueAT, timing.tueDT],
         [timing.wedAT, timing.wedDT],
         [timing.thuAT, timing.thuDT],
         [timing.friAT, timing.friDT],
         [timing.satAT, timing.satDT],
-        [timing.sunAT, timing.sunDT],
       ],
     };
   });

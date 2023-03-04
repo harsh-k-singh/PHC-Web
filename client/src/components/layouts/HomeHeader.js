@@ -47,12 +47,12 @@ const HomeHeader = () => {
               </li>
               <li className="nav-item">
               <button
-                  className={`nav-link ${location.pathname==="/doctorsSchedule"?"fw-bolder text-primary active":""}`}
+                  className={`nav-link ${location.pathname==="/schedule"?"fw-bolder text-primary active":""}`}
                   aria-current='page'
-                  onClick={() => navigate("/doctorsSchedule")}
+                  onClick={() => navigate("/schedule")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
                 >
-                  Doctor
+                  Schedule
                 </button>
               </li>
               <li className="nav-item">

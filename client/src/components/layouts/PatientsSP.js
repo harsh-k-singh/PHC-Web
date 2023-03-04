@@ -6,7 +6,7 @@ import GlobalContext from "../../context/global/GlobalContext";
 const PatientsSP = () => {
   const globalContext = useContext(GlobalContext);
   const {isMobile} = globalContext;
-
+  console.log(isMobile);
   return (
     <div class={`${styles.accordian} accordion`} id="accordionExample">
       <div class="accordion-item" hidden={!isMobile}>

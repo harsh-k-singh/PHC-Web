@@ -14,7 +14,7 @@ import HomeBody from "./components/layouts/HomeBody";
 import SignUpPatient from "./components/layouts/SignUpPatient";
 import Ambulance from "./components/layouts/Ambulance";
 import About from "./components/layouts/About";
-import CheckDoctorsSchedule from "./components/layouts/CheckDoctorsSchedule";
+import CheckSchedule from "./components/layouts/CheckSchedule";
 
 import Doctor from "./components/pages/Doctor";
 import DoctorsDashboard from "./components/layouts/DoctorsDashboard";
@@ -51,8 +51,8 @@ const App = () => {
                       <Route path='/' element={<HomeBody />} />
                       <Route path='signup' element={<SignUpPatient />} />
                       <Route
-                        path='doctorsSchedule'
-                        element={<CheckDoctorsSchedule />}
+                        path='schedule'
+                        element={<CheckSchedule/>}
                       />
                       <Route path='ambulance' element={<Ambulance />} />
                       <Route path='about' element={<About />} />
@@ -98,8 +98,8 @@ const App = () => {
                       <Route path='/patient' element={<PatientsHistory />} />
                       <Route path='profile' element={<PatientsProfile />} />
                       <Route
-                        path='doctorsSchedule'
-                        element={<CheckDoctorsSchedule />}
+                        path='schedule'
+                        element={<CheckSchedule />}
                       />
                     </Route>
                   </Routes>

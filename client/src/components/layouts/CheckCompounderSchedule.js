@@ -2,19 +2,21 @@ import React, { useContext, useEffect, useState } from "react";
 
 import GlobalContext from "../../context/global/GlobalContext";
 
-const CheckDoctorsSchedule = () => {
+const CheckCompoundersSchedule = () => {
   const globalContext = useContext(GlobalContext);
   const {
-    getDoctorSchedule,
-    doctorSchedule,
+    getCompounderSchedule,
+    compounderSchedule,
   } = globalContext;
-  const [data, setData] = useState(null);
+
+  const [compoundersData, setCompoundersData] = useState(null);
   const d = new Date().getDay();
   const [day, setDay] = useState(d);
+
   useEffect(() => {
     const fetchData = async () => {
-      await getDoctorSchedule();
-      setData(doctorSchedule);
+      await getCompounderSchedule();
+      setCompoundersData(compounderSchedule);
     };
     fetchData();
     setDay(day);
@@ -105,19 +107,17 @@ const CheckDoctorsSchedule = () => {
               <tr>
                 <th scope='col'>S.No</th>
                 <th scope='col'>Name</th>
-                <th scope='col'>Suffix</th>
                 <th scope='col'>Arrival Time</th>
                 <th scope='col'>Departure Time</th>
               </tr>
             </thead>
             <tbody>
-              {data
-                ? data.map((item, index) => {
+              {compoundersData
+                ? compoundersData.map((item, index) => {
                     return (
                       <tr>
                         <th scope='row'>{index + 1}</th>
                         <td>{item.name}</td>
-                        <td>{item.degree}</td>
                         <td>{item.timing[day][0]}</td>
                         <td>{item.timing[day][1]}</td>
                       </tr>
@@ -132,4 +132,4 @@ const CheckDoctorsSchedule = () => {
   );
 };
 
-export default CheckDoctorsSchedule;
+export default CheckCompoundersSchedule;
