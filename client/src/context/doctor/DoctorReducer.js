@@ -17,7 +17,7 @@ const DoctorReducer = (state, action) => {
     };
   } else if (action.type === types.UPDATE_SCHEDULE_SUCCESS) {
     return { ...state };
-  } else if (action.type === types.UPDATE_SCHEDULE_SUCCESS) {
+  } else if (action.type === types.UPDATE_SCHEDULE_FAILURE) {
     return { ...state };
   } else {
     return state;

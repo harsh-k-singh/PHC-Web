@@ -38,7 +38,6 @@ const CompounderState = (props) => {
       setTimeout(clearError, 2000);
     }
   };
-
   const clearError = () => {
     dispatch({ type: types.CLEAR_ERROR });
   };

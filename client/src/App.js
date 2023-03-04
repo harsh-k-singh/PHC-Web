@@ -14,6 +14,7 @@ import HomeBody from "./components/layouts/HomeBody";
 import SignUpPatient from "./components/layouts/SignUpPatient";
 import Ambulance from "./components/layouts/Ambulance";
 import About from "./components/layouts/About";
+import CheckDoctorsSchedule from "./components/layouts/CheckDoctorsSchedule";
 
 import Doctor from "./components/pages/Doctor";
 import DoctorsDashboard from "./components/layouts/DoctorsDashboard";
@@ -35,7 +36,6 @@ import AdminsProfile from "./components/layouts/AdminsProfile";
 
 import Patient from "./components/pages/Patient";
 import PatientsProfile from "./components/layouts/PatientsProfile";
-import CheckDoctorsSchedule from "./components/layouts/CheckDoctorsSchedule";
 
 const App = () => {
   return (

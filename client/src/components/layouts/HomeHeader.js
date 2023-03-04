@@ -1,5 +1,4 @@
 import React from 'react'
-// import RegisterForm from './RegisterForm';
 import { useNavigate,useLocation } from "react-router-dom";
 import InstituteLogo from '../../images/InstituteLogo.jpg';
 const HomeHeader = () => {

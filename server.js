@@ -41,7 +41,6 @@ app.use("/api/doctor", require("./routes/doctor"));
 app.use("/api/compounder", require("./routes/compounder"));
 app.use("/api/patient", require("./routes/patient"));
 app.use("/api/schedule", require("./routes/schedule"));
-
 /**
  * Serve static assets in production
  */

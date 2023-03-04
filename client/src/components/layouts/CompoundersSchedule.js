@@ -3,15 +3,12 @@ import AuthContext from '../../context/auth/AuthContext';
 
 const CompoundersSchedule = () => {
   const authContext = useContext(AuthContext);
-  const {user } = authContext;
+  const { user} = authContext;
 
   const [edit, setEdit] = useState(false);
   const onEdit = () => {
       setEdit(true);
   }   
-  const onSave = () => {
-      setEdit(false);
-  }
   
   const [sche, setSche] = useState({
     monAT: '',
@@ -32,11 +29,12 @@ const CompoundersSchedule = () => {
   const onChange = (e) => {
     setSche({ ...sche, [e.target.name]: e.target.value });
   }
- 
+  
+  const onSave = () => {
+      setEdit(false);
+  }
   useEffect(() => {
-    if(user) {
-      setSche(user.timing);
-     }
+    if(user) setSche(sche);
   },[user])
   
   return (

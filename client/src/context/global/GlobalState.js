@@ -12,6 +12,7 @@ const GlobalState = (props) => {
     width: window.innerWidth,
     height: window.innerHeight,
     schedule: null,
+    compounderSchedule:null,
   };
 
   const [state, dispatch] = useReducer(GlobalReducer, initialState);

@@ -6,7 +6,7 @@ const GlobalReducer = (state, action) => {
       ...state,
       schedule: action.payload,
     };
-  } else if (action.type === types.SET_WIDTH) {
+  }else if (action.type === types.SET_WIDTH) {
     return {
       ...state,
       width: window.innerWidth,

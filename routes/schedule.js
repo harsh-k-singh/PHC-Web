@@ -20,4 +20,5 @@ router.get("/all", async (req, res) => {
   res.send(schedule);
 });
 
+
 module.exports = router;
