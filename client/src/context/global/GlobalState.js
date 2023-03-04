@@ -11,15 +11,25 @@ const GlobalState = (props) => {
     isMobile: false,
     width: window.innerWidth,
     height: window.innerHeight,
-    schedule: null,
+    doctorSchedule: null,
+    compounderSchedule: null,
   };
 
   const [state, dispatch] = useReducer(GlobalReducer, initialState);
 
-  const getSchedule = async () => {
+  const getDoctorSchedule = async () => {
     try {
-      const res = await axios.get("/api/schedule/all");
-      dispatch({ type: types.SET_SCHEDULE, payload: res.data });
+      const res = await axios.get("/api/schedule/doctors");
+      dispatch({ type: types.SET_DOCTOR_SCHEDULE, payload: res.data });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const getCompounderSchedule = async () => {
+    try {
+      const res = await axios.get("/api/schedule/compounders");
+      dispatch({ type: types.SET_COMPOUNDER_SCHEDULE, payload: res.data });
     } catch (err) {
       console.log(err);
     }
@@ -46,11 +56,13 @@ const GlobalState = (props) => {
   return (
     <GlobalContext.Provider
       value={{
-        schedule: state.schedule,
-        isMobile: state.isMobile,
+        doctorSchedule: state.doctorSchedule,
+        compounderSchedule: state.compounderSchedule,
+        isMobile: state.compounderSchedule,
         width: state.width,
         height: state.height,
-        getSchedule,
+        getDoctorSchedule,
+        getCompounderSchedule,
       }}
     >
       {props.children}

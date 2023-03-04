@@ -85,4 +85,48 @@ router.post("/updateProfile", middleware, async (req, res) => {
   }
 });
 
+router.post("/updateSchedule", middleware, async (req, res) => {
+  const validateSchedule = (schedule) => {
+    const schema = Joi.object({
+      friAT: Joi.string().required(),
+      friDT: Joi.string().required(),
+      monAT: Joi.string().required(),
+      monDT: Joi.string().required(),
+      satAT: Joi.string().required(),
+      satDT: Joi.string().required(),
+      sunAT: Joi.string().required(),
+      sunDT: Joi.string().required(),
+      thuAT: Joi.string().required(),
+      thuDT: Joi.string().required(),
+      tueAT: Joi.string().required(),
+      tueDT: Joi.string().required(),
+      wedAT: Joi.string().required(),
+      wedDT: Joi.string().required(),
+    });
+    return schema.validate(schedule);
+  };
+
+  const timing = req.body;
+  const { error } = validateSchedule(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+  try {
+    // create an api to update the schedule of the compounder
+    // the api should take the compounder id from the token
+    // the api should take the updated schedule from the body
+    // the api should update the schedule in the database
+    // the api should return the updated schedule
+    // the api should return the error if any
+    // the api should return the error if the compounder is not found
+    // the api should return the error if the compounder is not authorized
+    const compounder = await Compounder.findById(req.user.id);
+    if (!compounder) return res.status(404).send("Compounder not found");
+    compounder.timing = timing;
+    await compounder.save();
+    res.status(200).send(compounder);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Something went wrong");
+  }
+});
+
 module.exports = router;

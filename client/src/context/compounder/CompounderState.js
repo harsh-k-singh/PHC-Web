@@ -39,6 +39,32 @@ const CompounderState = (props) => {
     }
   };
 
+  const updateSchedule = async (formData) => {
+    console.log("updateScheule called...");
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    try {
+      console.log(formData);
+      const res = await axios.post(
+        `/api/compounder/updateSchedule`,
+        formData,
+        config
+      );
+      console.log(res);
+      dispatch({ type: types.UPDATE_SCHEDULE_SUCCESS });
+    } catch (error) {
+      dispatch({
+        type: types.UPDATE_SCHEDULE_FAILURE,
+        payload: error.response.data,
+      });
+      console.log(error.response.data);
+      setTimeout(clearError, 2000);
+    }
+  };
+
   const clearError = () => {
     dispatch({ type: types.CLEAR_ERROR });
   };
@@ -47,6 +73,7 @@ const CompounderState = (props) => {
     <CompounderContext.Provider
       value={{
         updateProfile,
+        updateSchedule,
       }}
     >
       {props.children}
