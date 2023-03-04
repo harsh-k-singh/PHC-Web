@@ -6,7 +6,8 @@ import AuthState from "./context/auth/AuthState";
 import AdminState from "./context/admin/AdminState";
 import DoctorState from "./context/doctor/DoctorState";
 import CompounderState from "./context/compounder/CompounderState";
-import GlobalReducer from "./context/global/GlobalReducer";
+import GlobalState from "./context/global/GlobalState";
+import PatientState from "./context/patient/PatientState";
 
 import Home from "./components/pages/Home";
 import HomeBody from "./components/layouts/HomeBody";
@@ -35,69 +36,79 @@ import AdminsProfile from "./components/layouts/AdminsProfile";
 import Patient from "./components/pages/Patient";
 import PatientsProfile from "./components/layouts/PatientsProfile";
 import CheckDoctorsSchedule from "./components/layouts/CheckDoctorsSchedule";
-import GlobalState from "./context/global/GlobalState";
 
 const App = () => {
   return (
     <GlobalState>
-    <AuthState>
-      <AdminState>
-        <DoctorState>
-          <CompounderState>
-            <Router>
-              <Routes>
-                <Route path='' element={<Home />}>
-                  <Route path='/' element={<HomeBody />} />
-                  <Route path='signup' element={<SignUpPatient />} />
-                  <Route
-                    path='doctorsSchedule'
-                    element={<CheckDoctorsSchedule />}
-                  />
-                  <Route path='ambulance' element={<Ambulance />} />
-                  <Route path='about' element={<About />} />
-                </Route>
-                <Route path='doctor' element={<Doctor />}>
-                  <Route path='/doctor' element={<DoctorsDashboard />} />
-                  <Route path='schedule' element={<DoctorsSchedule />} />
-                  <Route path='profile' element={<DoctorsProfile />} />
-                  <Route path='patientsList' element={<PatientsList />} />
-                  <Route path='inventory' element={<Inventory />} />
-                  <Route path='patientsHistory' element={<PatientsHistory />} />
-                </Route>
+      <AuthState>
+        <AdminState>
+          <DoctorState>
+            <CompounderState>
+              <PatientState>
+                <Router>
+                  <Routes>
+                    <Route path='' element={<Home />}>
+                      <Route path='/' element={<HomeBody />} />
+                      <Route path='signup' element={<SignUpPatient />} />
+                      <Route
+                        path='doctorsSchedule'
+                        element={<CheckDoctorsSchedule />}
+                      />
+                      <Route path='ambulance' element={<Ambulance />} />
+                      <Route path='about' element={<About />} />
+                    </Route>
+                    <Route path='doctor' element={<Doctor />}>
+                      <Route path='/doctor' element={<DoctorsDashboard />} />
+                      <Route path='schedule' element={<DoctorsSchedule />} />
+                      <Route path='profile' element={<DoctorsProfile />} />
+                      <Route path='patientsList' element={<PatientsList />} />
+                      <Route path='inventory' element={<Inventory />} />
+                      <Route
+                        path='patientsHistory'
+                        element={<PatientsHistory />}
+                      />
+                    </Route>
 
-                <Route path='compounder' element={<Compounder />}>
-                  <Route
-                    path='/compounder'
-                    element={<CompoundersDashboard />}
-                  />
-                  <Route path='schedule' element={<CompoundersSchedule />} />
-                  <Route path='profile' element={<CompoundersProfile />} />
-                  <Route path='patientsList' element={<PatientsList />} />
-                  <Route path='inventory' element={<Inventory />} />
-                  <Route path='patientsHistory' element={<PatientsHistory />} />
-                </Route>
+                    <Route path='compounder' element={<Compounder />}>
+                      <Route
+                        path='/compounder'
+                        element={<CompoundersDashboard />}
+                      />
+                      <Route
+                        path='schedule'
+                        element={<CompoundersSchedule />}
+                      />
+                      <Route path='profile' element={<CompoundersProfile />} />
+                      <Route path='patientsList' element={<PatientsList />} />
+                      <Route path='inventory' element={<Inventory />} />
+                      <Route
+                        path='patientsHistory'
+                        element={<PatientsHistory />}
+                      />
+                    </Route>
 
-                <Route path='admin' element={<Admin />}>
-                  <Route path='/admin' element={<AdminsDashboard />} />
-                  <Route path='addActor' element={<AddActor />} />
-                  <Route path='profile' element={<AdminsProfile />} />
-                  <Route path='inventory' element={<Inventory />} />
-                </Route>
+                    <Route path='admin' element={<Admin />}>
+                      <Route path='/admin' element={<AdminsDashboard />} />
+                      <Route path='addActor' element={<AddActor />} />
+                      <Route path='profile' element={<AdminsProfile />} />
+                      <Route path='inventory' element={<Inventory />} />
+                    </Route>
 
-                <Route path='patient' element={<Patient />}>
-                  <Route path='/patient' element={<PatientsHistory />} />
-                  <Route path='profile' element={<PatientsProfile />} />
-                  <Route
-                    path='doctorsSchedule'
-                    element={<CheckDoctorsSchedule />}
-                  />
-                </Route>
-              </Routes>
-            </Router>
-          </CompounderState>
-        </DoctorState>
-      </AdminState>
-    </AuthState>
+                    <Route path='patient' element={<Patient />}>
+                      <Route path='/patient' element={<PatientsHistory />} />
+                      <Route path='profile' element={<PatientsProfile />} />
+                      <Route
+                        path='doctorsSchedule'
+                        element={<CheckDoctorsSchedule />}
+                      />
+                    </Route>
+                  </Routes>
+                </Router>
+              </PatientState>
+            </CompounderState>
+          </DoctorState>
+        </AdminState>
+      </AuthState>
     </GlobalState>
   );
 };

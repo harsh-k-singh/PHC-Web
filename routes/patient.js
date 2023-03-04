@@ -11,12 +11,13 @@ router.post("/updateProfile", middleware, async (req, res) => {
     const schema = Joi.object({
       name: Joi.string().min(3).max(30).required(),
       email: Joi.string().email().required(),
-      new_password: Joi.string().min(6).max(30),
-      old_password: Joi.string(),
-      phone: Joi.string().length(10).required(),
       roll_number: Joi.string().required(),
-      birth: Joi.date().required(),
-      gender: Joi.string().required(),
+      old_password: Joi.string(),
+      new_password: Joi.string().min(6).max(30),
+      cnfNew_password: Joi.string(),
+      phone: Joi.string().length(10),
+      birth: Joi.date(),
+      gender: Joi.string(),
     });
     return schema.validate(patient);
   };
@@ -24,16 +25,29 @@ router.post("/updateProfile", middleware, async (req, res) => {
   const {
     name,
     email,
+    roll_number,
     old_password,
     new_password,
     phone,
-    roll_number,
     gender,
+    birth,
+    cnfNew_password,
   } = req.body;
   const { error } = validatepatient(req.body);
   if (error) return res.status(400).send(error.details[0].message);
+  if (
+    (old_password != undefined &&
+      (new_password === undefined || cnfNew_password === undefined)) ||
+    (new_password != undefined && cnfNew_password === undefined) ||
+    (new_password === undefined && cnfNew_password != undefined)
+  )
+    return res.status(400).send("Password fields are not filled properly");
   if (new_password != undefined && old_password === new_password)
     return res.status(400).send("New password and old password are same");
+  if (cnfNew_password != undefined && new_password != cnfNew_password)
+    return res
+      .status(400)
+      .send("New password and confirm password are not same");
   try {
     // create an api to upadte the profile of the patient
     // the api should take the patient id from the token
@@ -45,7 +59,7 @@ router.post("/updateProfile", middleware, async (req, res) => {
     // the api should return the error if the patient is not authorized
 
     const patient = await Patient.findById(req.user.id);
-    if (!patient) return res.status(404).send("Patient not found");
+    if (!patient) return res.status(404).send("patient not found");
     if (patient.email !== email) {
       return res.status(400).send("Email cannot be changed");
     }
@@ -64,6 +78,7 @@ router.post("/updateProfile", middleware, async (req, res) => {
     patient.name = name;
     patient.phone = phone;
     patient.gender = gender;
+    patient.birth = birth;
     await patient.save();
     res.status(200).send(patient);
   } catch (error) {
