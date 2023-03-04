@@ -126,4 +126,31 @@ router.post("/updateSchedule", middleware, async (req, res) => {
   }
 });
 
+router.post("/updateAvailability", middleware, async (req, res) => {
+  const validateSchedule = (schedule) => {
+    const schema = Joi.object({
+      availability: Joi.boolean().required(),
+    });
+    return schema.validate(schedule);
+  };
+  const { error } = validateSchedule(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+  try {
+    // create an api to update the availability of the doctor
+    // the api should take the doctor id from the token
+    // the api should take the updated availability from the body
+    // the api should update the availability in the database
+    // the api should return the updated availability
+    // the api should return the error if the doctor is not found
+    const doctor = await Doctor.findById(req.user.id);
+    if (!doctor) return res.status(404).send("Doctor not found");
+    doctor.availability = req.body.availability;
+    await doctor.save();
+    res.status(200).send(doctor);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Something went wrong");
+  }
+});
+
 module.exports = router;
