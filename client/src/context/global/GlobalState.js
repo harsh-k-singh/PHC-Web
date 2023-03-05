@@ -13,6 +13,8 @@ const GlobalState = (props) => {
     height: window.innerHeight,
     doctorSchedule: null,
     compounderSchedule: null,
+    err: null,
+    available: null,
   };
 
   const [state, dispatch] = useReducer(GlobalReducer, initialState);
@@ -20,17 +22,38 @@ const GlobalState = (props) => {
   const getDoctorSchedule = async () => {
     try {
       const res = await axios.get("/api/schedule/doctors");
-      dispatch({ type: types.SET_DOCTOR_SCHEDULE, payload: res.data });
+      dispatch({ type: types.SET_DOCTOR_SCHEDULE_SUCCESS, payload: res.data });
     } catch (err) {
       console.log(err);
+      dispatch({
+        type: types.SET_DOCTOR_SCHEDULE_FAILURE,
+        payload: err.response.data,
+      });
     }
   };
   const getCompounderSchedule = async () => {
     try {
       const res = await axios.get("/api/schedule/compounders");
-      dispatch({ type: types.SET_COMPOUNDER_SCHEDULE, payload: res.data });
+      dispatch({
+        type: types.SET_COMPOUNDER_SCHEDULE_SUCCESS,
+        payload: res.data,
+      });
     } catch (err) {
       console.log(err);
+      dispatch({
+        type: types.SET_COMPOUNDER_SCHEDULE_FAILURE,
+        payload: err.response.data,
+      });
+    }
+  };
+
+  const getAvailable = async () => {
+    try {
+      const res = await axios.get("/api/schedule/available");
+      dispatch({ type: types.SET_AVAILABLIITY_SUCCESS, payload: res.data });
+    } catch (err) {
+      console.log(err);
+      dispatch({ type: types.SET_AVAILABLIITY_FAILURE, payload: err.response });
     }
   };
 
@@ -61,8 +84,11 @@ const GlobalState = (props) => {
         isMobile: state.isMobile,
         width: state.width,
         height: state.height,
+        err: state.err,
+        available: state.available,
         getDoctorSchedule,
         getCompounderSchedule,
+        getAvailable,
       }}
     >
       {props.children}

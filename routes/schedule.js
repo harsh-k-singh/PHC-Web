@@ -50,4 +50,22 @@ router.get("/compounders", async (req, res) => {
   res.send(schedule);
 });
 
+router.get("/available", async (req, res) => {
+  const allDoctors = await Doctor.find();
+  const currDoctors = allDoctors.filter((doctor) => {
+    return doctor.availability;
+  });
+
+  // filter out name, degree from currDoctors
+  // and send the result
+  const available = currDoctors.map((doctor) => {
+    return {
+      name: doctor.name,
+      degree: doctor.degree,
+    };
+  });
+
+  res.send(available);
+});
+
 module.exports = router;
