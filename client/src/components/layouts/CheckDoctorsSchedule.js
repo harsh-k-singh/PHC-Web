@@ -16,7 +16,7 @@ const CheckDoctorsSchedule = () => {
       setData(doctorSchedule);
       await getAvailable();
       setAvailableData(available);
-      console.log("available data");
+      console.log("available data",availableData);
     };
     fetchData();
     setDay(day);
