@@ -5,13 +5,15 @@ import AddFamilyMembers from './AddFamilyMembers'
 const FamilyMembers = () => {
     const [action,setAction]=useState("view")
     return (
-      <div className="container text-center mt-3">
+      <div>
+        <div className="container text-center mt-3 mb-4">
           <buttoon class={`btn ${action==="view"?'btn-info':'btn-outline-info'} mx-2`} onClick={() => setAction("view")}>
             View Family Members
           </buttoon>
           <button class={`btn ${action==="add"?'btn-info':'btn-outline-info'} mx-2`} onClick={() => setAction("add")}>
             Add New Members
           </button>
+          </div>
           {action==="view"?<ViewFamilyMembers/>:<AddFamilyMembers/>}
       </div>
     )
