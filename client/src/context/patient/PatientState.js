@@ -9,6 +9,7 @@ axios.defaults.withCredentials = true;
 const PatientState = (props) => {
   const initialState = {
     error: null,
+    relatives: [],
   };
 
   const [state, dispatch] = useReducer(PatientReducer, initialState);
@@ -39,6 +40,44 @@ const PatientState = (props) => {
     }
   };
 
+  const getRelatives = async () => {
+    try {
+      const res = await axios.get(`/api/patient/getRelatives`);
+      dispatch({ type: types.GET_RELATIVES_SUCCESS, payload: res.data });
+    } catch (error) {
+      dispatch({
+        type: types.GET_RELATIVES_FAILURE,
+        payload: error.response.data,
+      });
+      console.log(error.response.data);
+      setTimeout(clearError, 2000);
+    }
+  };
+
+  const addRelative = async (formData) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    try {
+      const res = await axios.post(
+        `/api/patient/addRelative`,
+        formData,
+        config
+      );
+      console.log(res);
+      dispatch({ type: types.ADD_RELATIVE_SUCCESS });
+    } catch (error) {
+      dispatch({
+        type: types.ADD_RELATIVE_FAILURE,
+        payload: error.response.data,
+      });
+      console.log(error.response.data);
+      setTimeout(clearError, 2000);
+    }
+  };
+
   const clearError = () => {
     dispatch({ type: types.CLEAR_ERROR });
   };
@@ -46,7 +85,11 @@ const PatientState = (props) => {
   return (
     <PatientContext.Provider
       value={{
+        error: state.error,
+        relatives: state.relatives,
         updateProfile,
+        getRelatives,
+        addRelative,
       }}
     >
       {props.children}

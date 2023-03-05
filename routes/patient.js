@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Joi = require("joi");
 const { Patient } = require("../models/Patient");
-const config = require("config");
+const { Relative, validateRelative } = require("../models/Relative");
 const middleware = require("../middleware/auth");
 const bcrypt = require("bcryptjs");
 
@@ -81,6 +81,65 @@ router.post("/updateProfile", middleware, async (req, res) => {
     patient.birth = birth;
     await patient.save();
     res.status(200).send(patient);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Something went wrong");
+  }
+});
+
+router.post("/addRelative", middleware, async (req, res) => {
+  const { name, relation, gender, birth } = req.body;
+  const { error } = validateRelative(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+  try {
+    // create an api to add the relative of the patient
+    // the api should take the patient id from the token
+    // the api should take the relative details from the body
+    // the api should add the relative in the database
+    // the api should return the relative details
+    // the api should return the error if the patient is not found
+
+    let patient = await Patient.findById(req.user.id);
+    if (!patient) return res.status(404).send("patient not found");
+    if (patient.profession != "Faculty")
+      res.status(400).send("Only faculty can add relatives");
+
+    let relative = new Relative({
+      name,
+      relation,
+      gender,
+      birth,
+      source_id: req.user.id,
+    });
+    await relative.save();
+
+    // save the relative id in the patient document
+    patient.relative.push({
+      relative_id: relative._id,
+      name: relative.name,
+      relation: relative.relation,
+    });
+    await patient.save();
+
+    res.status(200).send(relative);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Something went wrong");
+  }
+});
+
+router.get("/getRelatives", middleware, async (req, res) => {
+  try {
+    // create an api to get the relatives of the patient
+    // the api should take the patient id from the token
+    // the api should return the relatives details
+    // the api should return the error if the patient is not found
+    const patient = await Patient.findById(req.user.id);
+    if (!patient) return res.status(404).send("patient not found");
+    const relatives = await Relative.find({
+      source_id: req.user.id,
+    });
+    res.status(200).send(relatives);
   } catch (error) {
     console.log(error.message);
     res.status(500).send("Something went wrong");

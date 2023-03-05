@@ -41,6 +41,20 @@ const patientSchema = mongoose.Schema({
     type: String,
     default: "patient",
   },
+  profession: {
+    type: String,
+    default: "student",
+  },
+  relative: {
+    type: Array,
+    default: [],
+  },
+  guarding_relation: {
+    type: String,
+  },
+  guardian_phone: {
+    type: String,
+  },
 });
 
 const validatePatient = (patient) => {
@@ -52,6 +66,10 @@ const validatePatient = (patient) => {
     gender: Joi.string().required(),
     birth: Joi.date().required(),
     password: Joi.string().min(6).max(30).required(),
+    profession: Joi.string(),
+    relative: Joi.array().items(Joi.object()),
+    guarding_relation: Joi.string(),
+    guardian_phone: Joi.string().min(10).max(10),
   });
   return schema.validate(patient);
 };
