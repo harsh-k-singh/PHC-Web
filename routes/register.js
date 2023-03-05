@@ -17,7 +17,7 @@ router.post("/", async (req, res) => {
     password,
     cnf_password,
     profession,
-    guarding_relation,
+    guardian_relation,
     guardian_phone,
   } = req.body;
   if (cnf_password != password)
@@ -26,14 +26,14 @@ router.post("/", async (req, res) => {
     return res.status(400).send("Invalid profession");
   if (
     profession === "Student" &&
-    (guarding_relation === undefined || guardian_phone === undefined)
+    (guardian_relation === undefined || guardian_phone === undefined)
   )
     return res.status(400).send("Guardian details are not filled");
-  if (
-    profession === "Faculty" &&
-    (guarding_relation !== undefined || guardian_phone !== undefined)
-  )
-    return res.status(400).send("Guardian details are not required");
+  // if (
+  //   profession === "Faculty" &&
+  //   (guardian_relation !== null || guardian_phone !== null)
+  // )
+  //   return res.status(400).send("Guardian details are not required");
 
   const form = {
     email,
@@ -44,7 +44,7 @@ router.post("/", async (req, res) => {
     birth,
     password,
     profession,
-    guarding_relation,
+    guardian_relation,
     guardian_phone,
   };
   const { error } = validatePatient(form);
@@ -67,7 +67,7 @@ router.post("/", async (req, res) => {
       birth,
       password: hashedPass,
       profession,
-      guarding_relation,
+      guardian_relation,
       guardian_phone,
     });
     await patient.save();

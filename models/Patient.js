@@ -43,13 +43,13 @@ const patientSchema = mongoose.Schema({
   },
   profession: {
     type: String,
-    default: "student",
+    default: "Student",
   },
   relative: {
     type: Array,
     default: [],
   },
-  guarding_relation: {
+  guardian_relation: {
     type: String,
   },
   guardian_phone: {
@@ -68,8 +68,8 @@ const validatePatient = (patient) => {
     password: Joi.string().min(6).max(30).required(),
     profession: Joi.string(),
     relative: Joi.array().items(Joi.object()),
-    guarding_relation: Joi.string(),
-    guardian_phone: Joi.string().min(10).max(10),
+    guardian_relation: Joi.string().allow(null),
+    guardian_phone: Joi.string().min(10).max(10).allow(null),
   });
   return schema.validate(patient);
 };

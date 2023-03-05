@@ -20,6 +20,9 @@ const PatientsProfile = () => {
     phone: "",
     gender: "",
     birth: "",
+    profession:"",
+    guardian_phone: null,
+    guardian_relation: null,
   });
 
   const onEdit = () => {
@@ -50,6 +53,9 @@ const PatientsProfile = () => {
         phone: user.phone,
         gender: user.gender,
         birth: user.birth,
+        profession:user.profession,
+        guardian_phone: user.guardian_phone,
+        guardian_relation: user.guardian_relation,
       });
     }
   }, [user]);
@@ -158,6 +164,40 @@ const PatientsProfile = () => {
                     />
                   </div>
                 </div>
+                {form.profession==="Student" && (
+                <div class='row gx-3 mt-3 mb-3'>
+                  <div class='col-md-6'>
+                    <label class='small mb-1' for='inputGuardianPhone'>
+                     Guardian's Phone number
+                    </label>
+                    <input
+                      class='form-control'
+                      id='inputGuardianPhone'
+                      type='integer'
+                      placeholder="Enter guardian's phone number"
+                      name='guardian_phone'
+                      onChange={onChange}
+                      value={form.guardian_phone}
+                      disabled={edit ? 0 : 1}
+                    />
+                  </div>
+                  <div class='col-md-6'>
+                  <label class='small mb-1' for='inputGuradianRelation'>
+                      Guardian's Relation
+                    </label>
+                    <input
+                      class='form-control'
+                      id='inputGuradianRelation'
+                      type='text'
+                      placeholder='Enter relationship with guardian'
+                      name='guardian_relation'
+                      onChange={onChange}
+                      value={form.guardian_relation}
+                      disabled={edit ? 0 : 1}
+                    />
+                  </div>
+                </div>
+                )}
                 <div class='row gx-3 mb-3 my-3'>
                   <label class='small mb-1' for='inputAddress'>
                     Update Profile Picture

@@ -18,6 +18,9 @@ router.post("/updateProfile", middleware, async (req, res) => {
       phone: Joi.string().length(10),
       birth: Joi.date(),
       gender: Joi.string(),
+      profession: Joi.string(),
+      guardian_relation: Joi.string().allow(null),
+      guardian_phone: Joi.string().min(10).max(10).allow(null),
     });
     return schema.validate(patient);
   };
@@ -32,6 +35,9 @@ router.post("/updateProfile", middleware, async (req, res) => {
     gender,
     birth,
     cnfNew_password,
+    profession,
+    guardian_relation,
+    guardian_phone,
   } = req.body;
   const { error } = validatepatient(req.body);
   if (error) return res.status(400).send(error.details[0].message);
@@ -48,6 +54,11 @@ router.post("/updateProfile", middleware, async (req, res) => {
     return res
       .status(400)
       .send("New password and confirm password are not same");
+  if (
+    profession === "Student" &&
+    (guardian_relation === undefined || guardian_phone === undefined)
+  )
+    return res.status(400).send("Guardian details are not filled");
   try {
     // create an api to upadte the profile of the patient
     // the api should take the patient id from the token
@@ -79,6 +90,8 @@ router.post("/updateProfile", middleware, async (req, res) => {
     patient.phone = phone;
     patient.gender = gender;
     patient.birth = birth;
+    patient.guardian_phone=guardian_phone;
+    patient.guardian_relation=guardian_relation;
     await patient.save();
     res.status(200).send(patient);
   } catch (error) {

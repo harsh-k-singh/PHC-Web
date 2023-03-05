@@ -15,6 +15,9 @@ const SignUpPatient = () => {
     password: "",
     cnf_password: "",
     birth: "",
+    profession:"",
+    guardian_phone: null,
+    guarding_relation: null,
   });
   const [formLoad, setFormLoad] = useState(loading);
   const [err, setErr] = useState({
@@ -39,17 +42,18 @@ const SignUpPatient = () => {
     }
     // // If error is not null, display error
     // if (error) {
-    //   if (error.errors.length > 0) {
+      //   if (error.errors.length > 0) {
     //     alert(error.errors[0].msg);
     //   }
     // }
     // // Clear errors
     // clearErrors();
-
+    
     // eslint-disable-next-line
   }, [error, isAuthenicated, user]);
   const onSubmit = (e) => {
     e.preventDefault();
+    console.log("prof",form.profession);
     console.log(form);
     register(form); 
    };
@@ -62,24 +66,36 @@ const SignUpPatient = () => {
           <div class='card-header'>Account Details</div>
           <div class='card-body'>
             <form>
-              <div className='mb-3'>
-                <label class='small mb-1' for='inputemail'>
-                      Email address
-                </label>
-                <input
-                      onChange={onChange}
-                      required={true}
-                      name='email'
-                      class='form-control'
-                      id='inputemail'
-                      type='email'
-                      placeholder='Your e-mail'
-                    />
-              </div>
+              <div class='row gx-6 mb-3'>
+                  <div class='col-md-6'>
+                    <label class='small mb-1' for='inputemail'>
+                          Email address
+                    </label>
+                    <input
+                          onChange={onChange}
+                          required={true}
+                          name='email'
+                          class='form-control'
+                          id='inputemail'
+                          type='email'
+                          placeholder='Your e-mail'
+                        />
+                  </div>
+                  <div class='col-md-6 mt-4'>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="inlineRadio1" onChange={onChange} name="profession" value="Student"/>
+                        <label class="form-check-label" for="inlineRadio1">Student</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="inlineRadio2" onChange={onChange} name="profession" value="Faculty"/>
+                        <label class="form-check-label" for="inlineRadio2">Faculty</label>
+                      </div>
+                  </div>
+                </div>
               <div class='row gx-6 mb-3'>
                   <div class='col-md-6'>
                     <label class='small mb-1' for='inputRollno'>
-                      Rollno
+                      Roll No./PF No.
                     </label>
                     <input
                       onChange={onChange}
@@ -88,7 +104,7 @@ const SignUpPatient = () => {
                       class='form-control'
                       id='inputRollno'
                       type='text'
-                      placeholder='Enter your Rollno'
+                      placeholder='Enter your Roll No./PF No.'
                     />
                   </div>
                   <div class='col-md-6'>
@@ -152,6 +168,38 @@ const SignUpPatient = () => {
                     />
                   </div>
                 </div>
+                {form.profession==="Student" && (
+                <div class='row gx-3 mt-3 mb-3'>
+                  <div class='col-md-6'>
+                    <label class='small mb-1' for='inputGuardianPhone'>
+                     Guardian's Phone number
+                    </label>
+                    <input
+                      onChange={onChange}
+                      required={true}
+                      name='guardian_phone'
+                      class='form-control'
+                      id='inputGuardianPhone'
+                      type='integer'
+                      placeholder="Enter guardian's phone number"
+                    />
+                  </div>
+                  <div class='col-md-6'>
+                  <label class='small mb-1' for='inputGuradianRelation'>
+                      Guardian's Relation
+                    </label>
+                    <input
+                      onChange={onChange}
+                      required={true}
+                      name='guardian_relation'
+                      class='form-control'
+                      id='inputGuradianRelation'
+                      type='text'
+                      placeholder='Enter relationship with guardian'
+                    />
+                  </div>
+                </div>
+                )}
               <div class='row gx-3 mt-3 mb-3'>
                 <label class='small mb-1' for='inputAddress'>
                   Set Password
