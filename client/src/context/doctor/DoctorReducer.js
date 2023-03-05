@@ -18,7 +18,9 @@ const DoctorReducer = (state, action) => {
   } else if (action.type === types.UPDATE_SCHEDULE_SUCCESS) {
     return { ...state };
   } else if (action.type === types.UPDATE_SCHEDULE_FAILURE) {
-    return { ...state };
+    return { ...state, error: action.payload };
+  } else if (action.type === types.UPDATE_AVAILABILITY_FAILURE) {
+    return { ...state, error: action.payload };
   } else {
     return state;
   }

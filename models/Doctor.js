@@ -22,16 +22,20 @@ const doctorSchema = mongoose.Schema({
     type: String,
   },
   birth: {
-    type: Date
+    type: Date,
   },
   gender: {
     type: String,
+  },
+  availability: {
+    type: Boolean,
+    default: false,
   },
   employment_details: {
     type: String,
   },
   timing: {
-    type:{
+    type: {
       monAT: String,
       monDT: String,
       tueAT: String,
@@ -48,21 +52,21 @@ const doctorSchema = mongoose.Schema({
       sunDT: String,
     },
     default: {
-      monAT: '00:00',
-      monDT: '00:00',
-      tueAT: '00:00',
-      tueDT: '00:00',
-      wedAT: '00:00',
-      wedDT: '00:00',
-      thuAT: '00:00',
-      thuDT: '00:00',
-      friAT: '00:00',
-      friDT: '00:00',
-      satAT: '00:00',
-      satDT: '00:00',
-      sunAT: '00:00',
-      sunDT: '00:00',
-    }
+      monAT: "00:00",
+      monDT: "00:00",
+      tueAT: "00:00",
+      tueDT: "00:00",
+      wedAT: "00:00",
+      wedDT: "00:00",
+      thuAT: "00:00",
+      thuDT: "00:00",
+      friAT: "00:00",
+      friDT: "00:00",
+      satAT: "00:00",
+      satDT: "00:00",
+      sunAT: "00:00",
+      sunDT: "00:00",
+    },
   },
   role: {
     type: String,
@@ -83,6 +87,7 @@ const validatedoctor = (doctor) => {
     degree: Joi.string(),
     birth: Joi.date(),
     gender: Joi.string(),
+    availability: Joi.boolean(),
     employment_details: Joi.string(),
     timing: Joi.object({
       monAT: Joi.string(),

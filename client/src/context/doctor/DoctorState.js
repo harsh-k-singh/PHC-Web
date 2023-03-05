@@ -65,6 +65,31 @@ const DoctorState = (props) => {
     }
   };
 
+  const updateAvailability = async (formData) => {
+    console.log("updateAvailability called...");
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    try {
+      console.log(formData);
+      const res = await axios.post(
+        `/api/doctor/updateAvailability`,
+        formData,
+        config
+      );
+      console.log(res);
+    } catch (error) {
+      dispatch({
+        type: types.UPDATE_AVAILABILITY_FAILURE,
+        payload: error.response.data,
+      });
+      console.log(error.response.data);
+      setTimeout(clearError, 2000);
+    }
+  };
+
   const clearError = () => {
     dispatch({ type: types.CLEAR_ERROR });
   };
@@ -74,6 +99,7 @@ const DoctorState = (props) => {
       value={{
         updateProfile,
         updateSchedule,
+        updateAvailability,
       }}
     >
       {props.children}
