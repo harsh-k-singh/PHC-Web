@@ -36,6 +36,7 @@ import AdminsProfile from "./components/layouts/AdminsProfile";
 
 import Patient from "./components/pages/Patient";
 import PatientsProfile from "./components/layouts/PatientsProfile";
+import FamilyMembers from "./components/layouts/FamilyMembers";
 
 const App = () => {
   return (
@@ -97,6 +98,7 @@ const App = () => {
                     <Route path='patient' element={<Patient />}>
                       <Route path='/patient' element={<PatientsHistory />} />
                       <Route path='profile' element={<PatientsProfile />} />
+                      <Route path='familyMembers' element={<FamilyMembers />} />
                       <Route
                         path='schedule'
                         element={<CheckSchedule />}

@@ -25,7 +25,6 @@ const GlobalState = (props) => {
       console.log(err);
     }
   };
-
   const getCompounderSchedule = async () => {
     try {
       const res = await axios.get("/api/schedule/compounders");

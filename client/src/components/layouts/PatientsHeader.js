@@ -56,6 +56,16 @@ const PatientsHeader = () => {
                   Profile
                 </button>
               </li>
+              <li class="nav-item">
+              <button
+                  className={`nav-link ${location.pathname==="/patient/familyMembers"?"fw-bolder text-primary active":""}`}
+                  aria-current='page'
+                  onClick={() => navigate("/patient/familyMembers")}
+                  style={{ borderWidth: "0px", backgroundColor: "transparent" }}
+                >
+                  Family Members
+                </button>
+              </li>
             </ul>
             <ul className="navbar-nav mx-2 ms-auto">
               <li className="nav-item">
