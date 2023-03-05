@@ -1,17 +1,19 @@
 import * as types from "../types";
 
 const GlobalReducer = (state, action) => {
-  if (action.type === types.SET_DOCTOR_SCHEDULE) {
+  if (action.type === types.SET_DOCTOR_SCHEDULE_SUCCESS) {
     return {
       ...state,
       doctorSchedule: action.payload,
     };
-  } else if (action.type === types.SET_COMPOUNDER_SCHEDULE) {
+  } else if (action.type === types.SET_COMPOUNDER_SCHEDULE_SUCCESS) {
     return {
       ...state,
       compounderSchedule: action.payload,
     };
-  }else if (action.type === types.SET_WIDTH) {
+  } else if (action.type === types.SET_AVAILABLIITY_SUCCESS) {
+    return { ...state, available: action.payload };
+  } else if (action.type === types.SET_WIDTH) {
     return {
       ...state,
       width: window.innerWidth,
