@@ -106,7 +106,7 @@ const PatientState = (props) => {
 
   const deleteRelative = async (id) => {
     try {
-      const res = await axios.delete(`/api/patient/deleteRelative/${id}`);
+      const res = await axios.delete(`/api/patient/deleteRelative?id=${id}`);
       console.log("res",res);
       await getRelatives();
       dispatch({ type: types.DELETE_RELATIVE_SUCCESS });
