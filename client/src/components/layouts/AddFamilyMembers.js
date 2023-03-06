@@ -1,7 +1,31 @@
-import React from 'react'
+import React,{useState,useEffect,useContext} from 'react'
+import PatientContext from "../../context/patient/PatientContext";
 
 const AddFamilyMembers = () => {
-  return (
+    const patientContext = useContext(PatientContext);
+    const { relatives,getRelatives,addRelative } = patientContext;
+    
+    const [form, setForm] = useState({
+        name: "",
+        relation: "",
+        birth: "",
+        gender: "Male",
+    });
+    const onChange = (e) => {
+        setForm({ ...form, [e.target.name]: e.target.value });
+    };
+    const onSubmit = async (e) => {
+        e.preventDefault();
+        addRelative(form);
+    };
+    useEffect(() => {
+      const func = async () => {
+        await getRelatives();
+        // console.log(relatives);
+      };
+      func();
+    },);
+    return (
         <div class='row'>
         <div class='col-xl-8' style={{ margin: "auto" }}>
         <div class='card mb-4'>
@@ -19,9 +43,7 @@ const AddFamilyMembers = () => {
                     type='text'
                     placeholder='Enter Relation'
                     name='relation'
-                    // value={form.degree}
-                    // onChange={onChange}
-                    // disabled={edit ? 0 : 1}
+                    onChange={onChange}
                     />
                 </div>
                 <div class='col-md-6'>
@@ -34,29 +56,12 @@ const AddFamilyMembers = () => {
                     type='text'
                     placeholder='Enter your full name'
                     name='name'
-                    // value={form.name}
-                    // onChange={onChange}
-                    // disabled={edit ? 0 : 1}
+                    onChange={onChange}
                     />
                 </div>
                 </div>
                 <div class='row gx-3 mb-3'>
                 <div class='col-md-6'>
-                    <label class='small mb-1' for='inputPhone'>
-                    Phone number
-                    </label>
-                    <input
-                    class='form-control'
-                    id='inputPhone'
-                    type='integer'
-                    placeholder='Enter their phone number'
-                    name='phone'
-                    // value={form.phone}
-                    // onChange={onChange}
-                    // disabled={edit ? 0 : 1}
-                    />
-                </div>
-                <div class='col-md-2'>
                     <label class='small mb-1' for='inputGender'>
                     Gender
                     </label>
@@ -64,16 +69,14 @@ const AddFamilyMembers = () => {
                     class='form-select'
                     aria-label='Select Your Gender'
                     name='gender'
-                    // onChange={onChange}
-                    // value={form.gender}
-                    // disabled={edit ? 0 : 1}
+                    onChange={onChange}
                     >
                     <option>Male</option>
                     <option>Female</option>
                     <option>Other</option>
                     </select>
                 </div>
-                <div class='col-md-4'>
+                <div class='col-md-6'>
                     <label class='small mb-1' for='inputBirth'>
                     Birthday
                     </label>
@@ -83,18 +86,14 @@ const AddFamilyMembers = () => {
                     type='date'
                     placeholder='Enter your birthday'
                     name='birth'
-                    // value={
-                    //   form.birth ? form.birth.slice(0, 10) : "1970-01-01"
-                    // }
-                    // onChange={onChange}
-                    // disabled={edit ? 0 : 1}
+                    onChange={onChange}
                     />
                 </div>
                 </div>
                 <button
                     class='btn btn-primary'
                     type='button'
-                    // onClick={onSave}
+                    onClick={onSubmit}
                 >
                     Add Member
                 </button>
