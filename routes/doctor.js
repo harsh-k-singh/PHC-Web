@@ -3,10 +3,10 @@ const router = express.Router();
 const Joi = require("joi");
 const { Doctor } = require("../models/Doctor");
 const config = require("config");
-const middleware = require("../middleware/auth");
+const authDoctor = require("../middleware/authDoctor");
 const bcrypt = require("bcryptjs");
 
-router.post("/updateProfile", middleware, async (req, res) => {
+router.post("/updateProfile", authDoctor, async (req, res) => {
   const validatedoctor = (doctor) => {
     const schema = Joi.object({
       name: Joi.string().min(3).max(30).required(),
@@ -82,7 +82,7 @@ router.post("/updateProfile", middleware, async (req, res) => {
   }
 });
 
-router.post("/updateSchedule", middleware, async (req, res) => {
+router.post("/updateSchedule", authDoctor, async (req, res) => {
   const validateSchedule = (schedule) => {
     const schema = Joi.object({
       friAT: Joi.string().required(),
@@ -126,7 +126,7 @@ router.post("/updateSchedule", middleware, async (req, res) => {
   }
 });
 
-router.post("/updateAvailability", middleware, async (req, res) => {
+router.post("/updateAvailability", authDoctor, async (req, res) => {
   const validateSchedule = (schedule) => {
     const schema = Joi.object({
       availability: Joi.boolean().required(),
