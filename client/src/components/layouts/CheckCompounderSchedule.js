@@ -4,22 +4,22 @@ import GlobalContext from "../../context/global/GlobalContext";
 
 const CheckCompoundersSchedule = () => {
   const globalContext = useContext(GlobalContext);
-  const {
-    getCompounderSchedule,
-    compounderSchedule,
-  } = globalContext;
+  const { getCompounderSchedule, compounderSchedule } = globalContext;
 
-  const [compoundersData, setCompoundersData] = useState(null);
-  const d = new Date().getDay();
-  const [day, setDay] = useState(d);
+  const [day, setDay] = useState(new Date().getDay());
 
   useEffect(() => {
     const fetchData = async () => {
       await getCompounderSchedule();
-      setCompoundersData(compounderSchedule);
     };
     fetchData();
-    setDay(day);
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await getCompounderSchedule();
+    };
+    fetchData();
   }, [day]);
   return (
     <div className='container mt-4'>
@@ -112,8 +112,8 @@ const CheckCompoundersSchedule = () => {
               </tr>
             </thead>
             <tbody>
-              {compoundersData
-                ? compoundersData.map((item, index) => {
+              {compounderSchedule
+                ? compounderSchedule.map((item, index) => {
                     return (
                       <tr>
                         <th scope='row'>{index + 1}</th>

@@ -91,7 +91,7 @@ const PatientState = (props) => {
         formData,
         config
       );
-      console.log(res);
+      console.log(res.data);
       await getRelatives();
       dispatch({ type: types.UPDATE_RELATIVE_SUCCESS });
     } catch (error) {

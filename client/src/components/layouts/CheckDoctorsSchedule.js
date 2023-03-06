@@ -4,22 +4,23 @@ import GlobalContext from "../../context/global/GlobalContext";
 
 const CheckDoctorsSchedule = () => {
   const globalContext = useContext(GlobalContext);
-  const { getDoctorSchedule, doctorSchedule, getAvailable, available } =
-    globalContext;
-  const [data, setData] = useState(null);
-  const d = new Date().getDay();
-  const [day, setDay] = useState(d);
-  const [availableData, setAvailableData] = useState(null);
+  const { getDoctorSchedule, doctorSchedule } = globalContext;
+  const [day, setDay] = useState(new Date().getDay());
+
   useEffect(() => {
     const fetchData = async () => {
       await getDoctorSchedule();
-      setData(doctorSchedule);
-      await getAvailable();
-      setAvailableData(available);
-      console.log("available data",availableData);
+      console.log("available data", doctorSchedule);
     };
     fetchData();
-    setDay(day);
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await getDoctorSchedule();
+      console.log("available data called");
+    };
+    fetchData();
   }, [day]);
   return (
     <div className='container mt-4'>
@@ -113,8 +114,8 @@ const CheckDoctorsSchedule = () => {
               </tr>
             </thead>
             <tbody>
-              {data
-                ? data.map((item, index) => {
+              {doctorSchedule
+                ? doctorSchedule.map((item, index) => {
                     return (
                       <tr>
                         <th scope='row'>{index + 1}</th>
