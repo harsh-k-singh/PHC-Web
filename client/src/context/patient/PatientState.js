@@ -78,6 +78,47 @@ const PatientState = (props) => {
     }
   };
 
+  const updateRelative = async (formData) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    try {
+      const res = await axios.post(
+        `/api/patient/updateRelative`,
+        formData,
+        config
+      );
+      console.log(res);
+      // await getRelatives();
+      dispatch({ type: types.UPDATE_RELATIVE_SUCCESS });
+    } catch (error) {
+      dispatch({
+        type: types.UPDATE_RELATIVE_FAILURE,
+        payload: error.response.data,
+      });
+      console.log(error.response.data);
+      setTimeout(clearError, 2000);
+    }
+  };
+
+  const deleteRelative = async (id) => {
+    try {
+      const res = await axios.delete(`/api/patient/deleteRelative/${id}`);
+      console.log(res);
+      await getRelatives();
+      dispatch({ type: types.DELETE_RELATIVE_SUCCESS });
+    } catch (error) {
+      dispatch({
+        type: types.DELETE_RELATIVE_FAILURE,
+        payload: error.response.data,
+      });
+      console.log(error.response.data);
+      setTimeout(clearError, 2000);
+    }
+  };
+
   const clearError = () => {
     dispatch({ type: types.CLEAR_ERROR });
   };
@@ -90,6 +131,8 @@ const PatientState = (props) => {
         updateProfile,
         getRelatives,
         addRelative,
+        updateRelative,
+        deleteRelative,
       }}
     >
       {props.children}
