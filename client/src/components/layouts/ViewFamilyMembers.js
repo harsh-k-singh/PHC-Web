@@ -1,26 +1,50 @@
 import React,{useState,useEffect,useContext} from 'react'
 import PatientContext from '../../context/patient/PatientContext'
+import AuthContext from '../../context/auth/AuthContext'
 
 const ViewFamilyMembers = () => {
     const [members, setMembers] = useState(null);
-    const [edit,setEdit]=useState(false);
+    const [edit,setEdit]=useState();
     
+    const authContext = useContext(AuthContext);
     const patientContext = useContext(PatientContext);
-    const { getRelatives, relatives } = patientContext;
+
+    const {loadUser } = authContext;
+    const { getRelatives, relatives ,updateRelative,deleteRelative} = patientContext;
+
+    const onEdit = () => {
+      setEdit(true);
+    };
+
+    const onChange = (index) => (e) => {
+      const newMembers = members.map((item, i) => {
+        if (index === i) {
+          return { ...item, [e.target.name]: e.target.value };
+        } else {
+          return item;
+        }
+      });
+      setMembers(newMembers);
+    };
+
+    const onSave = (item) => {
+      console.log(item);
+      const updateAndRefetch = async () => {
+        await updateRelative(item);
+        await loadUser();
+      };
+      updateAndRefetch();
+      setEdit(false);
+    };
+
     useEffect(() => {
       const func = async () => {
         await getRelatives();
-        console.log(relatives);
+        // console.log(relatives);
         setMembers(relatives);
       };
       func();
-    }, []);
-    const onEdit = () => {
-        setEdit(true);
-    };
-    const onSave = () => {
-        setEdit(false);
-    };
+    },[]);
 
   return (
     <div class='container-xl px-4'>
@@ -29,7 +53,7 @@ const ViewFamilyMembers = () => {
                 <div class='row'>
                 <div class='col-xl-8' style={{ margin: "auto" }}>
                   <div class='card mb-4'>
-                    <div class='card-header'>Members Details*</div>
+                    <div class='card-header'>Members Details</div>
                     <div class='card-body'>
                       <form>
                         <div class='row gx-3 mb-3'>
@@ -44,7 +68,7 @@ const ViewFamilyMembers = () => {
                               placeholder='Enter Relation'
                               name='relation'
                               value={item.relation}
-                              // onChange={onChange}
+                              onChange={onChange(index)}
                               disabled={edit? 0 : 1}
                             />
                           </div>
@@ -59,7 +83,7 @@ const ViewFamilyMembers = () => {
                               placeholder='Enter your full name'
                               name='name'
                               value={item.name}
-                              // onChange={onChange}
+                              onChange={onChange(index)}
                               disabled={edit ? 0 : 1}
                             />
                           </div>
@@ -73,7 +97,7 @@ const ViewFamilyMembers = () => {
                               class='form-select'
                               aria-label='Select Your Gender'
                               name='gender'
-                              // onChange={onChange}
+                              onChange={onChange(index)}
                               value={item.gender}
                               disabled={edit ? 0 : 1}
                             >
@@ -95,7 +119,7 @@ const ViewFamilyMembers = () => {
                               value={
                                 item.birth ? item.birth.slice(0, 10) : "1970-01-01"
                               }
-                              // onChange={onChange}
+                              onChange={onChange(index)}
                               disabled={edit ? 0 : 1}
                             />
                           </div>
@@ -104,7 +128,7 @@ const ViewFamilyMembers = () => {
                           <button
                             class='btn btn-primary'
                             type='button'
-                            onClick={onSave}
+                            onClick={onSave.bind(this,item)}
                           >
                             Save changes
                           </button>

@@ -28,7 +28,6 @@ const PatientsProfile = () => {
   const onEdit = () => {
     setEdit(true);
   };
-
   const onChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };

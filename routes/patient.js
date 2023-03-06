@@ -160,7 +160,7 @@ router.get("/getRelatives", authPatient, async (req, res) => {
 });
 
 router.post("/updateRelative", authPatient, async (req, res) => {
-  const { id, name, relation, gender, birth } = req.body;
+  const { _id, name, relation, gender, birth } = req.body;
   const form = { name, relation, gender, birth };
   const { error } = validateRelative(form);
   if (error) return res.status(400).send(error.details[0].message);
@@ -177,7 +177,7 @@ router.post("/updateRelative", authPatient, async (req, res) => {
     if (patient.profession != "Faculty")
       res.status(400).send("Only faculty can update relatives");
 
-    let relative = await Relative.findById(id);
+    let relative = await Relative.findById(_id);
     if (!relative) return res.status(404).send("Relative not found");
     if (relative.source_id != req.user.id)
       return res
