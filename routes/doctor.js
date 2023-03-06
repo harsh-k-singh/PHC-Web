@@ -2,7 +2,13 @@ const express = require("express");
 const router = express.Router();
 const Joi = require("joi");
 const { Doctor } = require("../models/Doctor");
-const config = require("config");
+const { Patient } = require("../models/Patient");
+const {
+  Prescription,
+  validatePrescription,
+} = require("../models/Prescription");
+const { Stock } = require("../models/Stock");
+const { Medicine } = require("../models/Medicine");
 const authDoctor = require("../middleware/authDoctor");
 const bcrypt = require("bcryptjs");
 
@@ -147,6 +153,116 @@ router.post("/updateAvailability", authDoctor, async (req, res) => {
     doctor.availability = req.body.availability;
     await doctor.save();
     res.status(200).send(doctor);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Something went wrong");
+  }
+});
+
+router.post("/addPrescription", authDoctor, async (req, res) => {
+  const { patient, relation, symptoms, diagnosis, tests, remarks, medicines } =
+    req.body;
+
+  if (
+    !patient ||
+    !relation ||
+    !symptoms ||
+    !diagnosis ||
+    !tests ||
+    !Array.isArray(tests) ||
+    !remarks ||
+    !medicines ||
+    !Array.isArray(medicines)
+  )
+    return res.status(400).send("Fields are not filled properly");
+  const curr_patient = await Patient.findOne({ roll_number: patient });
+  if (!curr_patient) return res.status(404).send("Patient not found");
+  const patient_id = curr_patient._id;
+  console.log(curr_patient, patient_id);
+
+  let final_medicines = [];
+  for (let i = 0; i < medicines.length; i++) {
+    if (!medicines[i].name || !medicines[i].quantity || !medicines[i].dosage)
+      return res.status(400).send("Medicine details are not filled properly");
+    let medicine = await Medicine.findOne({ name: medicines[i].name });
+    if (!medicine) return res.status(404).send("Medicine not found");
+    let req_quantity = medicines[i].quantity;
+    let final_medicine = {
+      medicine_id: medicine._id,
+      quantity: medicines[i].quantity,
+      dosage: medicines[i].dosage,
+      stocks: [],
+    };
+    // call the function to check if the medicine is available in sufficient quantity
+    for (
+      let j = 0;
+      j < medicine.availableStock.length && req_quantity > 0;
+      j++
+    ) {
+      console.log("medicine ch", medicine);
+      let stock_id = medicine.availableStock[j];
+      let stock = await Stock.findById(stock_id);
+      if (stock.quantity === 0 || stock.expirtyDate < Date.now()) {
+        console.log("inside 1st if ch");
+        medicine.deadStock.push(stock_id);
+        medicine.availableStock.splice(j, 1);
+        await medicine.save();
+        j--;
+        continue;
+      }
+      if (stock.quantity >= req_quantity) {
+        console.log("inside 2nd if ch");
+        stock.quantity -= req_quantity;
+        await stock.save();
+        final_medicine.stocks.push({
+          stock_id: stock._id,
+          quantity: req_quantity,
+        });
+        break;
+      } else {
+        console.log("inside 3rd if ch");
+        req_quantity -= stock.quantity;
+        final_medicine.stocks.push({
+          stock_id: stock._id,
+          quantity: stock.quantity,
+        });
+        stock.quantity = 0;
+        await stock.save();
+        medicine.deadStock.push(stock_id);
+        medicine.availableStock.splice(j, 1);
+        await medicine.save();
+        j--;
+      }
+    }
+    console.log("fm", final_medicine);
+    final_medicines.push(final_medicine);
+  }
+  const { error } = validatePrescription({
+    patient_id,
+    doctor_id: req.user.id,
+    relation,
+    symptoms,
+    diagnosis,
+    tests,
+    remarks,
+    medicines: final_medicines,
+  });
+  if (error) return res.status(400).send(error.details[0].message);
+  try {
+    const prescription = new Prescription({
+      patient_id: curr_patient._id,
+      doctor_id: req.user.id,
+      relation,
+      symptoms,
+      diagnosis,
+      tests,
+      remarks,
+      medicines: final_medicines,
+    });
+    await prescription.save();
+    curr_patient.prescriptions.push(prescription._id);
+    await curr_patient.save();
+    res.status(200).send(prescription);
   } catch (error) {
     console.log(error.message);
     res.status(500).send("Something went wrong");
