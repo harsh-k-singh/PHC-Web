@@ -11,37 +11,40 @@ useEffect(() => {
     const fetchData = async () =>{
       await getAvailable();
       setAvailableData(available);
-      console.log("available data",availableData);
     };
     fetchData();
   },);
   return (
-    <div class='card-body'>
-    <table
-      class='table my-3 text-center'
-      style={{ width: "80%", margin: "auto" }}
-    >
-      <thead class='table-dark'>
-        <tr>
-          <th scope='col'>S.No</th>
-          <th scope='col'>Name</th>
-          <th scope='col'>Suffix</th>
-        </tr>
-      </thead>
-      <tbody>
-        {availableData
-          ? availableData.map((item, index) => {
-              return (
+    <div class='card-body my-4'>
+    {availableData?
+        (availableData.length === 0 ? 
+          <div class="alert alert-danger align-items-center" role="alert" style={{width:"60%",margin:"auto"}}>
+              No Doctors available at the moment.
+          </div>:
+            (<table
+              class='table text-center'
+              style={{ width: "80%", margin: "auto" }}
+            >
+              <thead class='table-dark'>
                 <tr>
-                  <th scope='row'>{index + 1}</th>
-                  <td>{item.name}</td>
-                  <td>{item.degree}</td>
+                  <th scope='col'>S.No</th>
+                  <th scope='col'>Name</th>
+                  <th scope='col'>Suffix</th>
                 </tr>
-              );
-            })
-          : null}
-      </tbody>
-    </table>
+              </thead>
+              <tbody>
+                {availableData.map((item, index) => {
+                      return (
+                        <tr>
+                          <th scope='row'>{index + 1}</th>
+                          <td>{item.name}</td>
+                          <td>{item.degree}</td>
+                        </tr>
+                      );
+                    })}
+              </tbody>
+            </table>)
+    ):null}
   </div>
   )
 }

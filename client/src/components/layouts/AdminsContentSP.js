@@ -11,8 +11,8 @@ const AdminContentSP = (props) => {
     const navigate = useNavigate();
   return (
     <div className={`${styles.sideProfile} card px-2 py-2 mx-2 shadow-sm  ${isMobile?'border-0':''}`}>
-    <ul className='nav flex-column text-center' style={{ fontSize: 20 }}>
-      <div className='card px-2 py-2 mx-2 my-2 mt-4 shadow-sm'>
+    <ul className='nav flex-column text-center'>
+      <div  className='card  border-2 mb-2 mt-3 shadow-sm' style={{width: '18rem',margin:"auto", fontSize:"1.4rem"}}>
         <li>
           <img
             className='text-center rounded-circle my-2'
