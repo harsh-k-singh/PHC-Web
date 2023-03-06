@@ -6,7 +6,7 @@ import GlobalContext from "../../context/global/GlobalContext";
 
 const PatientsHeader = () => {
   const authContext = useContext(AuthContext);
-  const { logout } = authContext;
+  const { user,logout } = authContext;
   const globalContext = useContext(GlobalContext);
   const {isMobile} = globalContext;
   const handleLogout = () => {
@@ -14,7 +14,6 @@ const PatientsHeader = () => {
   };
   const navigate= useNavigate();
   const location = useLocation();
-  
   return (
     <div>
       <nav class={`navbar ${!isMobile?'fixed-top':''} navbar-expand-lg bg-light`}>
@@ -56,6 +55,7 @@ const PatientsHeader = () => {
                   Profile
                 </button>
               </li>
+              {user&&user.profession==="Faculty"?
               <li class="nav-item">
               <button
                   className={`nav-link ${location.pathname==="/patient/familyMembers"?"fw-bolder text-primary active":""}`}
@@ -66,6 +66,7 @@ const PatientsHeader = () => {
                   Family Members
                 </button>
               </li>
+              :null}
             </ul>
             <ul className="navbar-nav mx-2 ms-auto">
               <li className="nav-item">

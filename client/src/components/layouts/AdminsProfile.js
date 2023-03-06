@@ -35,7 +35,11 @@ const AdminsProfile = () => {
     <div class="row">
         <div class="col-xl-8" style={{margin:"auto"}}> 
             <div class="card mb-4" >
-                <div class="card-header">Account Details</div>
+            <div class='card-header'>Account Details
+                <div className="ms-auto" style={{float:"right"}}> {edit ? <i class="fa-solid fa-lg fa-user-check" style={{color:"green"}}  onClick={onSave}></i>
+                    :  <i class="fa-solid fa-lg fa-user-pen" onClick={onEdit} style={{color:"blue"}}></i>
+                }</div>
+            </div>
                 <div class="card-body">
                     <form>
                         <div class="mb-3">
@@ -73,7 +77,6 @@ const AdminsProfile = () => {
                                 <input type="password" class="form-control" id="inputConfirmNewPassword" aria-label="Confirm New Password"  placeholder='Confirm New Password' name="cnfNew_password" onhange={onChange} disabled={edit?0:1}/>    
                             </div>
                         </div>
-                        {edit ? <button class="btn btn-primary" type="button" onClick={onSave}>Save changes</button> : <button class="btn btn-danger" type="button" onClick={onEdit}>Edit</button>}                 
                     </form>
                 </div>
             </div>

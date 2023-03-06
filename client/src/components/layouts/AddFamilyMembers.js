@@ -24,12 +24,12 @@ const AddFamilyMembers = () => {
         // console.log(relatives);
       };
       func();
-    },);
+    },[]);
     return (
         <div class='row'>
         <div class='col-xl-8' style={{ margin: "auto" }}>
         <div class='card mb-4'>
-            <div class='card-header'>Members Details*</div>
+            <div class='card-header'>Members Details</div>
             <div class='card-body'>
             <form>
                 <div class='row gx-3 mb-3'>

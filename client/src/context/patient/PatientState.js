@@ -68,6 +68,7 @@ const PatientState = (props) => {
       );
       console.log(res);
       dispatch({ type: types.ADD_RELATIVE_SUCCESS });
+      await getRelatives();
     } catch (error) {
       dispatch({
         type: types.ADD_RELATIVE_FAILURE,
@@ -91,7 +92,7 @@ const PatientState = (props) => {
         config
       );
       console.log(res);
-      // await getRelatives();
+      await getRelatives();
       dispatch({ type: types.UPDATE_RELATIVE_SUCCESS });
     } catch (error) {
       dispatch({
@@ -106,9 +107,10 @@ const PatientState = (props) => {
   const deleteRelative = async (id) => {
     try {
       const res = await axios.delete(`/api/patient/deleteRelative/${id}`);
-      console.log(res);
+      console.log("res",res);
       await getRelatives();
       dispatch({ type: types.DELETE_RELATIVE_SUCCESS });
+      await getRelatives();
     } catch (error) {
       dispatch({
         type: types.DELETE_RELATIVE_FAILURE,

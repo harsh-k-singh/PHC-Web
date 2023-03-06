@@ -54,7 +54,6 @@ const SignUpPatient = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     console.log("prof",form.profession);
-    console.log(form);
     register(form); 
    };
   return (
