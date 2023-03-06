@@ -55,6 +55,12 @@ const patientSchema = mongoose.Schema({
   guardian_phone: {
     type: String,
   },
+  prescriptions: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Prescription",
+    },
+  ],
 });
 
 const validatePatient = (patient) => {
@@ -70,6 +76,7 @@ const validatePatient = (patient) => {
     relative: Joi.array().items(Joi.object()),
     guardian_relation: Joi.string().allow(null),
     guardian_phone: Joi.string().min(10).max(10).allow(null),
+    prescriptions: Joi.array().items(Joi.object()),
   });
   return schema.validate(patient);
 };

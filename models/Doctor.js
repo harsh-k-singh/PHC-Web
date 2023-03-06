@@ -76,6 +76,12 @@ const doctorSchema = mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  prescirption: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Prescription",
+    },
+  ],
 });
 
 const validatedoctor = (doctor) => {
@@ -105,6 +111,7 @@ const validatedoctor = (doctor) => {
       sunAT: Joi.string(),
       sunDT: Joi.string(),
     }),
+    prescirption: Joi.array().items(Joi.object()),
     // timing: Joi.array()
     //   .length(7)
     //   .items(

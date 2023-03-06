@@ -31,7 +31,7 @@ const compounderSchema = mongoose.Schema({
     type: String,
   },
   timing: {
-    type:{
+    type: {
       monAT: String,
       monDT: String,
       tueAT: String,
@@ -48,21 +48,21 @@ const compounderSchema = mongoose.Schema({
       sunDT: String,
     },
     default: {
-      monAT: '00:00',
-      monDT: '00:00',
-      tueAT: '00:00',
-      tueDT: '00:00',
-      wedAT: '00:00',
-      wedDT: '00:00',
-      thuAT: '00:00',
-      thuDT: '00:00',
-      friAT: '00:00',
-      friDT: '00:00',
-      satAT: '00:00',
-      satDT: '00:00',
-      sunAT: '00:00',
-      sunDT: '00:00',
-    }
+      monAT: "00:00",
+      monDT: "00:00",
+      tueAT: "00:00",
+      tueDT: "00:00",
+      wedAT: "00:00",
+      wedDT: "00:00",
+      thuAT: "00:00",
+      thuDT: "00:00",
+      friAT: "00:00",
+      friDT: "00:00",
+      satAT: "00:00",
+      satDT: "00:00",
+      sunAT: "00:00",
+      sunDT: "00:00",
+    },
   },
   role: {
     type: String,
@@ -72,6 +72,12 @@ const compounderSchema = mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  prescirption: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Prescription",
+    },
+  ],
 });
 
 const validatecompounder = (compounder) => {
@@ -100,6 +106,7 @@ const validatecompounder = (compounder) => {
       sunAT: Joi.string(),
       sunDT: Joi.string(),
     }),
+    prescirption: Joi.array().items(Joi.object()),
   });
   return schema.validate(compounder);
 };
