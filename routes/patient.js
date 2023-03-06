@@ -3,10 +3,10 @@ const router = express.Router();
 const Joi = require("joi");
 const { Patient } = require("../models/Patient");
 const { Relative, validateRelative } = require("../models/Relative");
-const middleware = require("../middleware/auth");
+const authPatient = require("../middleware/authPatient");
 const bcrypt = require("bcryptjs");
 
-router.post("/updateProfile", middleware, async (req, res) => {
+router.post("/updateProfile", authPatient, async (req, res) => {
   const validatepatient = (patient) => {
     const schema = Joi.object({
       name: Joi.string().min(3).max(30).required(),
@@ -90,8 +90,8 @@ router.post("/updateProfile", middleware, async (req, res) => {
     patient.phone = phone;
     patient.gender = gender;
     patient.birth = birth;
-    patient.guardian_phone=guardian_phone;
-    patient.guardian_relation=guardian_relation;
+    patient.guardian_phone = guardian_phone;
+    patient.guardian_relation = guardian_relation;
     await patient.save();
     res.status(200).send(patient);
   } catch (error) {
@@ -100,7 +100,7 @@ router.post("/updateProfile", middleware, async (req, res) => {
   }
 });
 
-router.post("/addRelative", middleware, async (req, res) => {
+router.post("/addRelative", authPatient, async (req, res) => {
   const { name, relation, gender, birth } = req.body;
   const { error } = validateRelative(req.body);
   if (error) return res.status(400).send(error.details[0].message);
@@ -141,7 +141,7 @@ router.post("/addRelative", middleware, async (req, res) => {
   }
 });
 
-router.get("/getRelatives", middleware, async (req, res) => {
+router.get("/getRelatives", authPatient, async (req, res) => {
   try {
     // create an api to get the relatives of the patient
     // the api should take the patient id from the token
@@ -153,6 +153,66 @@ router.get("/getRelatives", middleware, async (req, res) => {
       source_id: req.user.id,
     });
     res.status(200).send(relatives);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Something went wrong");
+  }
+});
+
+router.post("/updateRelative", authPatient, async (req, res) => {
+  const { id, name, relation, gender, birth } = req.body;
+  const form = { name, relation, gender, birth };
+  const { error } = validateRelative(form);
+  if (error) return res.status(400).send(error.details[0].message);
+  try {
+    // create an api to update the relative of the patient
+    // the api should take the patient id from the token
+    // the api should take the relative details from the body
+    // the api should upate the relative in the database
+    // the api should return the relative details
+    // the api should return the error if the patient is not found
+
+    let patient = await Patient.findById(req.user.id);
+    if (!patient) return res.status(404).send("patient not found");
+    if (patient.profession != "Faculty")
+      res.status(400).send("Only faculty can update relatives");
+
+    let relative = await Relative.findById(id);
+    if (!relative) return res.status(404).send("Relative not found");
+    if (relative.source_id != req.user.id)
+      return res
+        .status(400)
+        .send("You are not authorized to update this relative");
+    relative.name = name;
+    relative.relation = relation;
+    relative.gender = gender;
+    relative.birth = birth;
+    await relative.save();
+
+    res.status(200).send(relative);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Something went wrong");
+  }
+});
+
+router.delete("/deleteRelative", authPatient, async (req, res) => {
+  const { id } = req.query;
+  try {
+    // create an api to delete the relative of the patient
+    // the api should take the patient id from the token
+    // the api should take the relative id from the body
+    // the api should delete the relative in the database
+    // the api should return the relative details
+    // the api should return the error if the patient is not found
+    let relative = await Relative.findById(id);
+    if (!relative) return res.status(404).send("Relative not found");
+    if (relative.source_id != req.user.id)
+      return res
+        .status(400)
+        .send("You are not authorized to delete this relative");
+    await Relative.findByIdAndDelete(id);
+    res.status(200).send("Relative deleted");
   } catch (error) {
     console.log(error.message);
     res.status(500).send("Something went wrong");

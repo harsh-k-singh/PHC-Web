@@ -16,7 +16,9 @@ const PatientReducer = (state, action) => {
   } else if (
     action.type === types.UPDATE_PROFILE_FAILURE ||
     action.type === types.GET_RELATIVES_FAILURE ||
-    action.type === types.ADD_RELATIVE_FAILURE
+    action.type === types.ADD_RELATIVE_FAILURE ||
+    action.type === types.UPDATE_RELATIVE_FAILURE ||
+    action.type === types.DELETE_RELATIVE_FAILURE
   ) {
     return {
       ...state,

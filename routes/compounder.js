@@ -3,10 +3,10 @@ const router = express.Router();
 const Joi = require("joi");
 const { Compounder } = require("../models/Compounder");
 const config = require("config");
-const middleware = require("../middleware/auth");
+const authCompounder = require("../middleware/authCompounder");
 const bcrypt = require("bcryptjs");
 
-router.post("/updateProfile", middleware, async (req, res) => {
+router.post("/updateProfile", authCompounder, async (req, res) => {
   const validatecompounder = (compounder) => {
     const schema = Joi.object({
       name: Joi.string().min(3).max(30).required(),
@@ -85,7 +85,7 @@ router.post("/updateProfile", middleware, async (req, res) => {
   }
 });
 
-router.post("/updateSchedule", middleware, async (req, res) => {
+router.post("/updateSchedule", authCompounder, async (req, res) => {
   const validateSchedule = (schedule) => {
     const schema = Joi.object({
       friAT: Joi.string().required(),
