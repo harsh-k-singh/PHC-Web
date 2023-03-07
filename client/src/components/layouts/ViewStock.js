@@ -87,4 +87,4 @@ const ViewStock = () => {
   )
 }
 
-export default ViewStock
+export default ViewStock;

@@ -15,13 +15,19 @@ const AdminReducer = (state, action) => {
       ...state,
       stocks: action.payload,
     };
+  } else if (action.type === types.GET_MEDICINE_STOCK_SUCCESS) {
+    return {
+      ...state,
+      specific_medicine_stock: action.payload,
+    };
   } else if (
     action.type === types.ADD_ACTOR_FAILURE ||
     action.type === types.GET_MEDICINE_FAILURE ||
     action.type === types.GET_STOCK_FAILURE ||
     action.type === types.ADD_STOCK_FAILURE ||
     action.type === types.UPDATE_STOCK_FAILURE ||
-    action.type === types.DELETE_STOCK_FAILURE
+    action.type === types.DELETE_STOCK_FAILURE ||
+    action.type === types.GET_MEDICINE_STOCK_FAILURE
   ) {
     return {
       ...state,
