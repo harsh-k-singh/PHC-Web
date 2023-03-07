@@ -219,4 +219,66 @@ router.delete("/deleteStock", authAdmin, async (req, res) => {
   }
 });
 
+router.get("/totalQuantity/:name", authAdmin, async (req, res) => {
+  const { name } = req.params;
+  try {
+    const medicine = await Medicine.findOne({ name });
+    if (!medicine) return res.status(404).send("Medicine not found");
+    let totalQuantity = 0;
+    for (let i = 0; i < medicine.availableStock.length; i++) {
+      let stock_id = medicine.availableStock[i];
+      let stock = await Stock.findById(stock_id);
+      const isExpired = (stock) => {
+        if (new Date(stock.expiry) <= new Date()) return true;
+        return false;
+      };
+
+      if (stock.quantity === 0 || isExpired(stock)) {
+        medicine.deadStock.push(stock_id);
+        medicine.availableStock.splice(i, 1);
+        await medicine.save();
+        j--;
+        continue;
+      }
+      totalQuantity += stock.quantity;
+    }
+    res.status(200).send({ totalQuantity });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Something went wrong");
+  }
+});
+
+router.get("/allMedicines", authAdmin, async (req, res) => {
+  try {
+    const medicines = await Medicine.find();
+    let allMedicines = [];
+    for (let i = 0; i < medicines.length; i++) {
+      let medicine = medicines[i];
+      let totalQuantity = 0;
+      for (let j = 0; j < medicine.availableStock.length; j++) {
+        let stock_id = medicine.availableStock[j];
+        let stock = await Stock.findById(stock_id);
+        const isExpired = (stock) => {
+          if (new Date(stock.expiry) <= new Date()) return true;
+          return false;
+        };
+        if (stock.quantity === 0 || isExpired(stock)) {
+          medicine.deadStock.push(stock_id);
+          medicine.availableStock.splice(j, 1);
+          await medicine.save();
+          j--;
+          continue;
+        }
+        totalQuantity += stock.quantity;
+      }
+      allMedicines.push({ name: medicine.name, totalQuantity });
+    }
+    res.status(200).send(allMedicines);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Something went wrong");
+  }
+});
+
 module.exports = router;

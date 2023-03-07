@@ -26,6 +26,12 @@ const relativeSchema = mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  prescriptions: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Prescription",
+    },
+  ],
 });
 
 const validateRelative = (relative) => {
@@ -35,6 +41,7 @@ const validateRelative = (relative) => {
     gender: Joi.string().required(),
     birth: Joi.date().required(),
     source_id: Joi.string(),
+    prescriptions: Joi.array().items(Joi.object()),
   });
   return schema.validate(relative);
 };
