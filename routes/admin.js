@@ -163,10 +163,10 @@ router.get("/getStock", authAdmin, async (req, res) => {
   }
 });
 
-router.get("/getMedicineStock", authAdmin, async (req, res) => {
+router.get("/getMedicineStock/:name", authAdmin, async (req, res) => {
   try {
     console.log(req.query);
-    const stock = await Stock.find({ name: req.query.name });
+    const stock = await Stock.find({ name: req.params.name });
     // stock.sort((a, b) => {
     //   return a.expiry - b.expiry;
     // });

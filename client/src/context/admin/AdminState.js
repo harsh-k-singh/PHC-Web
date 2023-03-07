@@ -9,6 +9,7 @@ axios.defaults.withCredentials = true;
 const AdminState = (props) => {
   const initialState = {
     medicines: [],
+    specific_medicine_stock: null,
     stocks: [],
     error: null,
   };
@@ -65,6 +66,20 @@ const AdminState = (props) => {
     } catch (error) {
       dispatch({
         type: types.GET_STOCK_FAILURE,
+        payload: error.response.data,
+      });
+      console.log(error.response.data);
+      setTimeout(clearError, 2000);
+    }
+  };
+
+  const getStockByMedicine = async (name) => {
+    try {
+      const res = await axios.get(`/api/admin/getStock/${name}`);
+      dispatch({ type: types.GET_MEDICINE_STOCK_SUCCESS, payload: res.data });
+    } catch (error) {
+      dispatch({
+        type: types.GET_MEDICINE_STOCK_FAILURE,
         payload: error.response.data,
       });
       console.log(error.response.data);
@@ -140,6 +155,7 @@ const AdminState = (props) => {
         addActor,
         getMedicine,
         getStock,
+        getStockByMedicine,
         addStock,
         updateStock,
         deleteStock,
