@@ -3,6 +3,7 @@ const router = express.Router();
 const Joi = require("joi");
 const { Patient } = require("../models/Patient");
 const { Relative, validateRelative } = require("../models/Relative");
+const { Prescription } = require("../models/Prescription");
 const authPatient = require("../middleware/authPatient");
 const bcrypt = require("bcryptjs");
 
@@ -213,6 +214,33 @@ router.delete("/deleteRelative", authPatient, async (req, res) => {
         .send("You are not authorized to delete this relative");
     await Relative.findByIdAndDelete(id);
     res.status(200).send("Relative deleted");
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Something went wrong");
+  }
+});
+
+router.get("/getPrescription/:relation", authPatient, async (req, res) => {
+  try {
+    const { relation } = req.params;
+    const patient = await Patient.findById(req.user.id);
+    if (!patient) return res.status(404).send("Patient not found");
+    if (patient.profession == "Student" && relation != "self")
+      return res.status(400).send("Invalid relation");
+    let patient_id;
+    if (relation == "self") {
+      patient_id = patient._id;
+    } else {
+      let rel_id = patient.relative.find(
+        (rel) => rel.relation == relation
+      ).relative_id;
+      patient_id = rel_id;
+    }
+
+    const prescriptions = await Prescription.find({
+      patient_id,
+    }).populate("patient_id", "name roll_number");
+    res.status(200).send(prescriptions);
   } catch (error) {
     console.log(error.message);
     res.status(500).send("Something went wrong");

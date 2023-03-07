@@ -2,7 +2,13 @@ const express = require("express");
 const router = express.Router();
 const Joi = require("joi");
 const { Doctor } = require("../models/Doctor");
-const config = require("config");
+const { Patient } = require("../models/Patient");
+const {
+  Prescription,
+  validatePrescription,
+} = require("../models/Prescription");
+const { Stock } = require("../models/Stock");
+const { Medicine } = require("../models/Medicine");
 const authDoctor = require("../middleware/authDoctor");
 const bcrypt = require("bcryptjs");
 
@@ -147,6 +153,248 @@ router.post("/updateAvailability", authDoctor, async (req, res) => {
     doctor.availability = req.body.availability;
     await doctor.save();
     res.status(200).send(doctor);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Something went wrong");
+  }
+});
+
+router.post("/addPrescription", authDoctor, async (req, res) => {
+  const { patient, relation, symptoms, diagnosis, tests, remarks, medicines } =
+    req.body;
+
+  if (
+    !patient ||
+    !relation ||
+    !symptoms ||
+    !diagnosis ||
+    !tests ||
+    !Array.isArray(tests) ||
+    !remarks ||
+    !medicines ||
+    !Array.isArray(medicines)
+  )
+    return res.status(400).send("Fields are not filled properly");
+  const curr_patient = await Patient.findOne({ roll_number: patient });
+  if (!curr_patient) return res.status(404).send("Patient not found");
+  const patient_id = curr_patient._id;
+  console.log(curr_patient, patient_id);
+
+  let final_medicines = [];
+  for (let i = 0; i < medicines.length; i++) {
+    // check if the medicine details are filled properly
+    if (!medicines[i].name || !medicines[i].quantity || !medicines[i].dosage)
+      return res.status(400).send("Medicine details are not filled properly");
+
+    // find the medicine in the database
+    let medicine = await Medicine.findOne({ name: medicines[i].name });
+    if (!medicine) return res.status(404).send("Medicine not found");
+    let req_quantity = medicines[i].quantity;
+
+    // create the object to be pushed in the final_medicines array
+    let final_medicine = {
+      medicine_id: medicine._id,
+      quantity: medicines[i].quantity,
+      dosage: medicines[i].dosage,
+      stocks: [],
+    };
+
+    // call the function to check if the medicine is available in sufficient quantity
+    let totalQuantity = 0;
+    for (let i = 0; i < medicine.availableStock.length; i++) {
+      let stock_id = medicine.availableStock[i];
+      let stock = await Stock.findById(stock_id);
+      const isExpired = (stock) => {
+        if (new Date(stock.expiry) <= new Date()) return true;
+        return false;
+      };
+
+      if (stock.quantity === 0 || isExpired(stock)) {
+        medicine.deadStock.push(stock_id);
+        medicine.availableStock.splice(j, 1);
+        await medicine.save();
+        j--;
+        continue;
+      }
+      totalQuantity += stock.quantity;
+    }
+    if (totalQuantity < req_quantity)
+      return res
+        .status(400)
+        .send("Medicine not available in sufficient quantity");
+
+    // find the stocks from the available stocks of the medicine
+    for (
+      let j = 0;
+      j < medicine.availableStock.length && req_quantity > 0;
+      j++
+    ) {
+      console.log("medicine ch", medicine);
+      let stock_id = medicine.availableStock[j];
+      let stock = await Stock.findById(stock_id);
+      // write a function to check if the stock is expired or not
+      const isExpired = (stock) => {
+        if (new Date(stock.expiry) <= new Date()) return true;
+        return false;
+      };
+
+      if (stock.quantity === 0 || isExpired(stock)) {
+        console.log("inside 1st if ch");
+        medicine.deadStock.push(stock_id);
+        medicine.availableStock.splice(j, 1);
+        await medicine.save();
+        j--;
+        continue;
+      }
+      if (stock.quantity >= req_quantity) {
+        console.log("inside 2nd if ch");
+        stock.quantity -= req_quantity;
+        await stock.save();
+        final_medicine.stocks.push({
+          stock_id: stock._id,
+          quantity: req_quantity,
+        });
+        break;
+      } else {
+        console.log("inside 3rd if ch");
+        req_quantity -= stock.quantity;
+        final_medicine.stocks.push({
+          stock_id: stock._id,
+          quantity: stock.quantity,
+        });
+        stock.quantity = 0;
+        await stock.save();
+        medicine.deadStock.push(stock_id);
+        medicine.availableStock.splice(j, 1);
+        await medicine.save();
+        j--;
+      }
+    }
+    console.log("fm", final_medicine);
+    final_medicines.push(final_medicine);
+  }
+
+  // validate the prescription
+  const { error } = validatePrescription({
+    patient_id,
+    doctor_id: req.user.id,
+    relation,
+    symptoms,
+    diagnosis,
+    tests,
+    remarks,
+    medicines: final_medicines,
+  });
+  if (error) return res.status(400).send(error.details[0].message);
+
+  // save the prescription in the database
+  try {
+    const prescription = new Prescription({
+      patient_id: curr_patient._id,
+      doctor_id: req.user.id,
+      relation,
+      symptoms,
+      diagnosis,
+      tests,
+      remarks,
+      medicines: final_medicines,
+    });
+    await prescription.save();
+
+    // save the prescription in the patient's prescriptions array
+    if (relation == "self") {
+      curr_patient.prescriptions.push(prescription._id);
+      await curr_patient.save();
+    } else {
+      let rel_id = curr_patient.relative.find(
+        (rel) => rel.relation == relation
+      ).relative_id;
+      let rel = await Relative.findById(rel_id);
+      rel.prescriptions.push(prescription._id);
+      await rel.save();
+    }
+
+    // save the prescription in the doctor's prescriptions array
+    await Doctor.findByIdAndUpdate(req.user.id, {
+      $push: { prescriptions: prescription._id },
+    });
+
+    // send the prescription to the patient
+    res.status(200).send(prescription);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Something went wrong");
+  }
+});
+
+router.get("/getPrescription", authDoctor, async (req, res) => {
+  try {
+    const doctor = await Doctor.findById(req.user.id);
+    if (!doctor) return res.status(404).send("Doctor not found");
+    const prescriptions = await Prescription.find({
+      doctor_id: req.user.id,
+    }).populate("patient_id", "name roll_number");
+    res.status(200).send(prescriptions);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Something went wrong");
+  }
+});
+
+router.post("/getPrescription", authDoctor, async (req, res) => {
+  const { roll_number, relation } = req.body;
+  try {
+    const patient = await Patient.findOne({ roll_number });
+    if (!patient) return res.status(404).send("Patient not found");
+    if (patient.profession == "Student" && relation != "self")
+      return res.status(400).send("Invalid relation");
+
+    let patient_id;
+    if (relation == "self") {
+      patient_id = patient._id;
+    } else {
+      let rel_id = patient.relative.find(
+        (rel) => rel.relation == relation
+      ).relative_id;
+      patient_id = rel_id;
+    }
+
+    const prescriptions = await Prescription.find({
+      patient_id: patient._id,
+    }).populate("doctor_id", "name");
+    res.status(200).send(prescriptions);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Something went wrong");
+  }
+});
+
+router.get("/allMedicines", authDoctor, async (req, res) => {
+  try {
+    const medicines = await Medicine.find();
+    let allMedicines = [];
+    for (let i = 0; i < medicines.length; i++) {
+      let medicine = medicines[i];
+      let totalQuantity = 0;
+      for (let j = 0; j < medicine.availableStock.length; j++) {
+        let stock_id = medicine.availableStock[j];
+        let stock = await Stock.findById(stock_id);
+        const isExpired = (stock) => {
+          if (new Date(stock.expiry) <= new Date()) return true;
+          return false;
+        };
+        if (stock.quantity === 0 || isExpired(stock)) {
+          medicine.deadStock.push(stock_id);
+          medicine.availableStock.splice(j, 1);
+          await medicine.save();
+          j--;
+          continue;
+        }
+        totalQuantity += stock.quantity;
+      }
+      allMedicines.push({ name: medicine.name, totalQuantity });
+    }
+    res.status(200).send(allMedicines);
   } catch (error) {
     console.log(error.message);
     res.status(500).send("Something went wrong");
