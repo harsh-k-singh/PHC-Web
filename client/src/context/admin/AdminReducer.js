@@ -13,7 +13,7 @@ const AdminReducer = (state, action) => {
   } else if (action.type === types.GET_STOCK_SUCCESS) {
     return {
       ...state,
-      stock: action.payload,
+      stocks: action.payload,
     };
   } else if (
     action.type === types.ADD_ACTOR_FAILURE ||

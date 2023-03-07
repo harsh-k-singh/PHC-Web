@@ -76,6 +76,16 @@ const DoctorsHeader = () => {
                   Inventory
                 </button>
               </li>
+              <li className="nav-item">
+              <button
+                  className={`nav-link ${location.pathname==="/admin/stock"?"fw-bolder text-primary active":""}`}
+                  aria-current='page'
+                  onClick={() => navigate("/admin/stock")}
+                  style={{ borderWidth: "0px", backgroundColor: "transparent" }}
+                >
+                  Stock
+                </button>
+              </li>
             </ul>
             <ul className="navbar-nav mx-2 ms-auto">
               <li className="nav-item">

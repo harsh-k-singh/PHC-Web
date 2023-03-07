@@ -33,6 +33,7 @@ import Admin from "./components/pages/Admin";
 import AdminsDashboard from "./components/layouts/AdminsDashboard";
 import AddActor from "./components/layouts/AddActor";
 import AdminsProfile from "./components/layouts/AdminsProfile";
+import Stock from "./components/layouts/Stock";
 
 import Patient from "./components/pages/Patient";
 import PatientsProfile from "./components/layouts/PatientsProfile";
@@ -90,6 +91,7 @@ const App = () => {
                       <Route path='addActor' element={<AddActor />} />
                       <Route path='profile' element={<AdminsProfile />} />
                       <Route path='inventory' element={<Inventory />} />
+                      <Route path='stock' element={<Stock/>}/>
                     </Route>
 
                     <Route path='patient' element={<Patient />}>

@@ -53,7 +53,7 @@ const MembersContent = (props) => {
             <div class='row gx-3 mb-3'>
               <div class='col-md-6'>
                 <label class='small mb-1' for='inputOrgName'>
-                  Relation*
+                  Relation
                 </label>
                 <input
                   class='form-control'
@@ -68,7 +68,7 @@ const MembersContent = (props) => {
               </div>
               <div class='col-md-6'>
                 <label class='small mb-1' for='inputName'>
-                  Full Name*
+                  Full Name
                 </label>
                 <input
                   class='form-control'
@@ -85,7 +85,7 @@ const MembersContent = (props) => {
             <div class='row gx-3 mb-3'>
               <div class='col-md-6'>
                 <label class='small mb-1' for='inputGender'>
-                  Gender*
+                  Gender
                 </label>
                 <select
                   class='form-select'
@@ -102,7 +102,7 @@ const MembersContent = (props) => {
               </div>
               <div class='col-md-6'>
                 <label class='small mb-1' for='inputBirth'>
-                  Birthday*
+                  Birthday
                 </label>
                 <input
                   class='form-control'
