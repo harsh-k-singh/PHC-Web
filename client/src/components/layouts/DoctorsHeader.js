@@ -110,14 +110,14 @@ const DoctorsHeader = () => {
               <li className='nav-item'>
                 <button
                   className={`nav-link ${
-                    location.pathname === "/doctor/inventory"
+                    location.pathname === "/doctor/viewMedicine"
                       ? "fw-bolder text-primary active"
                       : ""
                   }`}
-                  onClick={() => navigate("/doctor/inventory")}
+                  onClick={() => navigate("/doctor/viewMedicine")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
                 >
-                  Peek in inventory
+                  Medicines
                 </button>
               </li>
             </ul>

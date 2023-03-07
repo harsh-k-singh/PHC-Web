@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { useNavigate,useLocation} from "react-router-dom"
+import { useNavigate,useLocation, Link} from "react-router-dom"
 import AuthContext from '../../context/auth/AuthContext';
 import GlobalContext from '../../context/global/GlobalContext';
 import InstituteLogo from '../../images/InstituteLogo.jpg';
@@ -66,25 +66,23 @@ const DoctorsHeader = () => {
                   Profile
                 </button>
               </li>
-              <li className="nav-item">
-              <button
-                  className={`nav-link ${location.pathname==="/admin/inventory"?"fw-bolder text-primary active":""}`}
-                  aria-current='page'
-                  onClick={() => navigate("/admin/inventory")}
-                  style={{ borderWidth: "0px", backgroundColor: "transparent" }}
-                >
-                  Inventory
-                </button>
-              </li>
-              <li className="nav-item">
-              <button
-                  className={`nav-link ${location.pathname==="/admin/stock"?"fw-bolder text-primary active":""}`}
-                  aria-current='page'
-                  onClick={() => navigate("/admin/stock")}
-                  style={{ borderWidth: "0px", backgroundColor: "transparent" }}
-                >
+              <li class="nav-item dropdown">
+                <a class={`nav-link dropdown-toggle  ${(location.pathname==="/admin/viewStock"||location.pathname==="/admin/addStock"||location.pathname==="/admin/viewMedicine")?"fw-bolder text-primary active":""}`} href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Stock
-                </button>
+                </a>
+                <ul class="dropdown-menu">
+                  <li className="dropdown-item">
+                  <Link class={`dropdown-item  ${location.pathname==="/admin/viewStock"?"fw-bolder":""}`} to="/admin/viewStock">View Complete Stock</Link>
+                  </li>
+                  <li><hr class="dropdown-divider"/></li>
+                  <li className="dropdown-item">
+                  <Link class={`dropdown-item  ${location.pathname==="/admin/addStock"?"fw-bolder":""}`} to="/admin/addStock">Add New Stock</Link>
+                  </li>
+                  <li><hr class="dropdown-divider"/></li>
+                  <li className="dropdown-item">
+                  <Link class={`dropdown-item  ${location.pathname==="/admin/viewMedicine"?"fw-bolder":""}`} to="/admin/viewMedicine">View Medicine</Link>
+                  </li>
+                </ul>
               </li>
             </ul>
             <ul className="navbar-nav mx-2 ms-auto">

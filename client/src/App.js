@@ -21,7 +21,6 @@ import DoctorsDashboard from "./components/layouts/DoctorsDashboard";
 import DoctorsSchedule from "./components/layouts/DoctorsSchedule";
 import DoctorsProfile from "./components/layouts/DoctorsProfile";
 import PatientsList from "./components/layouts/PatientsList";
-import Inventory from "./components/layouts/Inventory";
 import PatientsHistory from "./components/layouts/PatientsHistory";
 
 import Compounder from "./components/pages/Compounder";
@@ -33,7 +32,9 @@ import Admin from "./components/pages/Admin";
 import AdminsDashboard from "./components/layouts/AdminsDashboard";
 import AddActor from "./components/layouts/AddActor";
 import AdminsProfile from "./components/layouts/AdminsProfile";
-import Stock from "./components/layouts/Stock";
+import AddStock from "./components/layouts/AddStock";
+import ViewStock from "./components/layouts/ViewStock";
+import ViewMedicine from "./components/layouts/ViewMedicine";
 
 import Patient from "./components/pages/Patient";
 import PatientsProfile from "./components/layouts/PatientsProfile";
@@ -61,37 +62,26 @@ const App = () => {
                       <Route path='schedule' element={<DoctorsSchedule />} />
                       <Route path='profile' element={<DoctorsProfile />} />
                       <Route path='patientsList' element={<PatientsList />} />
-                      <Route path='inventory' element={<Inventory />} />
-                      <Route
-                        path='patientsHistory'
-                        element={<PatientsHistory />}
-                      />
+                      <Route path='patientsHistory' element={<PatientsHistory />}/>
+                      <Route path='viewMedicine' element={<ViewMedicine/>}/>
                     </Route>
 
-                    <Route path='compounder' element={<Compounder />}>
-                      <Route
-                        path='/compounder'
-                        element={<CompoundersDashboard />}
-                      />
-                      <Route
-                        path='schedule'
-                        element={<CompoundersSchedule />}
-                      />
+                    <Route path='compounder' element={<Compounder />}>  
+                      <Route path='/compounder' element={<CompoundersDashboard />}/>
+                      <Route path='schedule' element={<CompoundersSchedule />}/>
                       <Route path='profile' element={<CompoundersProfile />} />
                       <Route path='patientsList' element={<PatientsList />} />
-                      <Route path='inventory' element={<Inventory />} />
-                      <Route
-                        path='patientsHistory'
-                        element={<PatientsHistory />}
-                      />
+                      <Route path='patientsHistory' element={<PatientsHistory />} />
+                      <Route path='viewMedicine' element={<ViewMedicine/>}/>
                     </Route>
 
                     <Route path='admin' element={<Admin />}>
                       <Route path='/admin' element={<AdminsDashboard />} />
                       <Route path='addActor' element={<AddActor />} />
                       <Route path='profile' element={<AdminsProfile />} />
-                      <Route path='inventory' element={<Inventory />} />
-                      <Route path='stock' element={<Stock/>}/>
+                      <Route path='addStock' element={<AddStock/>}/>
+                      <Route path='viewStock' element={<ViewStock/>}/>
+                      <Route path='viewMedicine' element={<ViewMedicine/>}/>
                     </Route>
 
                     <Route path='patient' element={<Patient />}>
