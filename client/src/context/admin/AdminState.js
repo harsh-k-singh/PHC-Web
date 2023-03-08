@@ -86,7 +86,19 @@ const AdminState = (props) => {
       setTimeout(clearError, 2000);
     }
   };
-
+  const getAllMedicines = async () => {
+    try {
+      const res = await axios.get(`/api/admin/allMedicines`);
+      dispatch({ type: types.GET_ALL_MEDICINES_SUCCESS, payload: res.data });
+    } catch (error) {
+      dispatch({
+        type: types.GET_ALL_MEDICINES_FAILURE,
+        payload: error.response.data,
+      });
+      console.log(error.response.data);
+      setTimeout(clearError, 2000);
+    }
+  };
   const addStock = async (formData) => {
     const config = {
       headers: {
@@ -150,6 +162,8 @@ const AdminState = (props) => {
     <AdminContext.Provider
       value={{
         medicines: state.medicines,
+        getAllMedicines,
+        allMedicines: state.allMedicines,
         stocks: state.stocks,
         error: state.error,
         addActor,

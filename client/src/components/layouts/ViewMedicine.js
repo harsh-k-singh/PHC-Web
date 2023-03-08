@@ -5,51 +5,51 @@ import Select from 'react-select';
 
 const ViewMedicine = () => {
   const adminContext = useContext(AdminContext);
-  const { getMedicine,stocks,medicines,getStock} = adminContext;
-  const [data,setData]=useState(stocks);
+  const {getAllMedicines,allMedicines} = adminContext;
+  const [data,setData]=useState(allMedicines);
 
   const [action,setAction]=useState("viewAll");
 
   const [sortQuantity,setSortQuantity]=useState(false);
 
-  const medOptions=stocks?stocks.map(opt => ({ label: opt.name, value: opt.name })):null;
+  const medOptions=allMedicines?allMedicines.map(opt => ({ label: opt.name, value: opt.name })):null;
 
   const [selectedOption, setSelectedOption] = useState(null);
   const onChange = (e) => {
     setAction("search");
     setSelectedOption(e);
   };
-
+  console.log("allMedicines",allMedicines)
   useEffect(() => {
     const func = async () => {
-      await getStock();
+      await getAllMedicines();
     };
     func();
   },[]);
   useEffect(() => {
       if(action==="viewAll"){
-        setData(stocks);
+        setData(allMedicines);
       }
       else if(action==="search"){
-        setData(stocks.filter(item => item.name===selectedOption.value));
+        setData(allMedicines.filter(item => item.name===selectedOption.value));
       }
     },[action,selectedOption]);
     
   useEffect(() => {
       if(action==="viewAll"&&sortQuantity===false){
-        setData(stocks);
+        setData(allMedicines);
       }
       else if(action==="viewAll"&&sortQuantity===true){
-        setData(stocks.sort((q1, q2) => (q1.quantity < q2.quantity) ? 1 : (q1.quantity > q2.quantity) ? -1 : 0).reverse());
+        setData(allMedicines.sort((q1, q2) => (q1.totalQuantity < q2.totalQuantity) ? 1 : (q1.totalQuantity > q2.totalQuantity) ? -1 : 0).reverse());
       }
       else if(action==="search" && sortQuantity===false){
-        setData(stocks.filter(item => item.name===selectedOption.value));
+        setData(allMedicines.filter(item => item.name===selectedOption.value));
       }
       else if(action==="search" && sortQuantity===true){
-        setData(stocks.filter(item => item.name===selectedOption.value).sort((q1, q2) => (q1.quantity < q2.quantity) ? 1 : (q1.quantity > q2.quantity) ? -1 : 0).reverse());
+        setData(allMedicines.filter(item => item.name===selectedOption.value).sort((q1, q2) => (q1.totalQuantity < q2.totalQuantity) ? 1 : (q1.totalQuantity > q2.totalQuantity) ? -1 : 0).reverse());
       }
     const func = async () => {
-      await getStock();
+      await getAllMedicines();
     };
     func();
   },[action,sortQuantity,selectedOption]);
@@ -95,7 +95,7 @@ return (
                   <tr>
                     <th scope="row">{index+1}</th>
                     <td>{item.name}</td>
-                    <td>{item.quantity}</td>
+                    <td>{item.totalQuantity}</td>
                     <td>Requested</td>
                   </tr>
             )

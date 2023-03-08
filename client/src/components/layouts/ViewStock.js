@@ -4,14 +4,14 @@ import StockContent from './StockContent';
 import Select from 'react-select';
 const ViewStock = () => {
     const adminContext = useContext(AdminContext);
-    const { getStock,stocks,medicines} = adminContext;
+    const { getStock,stocks,getMedicine,medicines} = adminContext;
     const [data,setData]=useState(stocks);
 
     const [action,setAction]=useState("viewAll");
 
     const [sortExpiry,setSortExpiry]=useState(false);
 
-    const medOptions=stocks?stocks.map(opt => ({ label: opt.name, value: opt.name })):null;
+    const medOptions=medicines?medicines.map(opt => ({ label: opt.name, value: opt.name })):null;
 
     const [selectedOption, setSelectedOption] = useState(null);
     const onChange = (e) => {
@@ -22,6 +22,7 @@ const ViewStock = () => {
     useEffect(() => {
       const func = async () => {
         await getStock();
+        await getMedicine();
       };
       func();
     },[]);
@@ -49,6 +50,7 @@ const ViewStock = () => {
         }
       const func = async () => {
         await getStock();
+        await getMedicine();
       };
       func();
     },[action,sortExpiry,selectedOption]);
