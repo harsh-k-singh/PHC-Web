@@ -1,11 +1,10 @@
 import React,{useEffect,useState,useContext} from 'react'
-import AdminContext from '../../context/admin/AdminContext';
-import StockContent from './StockContent';
 import Select from 'react-select';
+import CompounderContext from '../../context/compounder/CompounderContext';
 
-const ViewMedicine = () => {
-  const adminContext = useContext(AdminContext);
-  const {getAllMedicines,allMedicines} = adminContext;
+const ViewCompMedicine = () => {
+  const compounderContext = useContext(CompounderContext);
+  const {getAllMedicines,allMedicines} = compounderContext;
   const [data,setData]=useState(allMedicines);
 
   const [action,setAction]=useState("viewAll");
@@ -19,6 +18,7 @@ const ViewMedicine = () => {
     setAction("search");
     setSelectedOption(e);
   };
+
   console.log("allMedicines",allMedicines)
   useEffect(() => {
     const func = async () => {
@@ -59,7 +59,7 @@ return (
       <div style={{width:"40%",margin:"auto"}}>
         <Select options={medOptions} 
         placeholder="Search stock..." 
-        value={selectedOption}
+        value={action==="search"?selectedOption:""}
         onChange={onChange}/>
       </div>
        <div className="m-4 text-center">
@@ -86,7 +86,6 @@ return (
               <th scope="col">S.No</th>
               <th scope="col">Medicine</th>
               <th scope="col">Quantity</th>
-              <th scope="col">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -96,7 +95,6 @@ return (
                     <th scope="row">{index+1}</th>
                     <td>{item.name}</td>
                     <td>{item.totalQuantity}</td>
-                    <td>Requested</td>
                   </tr>
             )
           }):null}
@@ -106,4 +104,4 @@ return (
 )
 }
 
-export default ViewMedicine
+export default ViewCompMedicine

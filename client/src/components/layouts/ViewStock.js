@@ -60,7 +60,7 @@ const ViewStock = () => {
         <div style={{width:"40%",margin:"auto"}}>
           <Select options={medOptions} 
           placeholder="Search stock..." 
-          value={selectedOption}
+          value={action==="search"?selectedOption:""}
           onChange={onChange}/>
         </div>
          <div className="m-4 text-center">

@@ -74,8 +74,8 @@ const CompoundersHeader = () => {
               </li>
               <li className="nav-item">
                 <button
-                  className={`nav-link ${location.pathname==="/compounder/viewMedicine"?"fw-bolder text-primary active":""}`}
-                  onClick={() => navigate("/compounder/viewMedicine")}
+                  className={`nav-link ${location.pathname==="/compounder/viewCompMedicine"?"fw-bolder text-primary active":""}`}
+                  onClick={() => navigate("/compounder/viewCompMedicine")}
                   style={{ borderWidth: "0px", backgroundColor: "transparent" }}
                 >
                   Medicines

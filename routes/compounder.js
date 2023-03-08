@@ -3,6 +3,8 @@ const router = express.Router();
 const Joi = require("joi");
 const { Compounder } = require("../models/Compounder");
 const config = require("config");
+const { Stock } = require("../models/Stock");
+const { Medicine } = require("../models/Medicine");
 const authCompounder = require("../middleware/authCompounder");
 const bcrypt = require("bcryptjs");
 
@@ -123,6 +125,38 @@ router.post("/updateSchedule", authCompounder, async (req, res) => {
     compounder.timing = timing;
     await compounder.save();
     res.status(200).send(compounder);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Something went wrong");
+  }
+});
+
+router.get("/allMedicines", authCompounder, async (req, res) => {
+  try {
+    const medicines = await Medicine.find();
+    let allMedicines = [];
+    for (let i = 0; i < medicines.length; i++) {
+      let medicine = medicines[i];
+      let totalQuantity = 0;
+      for (let j = 0; j < medicine.availableStock.length; j++) {
+        let stock_id = medicine.availableStock[j];
+        let stock = await Stock.findById(stock_id);
+        const isExpired = (stock) => {
+          if (new Date(stock.expiry) <= new Date()) return true;
+          return false;
+        };
+        if (stock.quantity === 0 || isExpired(stock)) {
+          medicine.deadStock.push(stock_id);
+          medicine.availableStock.splice(j, 1);
+          await medicine.save();
+          j--;
+          continue;
+        }
+        totalQuantity += stock.quantity;
+      }
+      allMedicines.push({ name: medicine.name, totalQuantity });
+    }
+    res.status(200).send(allMedicines);
   } catch (error) {
     console.log(error.message);
     res.status(500).send("Something went wrong");

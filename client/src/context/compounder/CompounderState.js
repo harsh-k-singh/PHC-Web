@@ -65,6 +65,20 @@ const CompounderState = (props) => {
     }
   };
 
+  const getAllMedicines = async () => {
+    try {
+      const res = await axios.get(`/api/compounder/allMedicines`);
+      dispatch({ type: types.GET_ALL_MEDICINES_SUCCESS, payload: res.data });
+    } catch (error) {
+      dispatch({
+        type: types.GET_ALL_MEDICINES_FAILURE,
+        payload: error.response.data,
+      });
+      console.log(error.response.data);
+      setTimeout(clearError, 2000);
+    }
+  };
+
   const clearError = () => {
     dispatch({ type: types.CLEAR_ERROR });
   };
@@ -72,6 +86,8 @@ const CompounderState = (props) => {
   return (
     <CompounderContext.Provider
       value={{
+        getAllMedicines,
+        allMedicines: state.allMedicines,
         updateProfile,
         updateSchedule,
       }}

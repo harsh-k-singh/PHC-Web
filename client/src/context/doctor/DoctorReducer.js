@@ -9,8 +9,18 @@ const DoctorReducer = (state, action) => {
     return {
       ...state,
       error: action.payload,
-    };
-  } else if (action.type === types.CLEAR_ERROR) {
+    }; 
+  }else if(action.type===types.GET_ALL_MEDICINES_SUCCESS){
+    return({
+      ...state,
+      allMedicines:action.payload
+    })
+  } else if(action.type === types.GET_ALL_MEDICINES_FAILURE ){
+    return{
+      ...state,
+      error:action.payload
+    }
+  }else if (action.type === types.CLEAR_ERROR) {
     return {
       ...state,
       error: null,

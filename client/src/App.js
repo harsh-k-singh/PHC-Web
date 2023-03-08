@@ -22,11 +22,13 @@ import DoctorsSchedule from "./components/layouts/DoctorsSchedule";
 import DoctorsProfile from "./components/layouts/DoctorsProfile";
 import PatientsList from "./components/layouts/PatientsList";
 import PatientsHistory from "./components/layouts/PatientsHistory";
+import ViewDocMedicine from "./components/layouts/ViewDocMedicines";
 
 import Compounder from "./components/pages/Compounder";
 import CompoundersProfile from "./components/layouts/CompoundersProfile";
 import CompoundersSchedule from "./components/layouts/CompoundersSchedule";
 import CompoundersDashboard from "./components/layouts/CompoundersDashboard";
+import ViewCompMedicine from "./components/layouts/ViewCompMedicine";
 
 import Admin from "./components/pages/Admin";
 import AdminsDashboard from "./components/layouts/AdminsDashboard";
@@ -34,7 +36,7 @@ import AddActor from "./components/layouts/AddActor";
 import AdminsProfile from "./components/layouts/AdminsProfile";
 import AddStock from "./components/layouts/AddStock";
 import ViewStock from "./components/layouts/ViewStock";
-import ViewMedicine from "./components/layouts/ViewMedicine";
+import ViewAdminMedicine from "./components/layouts/ViewAdminMedicine";
 
 import Patient from "./components/pages/Patient";
 import PatientsProfile from "./components/layouts/PatientsProfile";
@@ -63,7 +65,7 @@ const App = () => {
                       <Route path='profile' element={<DoctorsProfile />} />
                       <Route path='patientsList' element={<PatientsList />} />
                       <Route path='patientsHistory' element={<PatientsHistory />}/>
-                      <Route path='viewMedicine' element={<ViewMedicine/>}/>
+                      <Route path='viewDocMedicine' element={<ViewDocMedicine/>}/>
                     </Route>
 
                     <Route path='compounder' element={<Compounder />}>  
@@ -72,7 +74,7 @@ const App = () => {
                       <Route path='profile' element={<CompoundersProfile />} />
                       <Route path='patientsList' element={<PatientsList />} />
                       <Route path='patientsHistory' element={<PatientsHistory />} />
-                      <Route path='viewMedicine' element={<ViewMedicine/>}/>
+                      <Route path='viewCompMedicine' element={<ViewCompMedicine/>}/>
                     </Route>
 
                     <Route path='admin' element={<Admin />}>
@@ -81,7 +83,7 @@ const App = () => {
                       <Route path='profile' element={<AdminsProfile />} />
                       <Route path='addStock' element={<AddStock/>}/>
                       <Route path='viewStock' element={<ViewStock/>}/>
-                      <Route path='viewMedicine' element={<ViewMedicine/>}/>
+                      <Route path='viewAdminMedicine' element={<ViewAdminMedicine/>}/>
                     </Route>
 
                     <Route path='patient' element={<Patient />}>
