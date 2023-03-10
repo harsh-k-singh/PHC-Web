@@ -5,7 +5,6 @@ const PrescriptionForm = (props) => {
   const doctorContext = useContext(DoctorContext);
   const {getAllMedicines,allMedicines} = doctorContext;
   const medOptions=allMedicines?allMedicines.map(opt => ({ label: opt.name, value: opt.name })):null;
-  // const [selectedOption, setSelectedOption] = useState([null]);
 
   const {roll_number,relative} = props;
   const [form, setForm] = useState({
@@ -21,14 +20,14 @@ const PrescriptionForm = (props) => {
   const [inputMedicine, setInputMedicine] = useState([{name:"",quantity:"",dosage:""}]);
   const [inputTests, setInputTests] = useState([{test:""}]);
   
-  // handle input change
+
   const handleInputChange = (e, index) => {
-    const { name, value } = e.target;
+    const { name ,value} = e.target;
     const list = [...inputMedicine];
     list[index][name] = value;
     setInputMedicine(list);
   };
- 
+  
   // handle click event of the Remove button
   const handleRemoveClick = index => {
     const list = [...inputMedicine];
@@ -42,7 +41,6 @@ const PrescriptionForm = (props) => {
   };
   
   //handling Tests
-
   const handleTestsChange = (e, index) => {
     const { name, value } = e.target;
     const list = [...inputTests];
@@ -137,7 +135,7 @@ const PrescriptionForm = (props) => {
                               options={medOptions} 
                               name='name'
                               value={x.name}
-                              onChange={e => handleInputChange(e, i)}
+                              onChange={e => handleInputChange(e, i)}                      
                               class='form-control'
                               />
                             {/* <input
