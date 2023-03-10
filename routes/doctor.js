@@ -3,6 +3,7 @@ const router = express.Router();
 const Joi = require("joi");
 const { Doctor } = require("../models/Doctor");
 const { Patient } = require("../models/Patient");
+const { Relative } = require("../models/Relative");
 const {
   Prescription,
   validatePrescription,
@@ -195,14 +196,14 @@ router.post("/addPrescription", authDoctor, async (req, res) => {
     req.body;
 
   if (
-    !patient ||
-    !relation ||
-    !symptoms ||
-    !diagnosis ||
-    !tests ||
+    patient == null ||
+    relation == null ||
+    symptoms == null ||
+    diagnosis == null ||
+    tests == null ||
+    remarks == null ||
+    medicines == null ||
     !Array.isArray(tests) ||
-    !remarks ||
-    !medicines ||
     !Array.isArray(medicines)
   )
     return res.status(400).send("Fields are not filled properly");
@@ -242,9 +243,9 @@ router.post("/addPrescription", authDoctor, async (req, res) => {
 
       if (stock.quantity === 0 || isExpired(stock)) {
         medicine.deadStock.push(stock_id);
-        medicine.availableStock.splice(j, 1);
+        medicine.availableStock.splice(i, 1);
         await medicine.save();
-        j--;
+        i--;
         continue;
       }
       totalQuantity += stock.quantity;

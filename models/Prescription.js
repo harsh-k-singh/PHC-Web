@@ -86,7 +86,7 @@ const validatePrescription = (prescription) => {
     tests: Joi.array().items({
       test: Joi.string(),
     }),
-    remarks: Joi.string(),
+    remarks: Joi.string().allow(""),
   });
   return schema.validate(prescription);
 };

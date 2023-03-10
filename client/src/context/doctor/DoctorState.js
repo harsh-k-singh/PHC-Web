@@ -131,7 +131,7 @@ const DoctorState = (props) => {
     };
     try {
       const res = await axios.post(
-        `/api/patient/addPescription`,
+        `/api/doctor/addPrescription`,
         formData,
         config
       );
