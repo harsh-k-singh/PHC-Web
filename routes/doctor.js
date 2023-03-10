@@ -158,19 +158,38 @@ router.post("/updateAvailability", authDoctor, async (req, res) => {
     res.status(500).send("Something went wrong");
   }
 });
+
+router.get("/patientExists", authDoctor, async (req, res) => {
+  const { roll_number } = req.query;
+  if (!roll_number) return res.status(400).send("Roll number not provided");
+  try {
+    const patient = await Patient.findOne({ roll_number });
+    if (!patient)
+      return res
+        .status(404)
+        .send("No such patient exists with this roll number");
+    res.status(200).send("Patient exists");
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Something went wrong");
+  }
+});
+
 router.get("/getRelative", authDoctor, async (req, res) => {
   const { roll_number } = req.query;
   if (!roll_number) return res.status(400).send("Roll number not provided");
   try {
-    const patient=await Patient.findOne({roll_number});
-    if(!patient) return res.status(404).send("Patient not found");
-    const relative=patient.relative;
+    const patient = await Patient.findOne({ roll_number });
+    if (!patient)
+      return res.status(404).send("No patient found with this rool number");
+    const relative = patient.relative;
     res.status(200).send(relative);
   } catch (error) {
     console.log(error.message);
     res.status(500).send("Something went wrong");
   }
 });
+
 router.post("/addPrescription", authDoctor, async (req, res) => {
   const { patient, relation, symptoms, diagnosis, tests, remarks, medicines } =
     req.body;
