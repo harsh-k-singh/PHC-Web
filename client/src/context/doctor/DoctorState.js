@@ -103,7 +103,42 @@ const DoctorState = (props) => {
       setTimeout(clearError, 2000);
     }
   };
-
+  const getRelative= async (roll_number) => {
+    try {
+      const res = await axios.get(`/api/doctor/getRelative?roll_number=${roll_number}`);
+      dispatch({ type: types.GET_RELATIVES_SUCCESS, payload: res.data });
+    } catch (error) {
+      dispatch({
+        type: types.GET_RELATIVES_FAILURE,
+        payload: error.response.data,
+      });
+      console.log(error.response.data);
+      setTimeout(clearError, 2000);
+    }
+  };
+  const addPrescription = async (formData) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    try {
+      const res = await axios.post(
+        `/api/patient/addPescription`,
+        formData,
+        config
+      );
+      console.log(res);
+      dispatch({ type: types.ADD_PRESCRIPTION_SUCCESS });
+    } catch (error) {
+      dispatch({
+        type: types.ADD_PRESCRIPTION_FAILURE,
+        payload: error.response.data,
+      });
+      console.log(error.response.data);
+      setTimeout(clearError, 2000);
+    }
+  };
   const clearError = () => {
     dispatch({ type: types.CLEAR_ERROR });
   };
@@ -112,6 +147,9 @@ const DoctorState = (props) => {
     <DoctorContext.Provider
       value={{
         getAllMedicines,
+        addPrescription,
+        getRelative,
+        relative: state.relative,
         allMedicines: state.allMedicines,
         updateProfile,
         updateSchedule,

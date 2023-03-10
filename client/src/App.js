@@ -23,6 +23,7 @@ import DoctorsProfile from "./components/layouts/DoctorsProfile";
 import PatientsList from "./components/layouts/PatientsList";
 import PatientsHistory from "./components/layouts/PatientsHistory";
 import ViewDocMedicine from "./components/layouts/ViewDocMedicines";
+import PrescriptionForm from "./components/layouts/PrescriptionForm";
 
 import Compounder from "./components/pages/Compounder";
 import CompoundersProfile from "./components/layouts/CompoundersProfile";
@@ -66,6 +67,7 @@ const App = () => {
                       <Route path='patientsList' element={<PatientsList />} />
                       <Route path='patientsHistory' element={<PatientsHistory />}/>
                       <Route path='viewDocMedicine' element={<ViewDocMedicine/>}/>
+                      <Route path='prescriptionForm' element={<PrescriptionForm/>}/>
                     </Route>
 
                     <Route path='compounder' element={<Compounder />}>  

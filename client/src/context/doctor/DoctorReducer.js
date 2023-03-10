@@ -1,7 +1,8 @@
 import * as types from "../types";
 
 const DoctorReducer = (state, action) => {
-  if (action.type === types.UPDATE_PROFILE_SUCCESS) {
+  if (action.type === types.UPDATE_PROFILE_SUCCESS
+    || action.type === types.ADD_PRESCRIPTION_SUCCESS) {
     return {
       ...state,
     };
@@ -20,7 +21,12 @@ const DoctorReducer = (state, action) => {
       ...state,
       error:action.payload
     }
-  }else if (action.type === types.CLEAR_ERROR) {
+  }else if (action.type === types.GET_RELATIVES_SUCCESS) {
+    return {
+      ...state,
+      relative:action.payload,
+    };
+  } else if (action.type === types.CLEAR_ERROR) {
     return {
       ...state,
       error: null,
@@ -30,6 +36,10 @@ const DoctorReducer = (state, action) => {
   } else if (action.type === types.UPDATE_SCHEDULE_FAILURE) {
     return { ...state, error: action.payload };
   } else if (action.type === types.UPDATE_AVAILABILITY_FAILURE) {
+    return { ...state, error: action.payload };
+  } else if (action.type === types.ADD_PRESCRIPTION_FAILURE) {
+    return { ...state, error: action.payload };
+  } else if (action.type === types.GET_RELATIVES_FAILURE) {
     return { ...state, error: action.payload };
   } else {
     return state;
