@@ -212,6 +212,10 @@ router.delete("/deleteRelative", authPatient, async (req, res) => {
       return res
         .status(400)
         .send("You are not authorized to delete this relative");
+    let patient = await Patient.findById(req.user.id);
+    if (!patient) return res.status(404).send("Patient not found");
+    patient.relative = patient.relative.filter((rel) => rel.relative_id != id);
+    await patient.save();
     await Relative.findByIdAndDelete(id);
     res.status(200).send("Relative deleted");
   } catch (error) {
