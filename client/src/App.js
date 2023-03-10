@@ -62,30 +62,58 @@ const App = () => {
                     </Route>
                     <Route path='doctor' element={<Doctor />}>
                       <Route path='/doctor' element={<DoctorsDashboard />} />
+                      <Route
+                        path='addRecord/:roll_number'
+                        element={<PrescriptionForm />}
+                      />
                       <Route path='schedule' element={<DoctorsSchedule />} />
                       <Route path='profile' element={<DoctorsProfile />} />
                       <Route path='patientsList' element={<PatientsList />} />
-                      <Route path='patientsHistory' element={<PatientsHistory />}/>
-                      <Route path='viewDocMedicine' element={<ViewDocMedicine/>}/>
-                      <Route path='prescriptionForm' element={<PrescriptionForm/>}/>
+                      <Route
+                        path='patientsHistory'
+                        element={<PatientsHistory />}
+                      />
+                      <Route
+                        path='viewDocMedicine'
+                        element={<ViewDocMedicine />}
+                      />
+                      <Route
+                        path='prescriptionForm'
+                        element={<PrescriptionForm />}
+                      />
                     </Route>
 
-                    <Route path='compounder' element={<Compounder />}>  
-                      <Route path='/compounder' element={<CompoundersDashboard />}/>
-                      <Route path='schedule' element={<CompoundersSchedule />}/>
+                    <Route path='compounder' element={<Compounder />}>
+                      <Route
+                        path='/compounder'
+                        element={<CompoundersDashboard />}
+                      />
+                      <Route
+                        path='schedule'
+                        element={<CompoundersSchedule />}
+                      />
                       <Route path='profile' element={<CompoundersProfile />} />
                       <Route path='patientsList' element={<PatientsList />} />
-                      <Route path='patientsHistory' element={<PatientsHistory />} />
-                      <Route path='viewCompMedicine' element={<ViewCompMedicine/>}/>
+                      <Route
+                        path='patientsHistory'
+                        element={<PatientsHistory />}
+                      />
+                      <Route
+                        path='viewCompMedicine'
+                        element={<ViewCompMedicine />}
+                      />
                     </Route>
 
                     <Route path='admin' element={<Admin />}>
                       <Route path='/admin' element={<AdminsDashboard />} />
                       <Route path='addActor' element={<AddActor />} />
                       <Route path='profile' element={<AdminsProfile />} />
-                      <Route path='addStock' element={<AddStock/>}/>
-                      <Route path='viewStock' element={<ViewStock/>}/>
-                      <Route path='viewAdminMedicine' element={<ViewAdminMedicine/>}/>
+                      <Route path='addStock' element={<AddStock />} />
+                      <Route path='viewStock' element={<ViewStock />} />
+                      <Route
+                        path='viewAdminMedicine'
+                        element={<ViewAdminMedicine />}
+                      />
                     </Route>
 
                     <Route path='patient' element={<Patient />}>

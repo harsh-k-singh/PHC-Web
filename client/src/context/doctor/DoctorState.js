@@ -9,6 +9,9 @@ axios.defaults.withCredentials = true;
 const DoctorState = (props) => {
   const initialState = {
     error: null,
+    relative: [],
+    patientExists: null,
+    allMedicines: [],
   };
 
   const [state, dispatch] = useReducer(DoctorReducer, initialState);
@@ -103,9 +106,12 @@ const DoctorState = (props) => {
       setTimeout(clearError, 2000);
     }
   };
-  const getRelative= async (roll_number) => {
+
+  const getRelative = async (roll_number) => {
     try {
-      const res = await axios.get(`/api/doctor/getRelative?roll_number=${roll_number}`);
+      const res = await axios.get(
+        `/api/doctor/getRelative?roll_number=${roll_number}`
+      );
       dispatch({ type: types.GET_RELATIVES_SUCCESS, payload: res.data });
     } catch (error) {
       dispatch({
@@ -116,6 +122,7 @@ const DoctorState = (props) => {
       setTimeout(clearError, 2000);
     }
   };
+
   const addPrescription = async (formData) => {
     const config = {
       headers: {
@@ -139,8 +146,31 @@ const DoctorState = (props) => {
       setTimeout(clearError, 2000);
     }
   };
+
   const clearError = () => {
     dispatch({ type: types.CLEAR_ERROR });
+  };
+
+  const checkPatientExists = async (roll_number) => {
+    try {
+      const res = await axios.get(
+        `/api/doctor/patientExists?roll_number=${roll_number}`
+      );
+      dispatch({ type: types.PATIENT_EXISTS_SUCCESS, payload: res.data });
+      setTimeout(() => {
+        dispatch({ type: types.CLEAR_PATIENT_EXISTS });
+      }, 2000);
+    } catch (error) {
+      console.log("errjjjd...");
+      dispatch({
+        type: types.PATIENT_EXISTS_FAILURE,
+        payload: error.response.data,
+      });
+      console.log(error.response.data);
+      setTimeout(() => {
+        dispatch({ type: types.CLEAR_PATIENT_EXISTS });
+      }, 2000);
+    }
   };
 
   return (
@@ -151,9 +181,11 @@ const DoctorState = (props) => {
         getRelative,
         relative: state.relative,
         allMedicines: state.allMedicines,
+        patientExists: state.patientExists,
         updateProfile,
         updateSchedule,
         updateAvailability,
+        checkPatientExists,
       }}
     >
       {props.children}
