@@ -10,6 +10,7 @@ const PatientState = (props) => {
   const initialState = {
     error: null,
     relatives: [],
+    records: [],
   };
 
   const [state, dispatch] = useReducer(PatientReducer, initialState);
@@ -122,6 +123,20 @@ const PatientState = (props) => {
     }
   };
 
+  const getRecords = async (id) => {
+    try {
+      const res = await axios.get(`/api/patient/getPrescription/${id}`);
+      dispatch({ type: types.GET_RECORDS_SUCCESS, payload: res.data });
+    } catch (error) {
+      dispatch({
+        type: types.GET_RECORDS_FAILURE,
+        payload: error.response.data,
+      });
+      console.log(error.response.data);
+      setTimeout(clearError, 2000);
+    }
+  };
+
   const clearError = () => {
     dispatch({ type: types.CLEAR_ERROR });
   };
@@ -131,11 +146,13 @@ const PatientState = (props) => {
       value={{
         error: state.error,
         relatives: state.relatives,
+        records: state.records,
         updateProfile,
         getRelatives,
         addRelative,
         updateRelative,
         deleteRelative,
+        getRecords,
       }}
     >
       {props.children}

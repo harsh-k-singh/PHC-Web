@@ -6,8 +6,13 @@ import Autocomplete from "@mui/material/Autocomplete";
 
 const PrescriptionForm = () => {
   const doctorContext = useContext(DoctorContext);
-  const { getAllMedicines, allMedicines, getRelative, relative } =
-    doctorContext;
+  const {
+    getAllMedicines,
+    allMedicines,
+    getRelative,
+    relative,
+    addPrescription,
+  } = doctorContext;
   // const medOptions = allMedicines
   //   ? allMedicines.map((opt) => ({ label: opt.name, value: opt.name }))
   //   : null;
@@ -15,10 +20,9 @@ const PrescriptionForm = () => {
 
   const [medicineList, setMedicineList] = useState(
     allMedicines.map((med) => {
-      return med.name.toLowerCase();
+      return med.name;
     })
   );
-  console.log(medicineList);
   // const editSearchTerm = (e) => {
   //   const { value } = e.target;
   //   const medicineList = allMedicines.map((med) => {
@@ -94,6 +98,7 @@ const PrescriptionForm = () => {
     e.preventDefault();
     setForm({ ...form, medicines: inputMedicine, tests: inputTests });
     console.log(form);
+    addPrescription(form);
   };
 
   useEffect(
@@ -169,26 +174,22 @@ const PrescriptionForm = () => {
                           autoComplete
                           autoHighlight
                           freeSolo
+                          name='name'
+                          onChange={(e, value) => {
+                            const list = [...inputMedicine];
+                            list[i].name = value;
+                            setInputMedicine(list);
+                            console.log(inputMedicine);
+                          }}
                           options={medicineList}
                           renderInput={(data) => (
                             <TextField
                               {...data}
                               variant='outlined'
-                              label='Search Box'
+                              label='Medicine Name'
                             />
                           )}
                         />
-                        {/* <input
-                              // onChange={onChange}
-                              onChange={e => handleInputChange(e, i)}
-                              required={true}
-                              name='name'
-                              value={x.name}
-                              class='form-control'
-                              id='inputMedName'
-                              type='text'
-                              placeholder='Enter Med Name'
-                            /> */}
                       </div>
                       <div class='col-md-2'>
                         <input

@@ -224,26 +224,27 @@ router.delete("/deleteRelative", authPatient, async (req, res) => {
   }
 });
 
-router.get("/getPrescription/:relation", authPatient, async (req, res) => {
+router.get("/getPrescription/:id", authPatient, async (req, res) => {
   try {
-    const { relation } = req.params;
-    const patient = await Patient.findById(req.user.id);
-    if (!patient) return res.status(404).send("Patient not found");
-    if (patient.profession == "Student" && relation != "self")
-      return res.status(400).send("Invalid relation");
-    let patient_id;
-    if (relation == "self") {
-      patient_id = patient._id;
-    } else {
-      let rel_id = patient.relative.find(
-        (rel) => rel.relation == relation
-      ).relative_id;
-      patient_id = rel_id;
-    }
+    const { id } = req.params;
+
+    // const patient = await Patient.findById(req.user.id);
+    // if (!patient) return res.status(404).send("Patient not found");
+    // if (patient.profession == "Student" && relation != "self")
+    //   return res.status(400).send("Invalid relation");
+    // let patient_id;
+    // if (relation == "self") {
+    //   patient_id = patient._id;
+    // } else {
+    //   let rel_id = patient.relative.find(
+    //     (rel) => rel.relation == relation
+    //   ).relative_id;
+    //   patient_id = rel_id;
+    // }
 
     const prescriptions = await Prescription.find({
-      patient_id,
-    }).populate("patient_id", "name roll_number");
+      patient_id: id,
+    });
     res.status(200).send(prescriptions);
   } catch (error) {
     console.log(error.message);
