@@ -182,7 +182,7 @@ router.get("/getRelative", authDoctor, async (req, res) => {
   try {
     const patient = await Patient.findOne({ roll_number });
     if (!patient)
-      return res.status(404).send("No patient found with this rool number");
+      return res.status(404).send("No patient found with this roll number");
     const relative = patient.relative;
     res.status(200).send(relative);
   } catch (error) {
@@ -365,7 +365,10 @@ router.get("/getPrescription", authDoctor, async (req, res) => {
     if (!doctor) return res.status(404).send("Doctor not found");
     const prescriptions = await Prescription.find({
       doctor_id: req.user.id,
-    }).populate("patient_id", "name roll_number");
+    });
+    // const prescriptions = await Prescription.find({
+    //   doctor_id: req.user.id,
+    // }).populate("patient_id", "name roll_number");
     res.status(200).send(prescriptions);
   } catch (error) {
     console.log(error.message);

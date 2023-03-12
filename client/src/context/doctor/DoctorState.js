@@ -147,6 +147,20 @@ const DoctorState = (props) => {
     }
   };
 
+  const getPrescription = async () => {
+    try {
+      const res = await axios.get(`/api/doctor/getPrescription`);
+      dispatch({ type: types.GET_PRESCRIPTION_SUCCESS, payload: res.data });
+    } catch (error) {
+      dispatch({
+        type: types.GET_PRESCRIPTION_FAILURE,
+        payload: error.response.data,
+      });
+      console.log(error.response.data);
+      setTimeout(clearError, 2000);
+    }
+  };
+
   const clearError = () => {
     dispatch({ type: types.CLEAR_ERROR });
   };
@@ -178,6 +192,8 @@ const DoctorState = (props) => {
       value={{
         getAllMedicines,
         addPrescription,
+        getPrescription,
+        allPrescription: state.allPrescription,
         getRelative,
         relative: state.relative,
         allMedicines: state.allMedicines,
