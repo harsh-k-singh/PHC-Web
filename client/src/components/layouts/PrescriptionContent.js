@@ -30,7 +30,7 @@ const PrescriptionContent = (props) => {
                     {data.tests.map((item,index)=>{
                       return(
                         <div>
-                          <p>{item.name}</p>
+                          <p>{item.test}</p>
                         </div>
                       )
                     })}

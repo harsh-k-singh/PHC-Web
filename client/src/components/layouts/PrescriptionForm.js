@@ -1,11 +1,22 @@
 import React, { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import DoctorContext from "../../context/doctor/DoctorContext";
 import { useParams } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
+import { display } from "@mui/system";
 
 const PrescriptionForm = () => {
   const doctorContext = useContext(DoctorContext);
+  const navigate = useNavigate();
+  const [back, setBack] = useState(false);
+
+  useEffect(() => {
+    if (back === true) {
+      navigate(`/doctor`);
+    }
+  }, [back]);
+
   const {
     getAllMedicines,
     allMedicines,
@@ -119,17 +130,22 @@ const PrescriptionForm = () => {
 
   return (
     <div class='container-xl px-4'>
-      <h3 className='text-center'>Prescription Form</h3>
       <div class='row mt-3'>
         <div class='col-xl-8' style={{ margin: "auto" }}>
           <div class='card mb-4'>
-            <div class='card-header'>Prescription details</div>
+            <div class='card-header' style={{position:"relative", textAlign:"center" , padding:"1rem"}}>
+              <div style={{position:"absolute", left:"0",  top:"0.4rem"}}>
+              <button class={`btn ${back === true ? "btn-danger" : "btn-outline-danger"} mx-2 my-2`} onClick={() => setBack(true)}>
+                    Back
+              </button> 
+              </div> 
+             <div style={{display:"inline-block"}}><h5>Prescription Form</h5></div> </div>
             <div class='card-body'>
               <form>
                 {/* row-1 */}
-                <div class='row gx-6 mb-3'>
+                <div class='row gx-6 mb-4'>
                   <div class='col-md-6'>
-                    <label class='small mb-1' for='inputrollnn'>
+                    <label class='small mb-1' for='inputrollno'>
                       Roll No./PF No.
                     </label>
                     <input
@@ -167,10 +183,9 @@ const PrescriptionForm = () => {
                 </label>
                 {inputMedicine.map((x, i) => {
                   return (
-                    <div class='row gx-6 mb-3'>
+                    <div class='row gx-6 my-2'>
                       <div class='col-md-4'>
                         <Autocomplete
-                          Style={{ width: 400 }}
                           autoComplete
                           autoHighlight
                           freeSolo
@@ -187,29 +202,36 @@ const PrescriptionForm = () => {
                               {...data}
                               variant='outlined'
                               label='Medicine Name'
+                              size="small"
+                              fullWidth
                             />
                           )}
                         />
                       </div>
                       <div class='col-md-2'>
-                        <input
+                        <TextField
                           type='number'
-                          placeholder='Quantity'
+                          InputProps={{ inputProps: { min: 1} }}
+                          variant='outlined'
+                          label='Quantity'
+                          size="small"
+                          fullWidth
                           name='quantity'
-                          class='form-control'
                           value={x.quantity}
                           onChange={(e) => handleInputChange(e, i)}
                         />
                       </div>
                       <div class='col-md-5'>
-                        <input
+                        <TextField
                           type='text'
+                          variant='outlined'
+                          label='Dosage'
+                          size="small"
+                          fullWidth
                           name='dosage'
-                          class='form-control'
-                          placeholder='Dosage'
                           value={x.dosage}
                           onChange={(e) => handleInputChange(e, i)}
-                        />
+                        />  
                       </div>
 
                       <div className='col-md-1'>
@@ -234,61 +256,64 @@ const PrescriptionForm = () => {
                 {/* row-2-end */}
 
                 {/* row-3 -start*/}
-                <div class='row gx-3 mt-3 mb-3'>
+                <div class='row gx-3 my-3'>
                   <div class='col-md-12'>
-                    <label class='small mb-1' for='inputDiagnosis'>
+                    <label class='small mb-2' for='inputDiagnosis'>
                       Diagnosis
                     </label>
-                    <input
+                    <TextField
                       onChange={onChange}
-                      // required={true}
                       name='diagnosis'
-                      class='form-control'
                       id='inputDiagnosis'
                       type='text'
-                      placeholder='Enter Diagnosis'
+                      size="small"
+                      fullWidth
+                      label='Diagnosis'
+                      variant='outlined'
                     />
                   </div>
                 </div>
                 {/* row-3-end */}
 
                 {/* row-4 start*/}
-                <div class='row gx-3 mt-3 mb-3'>
+                <div class='row gx-3 my-3'>
                   <div class='col-md-12'>
-                    <label class='small mb-1' for='inputSymptoms'>
+                    <label class='small mb-2' for='inputSymptoms'>
                       Symptoms
                     </label>
-                    <input
+                    <TextField
                       onChange={onChange}
-                      // required={true}
                       name='symptoms'
-                      class='form-control'
                       id='inputSymptoms'
                       type='text'
-                      placeholder='Enter Symptoms'
+                      size="small"
+                      fullWidth
+                      label='Symptoms'
+                      variant='outlined'
                     />
                   </div>
                 </div>
                 {/* row-4-end */}
 
                 {/* row-5-start */}
-                <label class='small mb-1' for='inputTests'>
+                <label class='small mb-2' for='inputTests'>
                   Tests
                 </label>
                 {inputTests.map((x, i) => {
                   return (
-                    <div class='row gx-6 mb-3'>
+                    <div class='row gx-6 my-2'>
                       <div class='col-md-11'>
-                        <input
-                          // onChange={onChange}
+                        <TextField
                           onChange={(e) => handleTestsChange(e, i)}
-                          required={true}
                           name='test'
+                          // defaultValue={"None"}
                           value={x.test}
-                          class='form-control'
                           id='inputTest'
                           type='text'
-                          placeholder='Enter test name'
+                          label='Test'
+                          variant='outlined'
+                          size="small"
+                          fullWidth
                         />
                       </div>
                       <div className='col-md-1'>
@@ -313,25 +338,26 @@ const PrescriptionForm = () => {
                 {/* row-5 -end*/}
                 {/* row 6 -start*/}
 
-                <div class='row gx-3 mt-3 mb-3'>
+                <div class='row gx-3 my-3'>
                   <div class='col-md-12'>
-                    <label class='small mb-1' for='inputRemarks'>
+                    <label class='small mb-2' for='inputRemarks'>
                       Remarks
                     </label>
-                    <input
+                    <TextField
                       onChange={onChange}
-                      // required={true}
                       name='remarks'
-                      class='form-control'
                       id='inputRemarks'
                       type='text'
-                      placeholder='Enter Remarks'
+                      size="small"
+                      fullWidth
+                      label='Remarks'
+                      variant='outlined'
                     />
                   </div>
                 </div>
 
                 {/* row 6 -end*/}
-                <div class='d-grid gap-2 mt-5'>
+                <div class='d-grid gap-2 mt-4'>
                   <button
                     onClick={onSubmit}
                     class='btn btn-primary'
