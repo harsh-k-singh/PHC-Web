@@ -11,10 +11,10 @@ const PrescriptionContent = (props) => {
             <h5 class="card-title">Patient's ID: {data.patient_id}</h5>
                 <p class="card-text text-muted">e-mail: 20bec005@iiitdmj.ac.in<br/>Age: 21&emsp;Gender: M <br/> Relation : {data.relation}</p>
                 <p class="card-text">Date of Diagonsis: {data.date}</p>
-                  <a class="btn btn-success btn-sm" data-bs-toggle="collapse" href="#collapseExample-1" role="button" aria-expanded="false" aria-controls="collapseExample">
+                  <a class="btn btn-success btn-sm" data-bs-toggle="collapse" href={`#collapseExample-${index}`} role="button" aria-expanded="false" aria-controls="collapseExample">
                     View Details
                   </a>
-                <div class="collapse my-3" id="collapseExample-1">
+                <div class="collapse my-3" id={`collapseExample-${index}`}>
                   <div class="card card-body">
                     <p><strong>Daignosis</strong><br/>{data.diagnosis}</p>
                     <p><strong>Medicines</strong><br/>
