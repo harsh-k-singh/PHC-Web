@@ -1,5 +1,5 @@
-import AdminsHeader from "../layouts/AdminsHeader.js";
-import AdminsSP from "../layouts/AdminsSP";
+import AdminsHeader from "../layouts/Admin/AdminsHeader.js";
+import AdminsSP from "../layouts/Admin/AdminsSP";
 
 import styles from "../../CSSFiles/Actor.module.css";
 

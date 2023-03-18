@@ -9,39 +9,40 @@ import CompounderState from "./context/compounder/CompounderState";
 import GlobalState from "./context/global/GlobalState";
 import PatientState from "./context/patient/PatientState";
 
+import CheckSchedule from "./components/layouts/Schedule/CheckSchedule";
+
 import Home from "./components/pages/Home";
-import HomeBody from "./components/layouts/HomeBody";
-import SignUpPatient from "./components/layouts/SignUpPatient";
-import Ambulance from "./components/layouts/Ambulance";
-import About from "./components/layouts/About";
-import CheckSchedule from "./components/layouts/CheckSchedule";
+import HomeBody from "./components/layouts/Home/HomeBody";
+import SignUpPatient from "./components/layouts/Home/SignUpPatient";
+import Ambulance from "./components/layouts/Home/Ambulance";
+import About from "./components/layouts/Home/About";
 
 import Doctor from "./components/pages/Doctor";
-import DoctorsDashboard from "./components/layouts/DoctorsDashboard";
-import DoctorsSchedule from "./components/layouts/DoctorsSchedule";
-import DoctorsProfile from "./components/layouts/DoctorsProfile";
-import PatientsList from "./components/layouts/PatientsList";
-import PatientsHistory from "./components/layouts/PatientsHistory";
-import ViewDocMedicine from "./components/layouts/ViewDocMedicines";
-import PrescriptionForm from "./components/layouts/PrescriptionForm";
+import DoctorsDashboard from "./components/layouts/Doctor/DoctorsDashboard";
+import DoctorsSchedule from "./components/layouts/Doctor/DoctorsSchedule";
+import DoctorsProfile from "./components/layouts/Doctor/DoctorsProfile";
+import PatientsList from "./components/layouts/Doctor/PatientsList";
+import ViewDocMedicine from "./components/layouts/Doctor/ViewDocMedicines";
+import PrescriptionForm from "./components/layouts/Doctor/PrescriptionForm";
 
 import Compounder from "./components/pages/Compounder";
-import CompoundersProfile from "./components/layouts/CompoundersProfile";
-import CompoundersSchedule from "./components/layouts/CompoundersSchedule";
-import CompoundersDashboard from "./components/layouts/CompoundersDashboard";
-import ViewCompMedicine from "./components/layouts/ViewCompMedicine";
+import CompoundersProfile from "./components/layouts/Compounder/CompoundersProfile";
+import CompoundersSchedule from "./components/layouts/Compounder/CompoundersSchedule";
+import CompoundersDashboard from "./components/layouts/Compounder/CompoundersDashboard";
+import ViewCompMedicine from "./components/layouts/Compounder/ViewCompMedicine";
 
 import Admin from "./components/pages/Admin";
-import AdminsDashboard from "./components/layouts/AdminsDashboard";
-import AddActor from "./components/layouts/AddActor";
-import AdminsProfile from "./components/layouts/AdminsProfile";
-import AddStock from "./components/layouts/AddStock";
-import ViewStock from "./components/layouts/ViewStock";
-import ViewAdminMedicine from "./components/layouts/ViewAdminMedicine";
+import AdminsDashboard from "./components/layouts/Admin/AdminsDashboard";
+import AddActor from "./components/layouts/Admin/AddActor";
+import AdminsProfile from "./components/layouts/Admin/AdminsProfile";
+import AddStock from "./components/layouts/Admin/AddStock";
+import ViewStock from "./components/layouts/Admin/ViewStock";
+import ViewAdminMedicine from "./components/layouts/Admin/ViewAdminMedicine";
 
 import Patient from "./components/pages/Patient";
-import PatientsProfile from "./components/layouts/PatientsProfile";
-import FamilyMembers from "./components/layouts/FamilyMembers";
+import PatientsProfile from "./components/layouts/Patient/PatientsProfile";
+import FamilyMembers from "./components/layouts/Patient/FamilyMembers";
+import PatientsHistory from "./components/layouts/Patient/PatientsHistory";
 
 const App = () => {
   return (

@@ -1,5 +1,5 @@
-import DoctorsHeader from "../layouts/DoctorsHeader.js";
-import DoctorsSP from "../layouts/DoctorsSP.js";
+import DoctorsHeader from "../layouts/Doctor/DoctorsHeader.js";
+import DoctorsSP from "../layouts/Doctor/DoctorsSP.js";
 
 import styles from "../../CSSFiles/Actor.module.css";
 

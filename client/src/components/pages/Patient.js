@@ -1,5 +1,5 @@
-import PatientsHeader from "../layouts/PatientsHeader";
-import PatientsSP from "../layouts/PatientsSP";
+import PatientsHeader from "../layouts/Patient/PatientsHeader";
+import PatientsSP from "../layouts/Patient/PatientsSP";
 
 import styles from "../../CSSFiles/Actor.module.css";
 

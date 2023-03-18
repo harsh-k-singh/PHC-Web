@@ -1,5 +1,5 @@
-import CompoundersHeader from "../layouts/CompoundersHeader.js";
-import CompoundersSP from "../layouts/CompoundersSP";
+import CompoundersHeader from "../layouts/Compounder/CompoundersHeader.js";
+import CompoundersSP from "../layouts/Compounder/CompoundersSP";
 
 import styles from "../../CSSFiles/Actor.module.css";
 
