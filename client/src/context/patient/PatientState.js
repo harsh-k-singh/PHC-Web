@@ -123,9 +123,10 @@ const PatientState = (props) => {
     }
   };
 
-  const getRecords = async (id) => {
+  const getRecords = async (realtion) => {
     try {
-      const res = await axios.get(`/api/patient/getPrescription/${id}`);
+      console.log("relation form getRecords", realtion);
+      const res = await axios.get(`/api/patient/getPrescription/${realtion}`);
       dispatch({ type: types.GET_RECORDS_SUCCESS, payload: res.data });
     } catch (error) {
       dispatch({

@@ -375,17 +375,17 @@ router.get("/getPrescription", authDoctor, async (req, res) => {
       let patient = await Patient.findById(patient_id);
       let patient_roll_number = patient.roll_number;
       let patient_email = patient.email;
-      let patient_phone= patient.phone;
+      let patient_phone = patient.phone;
       let patient_name = patient.name;
-      let patient_gender= patient.gender;
-      let patient_birth= patient.birth;
+      let patient_gender = patient.gender;
+      let patient_birth = patient.birth;
 
       if (relation != "self") {
         let rel = patient.relative.find((rel) => rel.relation == relation);
-        const relative=await Relative.findById(rel.relative_id);
+        const relative = await Relative.findById(rel.relative_id);
         patient_name = relative.name;
-        patient_birth= relative.birth;
-        patient_gender=relative.gender;
+        patient_birth = relative.birth;
+        patient_gender = relative.gender;
       }
       let doctor = await Doctor.findById(prescription.doctor_id);
       let doctor_name = doctor.name;
@@ -414,7 +414,7 @@ router.get("/getPrescription", authDoctor, async (req, res) => {
         tests,
         remarks,
         medicines,
-        date
+        date,
       };
       pre.push(entry);
     }
@@ -434,19 +434,15 @@ router.post("/getPrescription", authDoctor, async (req, res) => {
     if (patient.profession == "Student" && relation != "self")
       return res.status(400).send("Invalid relation");
 
-    let patient_id;
+    let prescriptions = [];
     if (relation == "self") {
-      patient_id = patient._id;
+      prescriptions = patient.prescriptions;
     } else {
-      let rel_id = patient.relative.find(
-        (rel) => rel.relation == relation
-      ).relative_id;
-      patient_id = rel_id;
+      const rel = patient.relative.find((rel) => rel.relation == relation);
+      if (!rel) return res.status(404).send("Relative not found");
+      const relative = await Relative.findById(rel.relative_id);
+      prescriptions = relative.prescriptions;
     }
-
-    const prescriptions = await Prescription.find({
-      patient_id: patient._id,
-    }).populate("doctor_id", "name");
 
     let pre = [];
     for (let i = 0; i < prescriptions.length; i++) {

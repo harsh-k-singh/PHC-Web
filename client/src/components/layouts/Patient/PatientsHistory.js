@@ -7,36 +7,37 @@ const PatientsHistory = () => {
   const authContext = useContext(AuthContext);
   const { user } = authContext;
   const { getRelatives, relatives, getRecords, records } = patientContext;
-  const [id, setId] = useState(null);
+  const [relation, setRelation] = useState(null);
 
-  const fetchRecords = async (id) => {
-    await getRecords(id);
+  const fetchRecords = async (rel) => {
+    await getRecords(rel);
   };
 
   useEffect(() => {
     console.log(user);
-    setId(user._id);
+    setRelation("self");
     const func = async () => {
       await getRelatives();
     };
     func();
-    fetchRecords(user._id);
+    fetchRecords("self");
   }, []);
 
   const onChange = (e) => {
-    setId(e.target.value);
-    fetchRecords(id);
+    setRelation(e.target.value);
+    console.log("realtion from onchange", e.target.value);
+    fetchRecords(e.target.value);
   };
 
   return (
     <div>
       <h2 style={{ margin: "auto", textAlign: "center" }}>Past Records</h2>
       <select onChange={onChange}>
-        <option value={user ? user._id : null}>Self</option>
+        <option value={"self"}>Self</option>
         {relatives.length > 0
           ? relatives.map((relative) => {
               return (
-                <option value={relative._id}>
+                <option value={relative.relation}>
                   {relative.relation}--{relative.name}
                 </option>
               );

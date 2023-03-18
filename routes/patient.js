@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const Joi = require("joi");
 const { Patient } = require("../models/Patient");
+const { Doctor } = require("../models/Doctor");
+const { Medicine } = require("../models/Medicine");
 const { Relative, validateRelative } = require("../models/Relative");
 const { Prescription } = require("../models/Prescription");
 const authPatient = require("../middleware/authPatient");
@@ -224,9 +226,9 @@ router.delete("/deleteRelative", authPatient, async (req, res) => {
   }
 });
 
-router.get("/getPrescription/:id", authPatient, async (req, res) => {
+router.get("/getPrescription/:relation", authPatient, async (req, res) => {
   try {
-    const { id } = req.params;
+    const { relation } = req.params;
 
     // const patient = await Patient.findById(req.user.id);
     // if (!patient) return res.status(404).send("Patient not found");
@@ -242,10 +244,52 @@ router.get("/getPrescription/:id", authPatient, async (req, res) => {
     //   patient_id = rel_id;
     // }
 
-    const prescriptions = await Prescription.find({
-      patient_id: id,
+    let prescriptions = await Prescription.find({
+      patient_id: req.user.id,
     });
-    res.status(200).send(prescriptions);
+
+    prescriptions = prescriptions.filter((pres) => {
+      return pres.relation === relation;
+    });
+
+    let pre = [];
+    for (let i = 0; i < prescriptions.length; i++) {
+      let prescription = prescriptions[i];
+      let { patient_id, relation, symptoms, diagnosis, tests, remarks } =
+        prescription;
+      let patient = await Patient.findById(patient_id);
+      let patient_name = patient.name;
+      if (relation != "self") {
+        let rel = patient.relative.find((rel) => rel.relation == relation);
+        patient_name = rel.name;
+      }
+      let doctor = await Doctor.findById(prescription.doctor_id);
+      let doctor_name = doctor.name;
+      let medicines = [];
+      for (let j = 0; j < prescription.medicines.length; j++) {
+        let medicine = prescription.medicines[j];
+        let med = await Medicine.findById(medicine.medicine_id);
+        let medEntry = {
+          medicine_name: med.name,
+          quantity: medicine.quantity,
+          dosage: medicine.dosage,
+        };
+        medicines.push(medEntry);
+      }
+      let entry = {
+        doctor_name,
+        patient_name,
+        relation,
+        symptoms,
+        diagnosis,
+        tests,
+        remarks,
+        medicines,
+      };
+
+      pre.push(entry);
+    }
+    res.status(200).send(pre);
   } catch (error) {
     console.log(error.message);
     res.status(500).send("Something went wrong");
