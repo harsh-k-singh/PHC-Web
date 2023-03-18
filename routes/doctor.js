@@ -366,10 +366,45 @@ router.get("/getPrescription", authDoctor, async (req, res) => {
     const prescriptions = await Prescription.find({
       doctor_id: req.user.id,
     });
-    // const prescriptions = await Prescription.find({
-    //   doctor_id: req.user.id,
-    // }).populate("patient_id", "name roll_number");
-    res.status(200).send(prescriptions);
+
+    let pre = [];
+    for (let i = 0; i < prescriptions.length; i++) {
+      let prescription = prescriptions[i];
+      let { patient_id, relation, symptoms, diagnosis, tests, remarks } =
+        prescription;
+      let patient = await Patient.findById(patient_id);
+      let patient_name = patient.name;
+      if (relation != "self") {
+        let rel = patient.relative.find((rel) => rel.relation == relation);
+        patient_name = rel.name;
+      }
+      let doctor = await Doctor.findById(prescription.doctor_id);
+      let doctor_name = doctor.name;
+      let medicines = [];
+      for (let j = 0; j < prescription.medicines.length; j++) {
+        let medicine = prescription.medicines[j];
+        let med = await Medicine.findById(medicine.medicine_id);
+        let medEntry = {
+          medicine_name: med.name,
+          quantity: medicine.quantity,
+          dosage: medicine.dosage,
+        };
+        medicines.push(medEntry);
+      }
+      let entry = {
+        doctor_name,
+        patient_name,
+        relation,
+        symptoms,
+        diagnosis,
+        tests,
+        remarks,
+        medicines,
+      };
+      pre.push(entry);
+    }
+    // console.log("pre", pre);
+    res.status(200).send(pre);
   } catch (error) {
     console.log(error.message);
     res.status(500).send("Something went wrong");
@@ -397,7 +432,44 @@ router.post("/getPrescription", authDoctor, async (req, res) => {
     const prescriptions = await Prescription.find({
       patient_id: patient._id,
     }).populate("doctor_id", "name");
-    res.status(200).send(prescriptions);
+
+    let pre = [];
+    for (let i = 0; i < prescriptions.length; i++) {
+      let prescription = prescriptions[i];
+      let { patient_id, relation, symptoms, diagnosis, tests, remarks } =
+        prescription;
+      let patient = await Patient.findById(patient_id);
+      let patient_name = patient.name;
+      if (relation != "self") {
+        let rel = patient.relative.find((rel) => rel.relation == relation);
+        patient_name = rel.name;
+      }
+      let doctor = await Doctor.findById(prescription.doctor_id);
+      let doctor_name = doctor.name;
+      let medicines = [];
+      for (let j = 0; j < prescription.medicines.length; j++) {
+        let medicine = prescription.medicines[j];
+        let med = await Medicine.findById(medicine.medicine_id);
+        let medEntry = {
+          medicine_name: med.name,
+          quantity: medicine.quantity,
+          dosage: medicine.dosage,
+        };
+        medicines.push(medEntry);
+      }
+      let entry = {
+        doctor_name,
+        patient_name,
+        relation,
+        symptoms,
+        diagnosis,
+        tests,
+        remarks,
+        medicines,
+      };
+      pre.push(entry);
+    }
+    res.status(200).send(pre);
   } catch (error) {
     console.log(error.message);
     res.status(500).send("Something went wrong");
