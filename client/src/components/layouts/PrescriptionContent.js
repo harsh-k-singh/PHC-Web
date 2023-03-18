@@ -1,37 +1,54 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 
 const PrescriptionContent = (props) => {
   const {item,index}=props;
   const [data,setData]=useState(item);
+  const [age, setAge] = useState("Age here");
+  const d=new Date(data.date);
+  const time=d.toLocaleTimeString();;
+    useEffect(() => {
+      const getAge = (dateString) => {
+        var today = new Date();
+        var birthDate = new Date(dateString);
+        var curr = today.getFullYear() - birthDate.getFullYear();
+        var m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+          curr--;
+        }
+        return curr;
+      };
+      setAge(getAge(data.patient_birth));
+    }, []);
+    console.log(data);
   return (
     <div class='row my-4'>
     <div class='col-xl-8' style={{ margin: "auto" }}>
         <div class="card">
+            <div class="card-header text-center"> 
+            <div className="mx-2"style={{float:"left"}}>Roll/PF Number: {data.patient_roll_number}</div>
+             <>Phone : {data.patient_phone} </>
+            <div className="mx-2" style={{float:"right"}}>email : {data.patient_email}</div>
+            </div>
             <div class="card-body">
-            <h5 class="card-title">Patient's ID: {data.patient_id}</h5>
-                <p class="card-text text-muted">e-mail: 20bec005@iiitdmj.ac.in<br/>Age: 21&emsp;Gender: M <br/> Relation : {data.relation}</p>
-                <p class="card-text">Date of Diagonsis: {data.date}</p>
+                <p class="card-text text-muted"> Relation : {data.relation}<br/>Patient's Name : {data.patient_name}<br/>Age: {age}&emsp;Gender : {data.patient_gender}<br/></p>
+                <p class="card-text">Time of Diagonsis: {time}</p>
                   <a class="btn btn-success btn-sm" data-bs-toggle="collapse" href={`#collapseExample-${index}`} role="button" aria-expanded="false" aria-controls="collapseExample">
                     View Details
                   </a>
                 <div class="collapse my-3" id={`collapseExample-${index}`}>
                   <div class="card card-body">
-                    <p><strong>Daignosis</strong><br/>{data.diagnosis}</p>
+                    <p><strong>Diagnosis</strong><br/>{data.diagnosis}</p>
                     <p><strong>Medicines</strong><br/>
                     {data.medicines.map((item,index)=>{
                       return(
-                        <div>
-                          <p>{item.medicine_id} : {item.quantity} : {item.dosage}</p>
-                        </div>
+                          <p>{index+1})&emsp;{item.medicine_name}&emsp;quantity : {item.quantity}&emsp; dosage : {item.dosage}</p>
                       )
                     })}
                     </p>
                     <p><strong>Tests</strong><br/>
                     {data.tests.map((item,index)=>{
                       return(
-                        <div>
-                          <p>{item.test}</p>
-                        </div>
+                          <p>{index+1})&emsp;{item.test}</p>
                       )
                     })}
                     </p>

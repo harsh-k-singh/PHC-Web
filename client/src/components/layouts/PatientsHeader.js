@@ -7,6 +7,7 @@ import GlobalContext from "../../context/global/GlobalContext";
 const PatientsHeader = () => {
   const authContext = useContext(AuthContext);
   const { user,logout } = authContext;
+  // console.log(user.relative)
   const globalContext = useContext(GlobalContext);
   const {isMobile} = globalContext;
   const handleLogout = () => {

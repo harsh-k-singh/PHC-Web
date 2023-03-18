@@ -370,13 +370,22 @@ router.get("/getPrescription", authDoctor, async (req, res) => {
     let pre = [];
     for (let i = 0; i < prescriptions.length; i++) {
       let prescription = prescriptions[i];
-      let { patient_id, relation, symptoms, diagnosis, tests, remarks } =
+      let { patient_id, relation, symptoms, diagnosis, tests, remarks, date } =
         prescription;
       let patient = await Patient.findById(patient_id);
+      let patient_roll_number = patient.roll_number;
+      let patient_email = patient.email;
+      let patient_phone= patient.phone;
       let patient_name = patient.name;
+      let patient_gender= patient.gender;
+      let patient_birth= patient.birth;
+
       if (relation != "self") {
         let rel = patient.relative.find((rel) => rel.relation == relation);
-        patient_name = rel.name;
+        const relative=await Relative.findById(rel.relative_id);
+        patient_name = relative.name;
+        patient_birth= relative.birth;
+        patient_gender=relative.gender;
       }
       let doctor = await Doctor.findById(prescription.doctor_id);
       let doctor_name = doctor.name;
@@ -393,13 +402,19 @@ router.get("/getPrescription", authDoctor, async (req, res) => {
       }
       let entry = {
         doctor_name,
+        patient_roll_number,
+        patient_email,
+        patient_phone,
         patient_name,
+        patient_gender,
+        patient_birth,
         relation,
         symptoms,
         diagnosis,
         tests,
         remarks,
         medicines,
+        date
       };
       pre.push(entry);
     }
