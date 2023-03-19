@@ -54,11 +54,6 @@ const PrescriptionContent = (props) => {
                     </p>
                     <p><strong>Symptoms</strong><br/>{data.symptoms}</p>
                     <p><strong>Remarks</strong><br/>{data.remarks}</p>
-                      <div class="d-grid gap-2">
-                      <a class="btn btn-outline-success btn-sm" href="/patientsHistory" role="button">
-                        Check Past Records
-                      </a>
-                      </div>
                   </div>
                 </div>
             </div>

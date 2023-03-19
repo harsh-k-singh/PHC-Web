@@ -396,6 +396,8 @@ router.post("/addPrescription", authDoctor, async (req, res) => {
 
 router.get("/getPrescription", authDoctor, async (req, res) => {
   try {
+    const { id } = req.params;
+
     let prescriptions = await Prescription.find({
       docter_id: req.user.id,
     });

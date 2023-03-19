@@ -157,6 +157,7 @@ const DoctorState = (props) => {
   const getPrescription = async () => {
     if (state.allPrescription.length === 0) setLoading();
     try {
+      console.log('reached getPre');
       const res = await axios.get(`/api/doctor/getPrescription`);
       dispatch({ type: types.GET_PRESCRIPTION_SUCCESS, payload: res.data });
       clearLoading();

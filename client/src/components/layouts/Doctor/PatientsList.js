@@ -21,12 +21,12 @@ const PatientsList = () => {
     }, [])
 
     console.log(date.toLocaleDateString('en-CA'));
-    console.log(allPrescription);
+    console.log(allPrescription,"prescription");
   return (
       <div class='container-xl px-4'>
           <div className="text-center">
-            <label for="date">Select Record Date</label><br/>
-            <input className="my-2" type="date"  value={date.toLocaleDateString('en-CA')} onChange={onSetDate}/>
+            <label for="date"><h5>Select Record Date</h5></label><br/>
+            <input className="form-control my-2" type="date"  value={date.toLocaleDateString('en-CA')} onChange={onSetDate} style={{width:"30%" ,margin: "auto", textAlign: "center"}}/>
           </div>
           {allPrescription?allPrescription.map((item,index) => {
               return(
@@ -35,7 +35,15 @@ const PatientsList = () => {
                 <PrescriptionContent item={item} index={index}/>:""}
                 </>
               )
-          }):null}
+             })
+            :<div
+              class='alert alert-primary align-items-center text-center'
+              role='alert'
+              style={{ width: "60%", margin: "auto" }}
+            >
+              No Records on this Date.
+            </div>
+          }
       </div>
   )
 }
