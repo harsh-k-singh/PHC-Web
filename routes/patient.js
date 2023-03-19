@@ -226,45 +226,39 @@ router.delete("/deleteRelative", authPatient, async (req, res) => {
   }
 });
 
-router.get("/getPrescription/:relation", authPatient, async (req, res) => {
+router.get("/getPrescription/:id", authPatient, async (req, res) => {
   try {
-    const { relation } = req.params;
-
-    // const patient = await Patient.findById(req.user.id);
-    // if (!patient) return res.status(404).send("Patient not found");
-    // if (patient.profession == "Student" && relation != "self")
-    //   return res.status(400).send("Invalid relation");
-    // let patient_id;
-    // if (relation == "self") {
-    //   patient_id = patient._id;
-    // } else {
-    //   let rel_id = patient.relative.find(
-    //     (rel) => rel.relation == relation
-    //   ).relative_id;
-    //   patient_id = rel_id;
-    // }
+    const { id } = req.params;
 
     let prescriptions = await Prescription.find({
-      patient_id: req.user.id,
-    });
-
-    prescriptions = prescriptions.filter((pres) => {
-      return pres.relation === relation;
+      patient_id: id,
     });
 
     let pre = [];
     for (let i = 0; i < prescriptions.length; i++) {
       let prescription = prescriptions[i];
-      let { patient_id, relation, symptoms, diagnosis, tests, remarks } =
+      let { source_id, patient_id, symptoms, diagnosis, tests, remarks, date } =
         prescription;
-      let patient = await Patient.findById(patient_id);
-      let patient_name = patient.name;
-      if (relation != "self") {
-        let rel = patient.relative.find((rel) => rel.relation == relation);
-        patient_name = rel.name;
+      let source = await Patient.findById(source_id);
+      let source_roll_number = source.roll_number;
+      let source_email = source.email;
+      let source_phone = source.phone;
+
+      let patient;
+      let patient_relation = "self";
+      if (String(source_id) == String(patient_id)) {
+        patient = await Patient.findById(patient_id);
+      } else {
+        patient = await Relative.findById(patient_id);
+        patient_relation = patient.relation;
       }
+      patient_name = patient.name;
+      patient_birth = patient.birth;
+      patient_gender = patient.gender;
+
       let doctor = await Doctor.findById(prescription.doctor_id);
       let doctor_name = doctor.name;
+
       let medicines = [];
       for (let j = 0; j < prescription.medicines.length; j++) {
         let medicine = prescription.medicines[j];
@@ -278,21 +272,26 @@ router.get("/getPrescription/:relation", authPatient, async (req, res) => {
       }
       let entry = {
         doctor_name,
+        patient_roll_number: source_roll_number,
+        patient_email: source_email,
+        patient_phone: source_phone,
         patient_name,
-        relation,
+        patient_gender,
+        patient_birth,
+        relation: patient_relation,
         symptoms,
         diagnosis,
         tests,
         remarks,
         medicines,
+        date,
       };
-
       pre.push(entry);
     }
     res.status(200).send(pre);
   } catch (error) {
     console.log(error.message);
-    res.status(500).send("Something went wrong");
+    res.status(500).send("Something went wrong here");
   }
 });
 

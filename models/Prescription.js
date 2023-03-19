@@ -2,13 +2,13 @@ const mongoose = require("mongoose");
 const Joi = require("joi");
 
 const prescriptionSchema = mongoose.Schema({
-  patient_id: {
+  source_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Patient",
     required: true,
   },
-  relation: {
-    type: String,
+  patient_id: {
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
   doctor_id: {
@@ -67,8 +67,8 @@ const prescriptionSchema = mongoose.Schema({
 
 const validatePrescription = (prescription) => {
   const schema = Joi.object({
+    source_id: Joi.required(),
     patient_id: Joi.required(),
-    relation: Joi.string().required(),
     doctor_id: Joi.string(),
     compounder_id: Joi.string(),
     date: Joi.date(),
