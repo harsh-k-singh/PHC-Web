@@ -1,22 +1,27 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useContext } from "react";
 import DoctorContext from "./DoctorContext";
 import DoctorReducer from "./DoctorReducer";
 import axios from "axios";
 import * as types from "../types";
+import GlobalContext from "../global/GlobalContext";
 
 axios.defaults.withCredentials = true;
 
 const DoctorState = (props) => {
   const initialState = {
-    error: null,
     relative: [],
     patientExists: null,
     allMedicines: [],
+    allPrescription: [],
   };
+
+  const { setAlert, clearAlert, setLoading, clearLoading } =
+    useContext(GlobalContext);
 
   const [state, dispatch] = useReducer(DoctorReducer, initialState);
 
   const updateProfile = async (formData) => {
+    setLoading();
     console.log("updateProfile called...");
     const config = {
       headers: {
@@ -31,18 +36,19 @@ const DoctorState = (props) => {
         config
       );
       console.log(res);
-      dispatch({ type: types.UPDATE_PROFILE_SUCCESS });
+      clearLoading();
+      setAlert({ message: "Profile Updated Successfully", type: "success" });
+      setTimeout(clearAlert, 2000);
     } catch (error) {
-      dispatch({
-        type: types.UPDATE_PROFILE_FAILURE,
-        payload: error.response.data,
-      });
       console.log(error.response.data);
-      setTimeout(clearError, 2000);
+      clearLoading();
+      setAlert({ message: error.response.data, type: "error" });
+      setTimeout(clearAlert, 2000);
     }
   };
 
   const updateSchedule = async (formData) => {
+    setLoading();
     console.log("updateScheule called...");
     const config = {
       headers: {
@@ -57,14 +63,14 @@ const DoctorState = (props) => {
         config
       );
       console.log(res);
-      dispatch({ type: types.UPDATE_SCHEDULE_SUCCESS });
+      clearLoading();
+      setAlert({ message: "Schedule Updated Successfully", type: "success" });
+      setTimeout(clearAlert, 2000);
     } catch (error) {
-      dispatch({
-        type: types.UPDATE_SCHEDULE_FAILURE,
-        payload: error.response.data,
-      });
       console.log(error.response.data);
-      setTimeout(clearError, 2000);
+      clearLoading();
+      setAlert({ message: error.response.data, type: "error" });
+      setTimeout(clearAlert, 2000);
     }
   };
 
@@ -94,16 +100,15 @@ const DoctorState = (props) => {
   };
 
   const getAllMedicines = async () => {
+    if (state.allMedicines.length === 0) setLoading();
     try {
       const res = await axios.get(`/api/doctor/allMedicines`);
       dispatch({ type: types.GET_ALL_MEDICINES_SUCCESS, payload: res.data });
+      clearLoading();
     } catch (error) {
-      dispatch({
-        type: types.GET_ALL_MEDICINES_FAILURE,
-        payload: error.response.data,
-      });
       console.log(error.response.data);
-      setTimeout(clearError, 2000);
+      clearLoading();
+      setAlert({ type: "error", message: error.response.data });
     }
   };
 
@@ -125,6 +130,7 @@ const DoctorState = (props) => {
   };
 
   const addPrescription = async (formData) => {
+    setLoading();
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -137,37 +143,47 @@ const DoctorState = (props) => {
         config
       );
       console.log(res);
-      dispatch({ type: types.ADD_PRESCRIPTION_SUCCESS });
+      clearLoading();
+      setAlert({ message: "Prescription Added Successfully", type: "success" });
+      setTimeout(clearAlert, 2000);
     } catch (error) {
-      dispatch({
-        type: types.ADD_PRESCRIPTION_FAILURE,
-        payload: error.response.data,
-      });
       console.log(error.response.data);
-      setTimeout(clearError, 2000);
+      clearLoading();
+      setAlert({ message: error.response.data, type: "error" });
+      setTimeout(clearAlert, 2000);
     }
   };
 
   const getPrescription = async () => {
+    if (state.allPrescription.length === 0) setLoading();
     try {
       const res = await axios.get(`/api/doctor/getPrescription`);
       dispatch({ type: types.GET_PRESCRIPTION_SUCCESS, payload: res.data });
+      clearLoading();
+      // if (state.allPrescription.length === 0)
+      //   setAlert({
+      //     type: "success",
+      //     message: "Prescription fetched successfully",
+      //   });
+      // setTimeout(clearAlert, 2000);
     } catch (error) {
-      dispatch({
-        type: types.GET_PRESCRIPTION_FAILURE,
-        payload: error.response.data,
-      });
       console.log(error.response.data);
-      setTimeout(clearError, 2000);
+      clearLoading();
+      if (state.allPrescription.length === 0)
+        setAlert({ type: "error", message: error.response.data });
+      setTimeout(clearAlert, 2000);
     }
   };
-  
+
   const getPrescriptionByID = async (id) => {
     try {
-      console.log('reached getPreById', id);
+      console.log("reached getPreById", id);
       const res = await axios.get(`/api/doctor/getPrescription/${id}`);
-      dispatch({ type: types.GET_PRESCRIPTION_BY_ID_SUCCESS, payload: res.data });
-      console.log(res.data, 'logging from getPreById');
+      dispatch({
+        type: types.GET_PRESCRIPTION_BY_ID_SUCCESS,
+        payload: res.data,
+      });
+      console.log(res.data, "logging from getPreById");
     } catch (error) {
       dispatch({
         type: types.GET_PRESCRIPTION_BY_ID_FAILURE,
@@ -177,6 +193,7 @@ const DoctorState = (props) => {
       setTimeout(clearError, 2000);
     }
   };
+
   const clearError = () => {
     dispatch({ type: types.CLEAR_ERROR });
   };

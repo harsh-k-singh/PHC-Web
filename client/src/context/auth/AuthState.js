@@ -43,8 +43,6 @@ const AuthState = (props) => {
     console.log("loaduser called...");
     try {
       const res = await axios.get("/api/auth");
-      setAlert({ type: "success", message: "Logged in successfully" });
-      setTimeout(clearAlert, 2000);
       dispatch({ type: types.LOAD_SUCCESS, payload: res.data });
     } catch (error) {
       setAlert({ type: "error", message: error.response.data });
@@ -65,6 +63,8 @@ const AuthState = (props) => {
       dispatch({ type: types.LOGIN_SUCCESS, payload: formData.role });
       loadUser();
       clearLoading();
+      setAlert({ type: "success", message: "Logged in successfully" });
+      setTimeout(clearAlert, 2000);
       console.log("loggged in");
     } catch (error) {
       console.log(error);

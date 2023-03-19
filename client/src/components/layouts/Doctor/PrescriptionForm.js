@@ -60,7 +60,7 @@ const PrescriptionForm = () => {
 
   // handle input change
   const handleInputChange = (e, index) => {
-    const { name ,value} = e.target;
+    const { name, value } = e.target;
     const list = [...inputMedicine];
     list[index][name] = value;
     setInputMedicine(list);
@@ -127,20 +127,35 @@ const PrescriptionForm = () => {
       await getAllMedicines();
     };
     func();
-  }, []);
+  }, [allMedicines]);
 
   return (
     <div class='container-xl px-4'>
       <div class='row mt-3'>
         <div class='col-xl-8' style={{ margin: "auto" }}>
           <div class='card mb-4'>
-            <div class='card-header' style={{position:"relative", textAlign:"center" , padding:"1rem"}}>
-              <div style={{position:"absolute", left:"0",  top:"0.4rem"}}>
-              <button class={`btn ${back === true ? "btn-danger" : "btn-outline-danger"} mx-2 my-2`} onClick={() => setBack(true)}>
-                    Back
-              </button> 
-              </div> 
-             <div style={{display:"inline-block"}}><h5>Prescription Form</h5></div> </div>
+            <div
+              class='card-header'
+              style={{
+                position: "relative",
+                textAlign: "center",
+                padding: "1rem",
+              }}
+            >
+              <div style={{ position: "absolute", left: "0", top: "0.4rem" }}>
+                <button
+                  class={`btn ${
+                    back === true ? "btn-danger" : "btn-outline-danger"
+                  } mx-2 my-2`}
+                  onClick={() => setBack(true)}
+                >
+                  Back
+                </button>
+              </div>
+              <div style={{ display: "inline-block" }}>
+                <h5>Prescription Form</h5>
+              </div>{" "}
+            </div>
             <div class='card-body'>
               <form>
                 {/* row-1 */}
@@ -168,7 +183,9 @@ const PrescriptionForm = () => {
                       onChange={onChange}
                       name='id'
                     >
-                      <option selected value={''}>Select family member</option>
+                      <option selected value={""}>
+                        Select family member
+                      </option>
                       {relative.map((rel) => (
                         <option value={rel.relative_id}>
                           {rel.name}--{rel.relation}
@@ -202,7 +219,7 @@ const PrescriptionForm = () => {
                               {...data}
                               variant='outlined'
                               label='Medicine Name'
-                              size="small"
+                              size='small'
                               fullWidth
                             />
                           )}
@@ -211,10 +228,10 @@ const PrescriptionForm = () => {
                       <div class='col-md-2'>
                         <TextField
                           type='number'
-                          InputProps={{ inputProps: { min: 1} }}
+                          InputProps={{ inputProps: { min: 1 } }}
                           variant='outlined'
                           label='Quantity'
-                          size="small"
+                          size='small'
                           fullWidth
                           name='quantity'
                           value={x.quantity}
@@ -226,12 +243,12 @@ const PrescriptionForm = () => {
                           type='text'
                           variant='outlined'
                           label='Dosage'
-                          size="small"
+                          size='small'
                           fullWidth
                           name='dosage'
                           value={x.dosage}
                           onChange={(e) => handleInputChange(e, i)}
-                        />  
+                        />
                       </div>
 
                       <div className='col-md-1'>
@@ -266,7 +283,7 @@ const PrescriptionForm = () => {
                       name='diagnosis'
                       id='inputDiagnosis'
                       type='text'
-                      size="small"
+                      size='small'
                       fullWidth
                       label='Diagnosis'
                       variant='outlined'
@@ -286,7 +303,7 @@ const PrescriptionForm = () => {
                       name='symptoms'
                       id='inputSymptoms'
                       type='text'
-                      size="small"
+                      size='small'
                       fullWidth
                       label='Symptoms'
                       variant='outlined'
@@ -312,7 +329,7 @@ const PrescriptionForm = () => {
                           type='text'
                           label='Test'
                           variant='outlined'
-                          size="small"
+                          size='small'
                           fullWidth
                         />
                       </div>
@@ -348,7 +365,7 @@ const PrescriptionForm = () => {
                       name='remarks'
                       id='inputRemarks'
                       type='text'
-                      size="small"
+                      size='small'
                       fullWidth
                       label='Remarks'
                       variant='outlined'

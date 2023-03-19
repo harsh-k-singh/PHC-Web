@@ -229,7 +229,7 @@ router.get("/allMedicines", authDoctor, async (req, res) => {
   }
 });
 
-router.get("/addPrescription", authDoctor, async (req, res) => {
+router.post("/addPrescription", authDoctor, async (req, res) => {
   const { patient, id, symptoms, diagnosis, tests, remarks, medicines } =
     req.body;
 
@@ -394,12 +394,10 @@ router.get("/addPrescription", authDoctor, async (req, res) => {
   }
 });
 
-router.get("/getPrescription/:id", authDoctor, async (req, res) => {
+router.get("/getPrescription", authDoctor, async (req, res) => {
   try {
-    const { id } = req.params;
-
     let prescriptions = await Prescription.find({
-      patient_id: id,
+      docter_id: req.user.id,
     });
 
     let pre = [];
@@ -531,7 +529,7 @@ router.get("/getPrescription/:id", authDoctor, async (req, res) => {
   } catch (error) {
     console.log(error.message);
     res.status(500).send("Something went wrong");
-  }
+  }
 });
 
 module.exports = router;
