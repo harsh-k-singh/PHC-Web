@@ -9,7 +9,6 @@ const AuthReducer = (state, action) => {
     return {
       ...state,
       isAuthenicated: true,
-      loading: false,
     };
   } else if (
     action.type === types.REGISTER_FAILURE ||
@@ -19,15 +18,12 @@ const AuthReducer = (state, action) => {
     return {
       ...state,
       isAuthenicated: false,
-      loading: false,
-      error: action.payload,
       user: null,
     };
   } else if (action.type === types.LOAD_SUCCESS) {
     return {
       ...state,
       isAuthenicated: true,
-      loading: false,
       user: action.payload,
     };
   } else if (action.type === types.LOGOUT_SUCCESS) {
@@ -36,8 +32,6 @@ const AuthReducer = (state, action) => {
     return {
       ...state,
       isAuthenicated: false,
-      loading: false,
-      error: null,
       user: null,
     };
   } else if (action.type === types.CLEAR_ERROR) {

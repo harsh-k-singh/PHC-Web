@@ -9,19 +9,19 @@ const PatientsHistory = () => {
   const { user } = authContext;
   const { getRelatives, relatives, getRecords, records } = patientContext;
   const [id, setId] = useState(null);
-  
+
   const fetchRecords = async (id) => {
     await getRecords(id);
     console.log(id, records);
   };
   useEffect(() => {
     console.log(user);
-    setId(user._id);
+    if (user) setId(user._id);
     const func = async () => {
       await getRelatives();
     };
     func();
-    fetchRecords(user._id);
+    if (user) fetchRecords(user._id);
   }, []);
 
   const onChange = (e) => {
@@ -50,19 +50,19 @@ const PatientsHistory = () => {
             })
           : null}
       </select>
-      {records.length > 0
-        ? records.map((item,index) => {
-            return (
-            <RecordContent item={item} index={index}/>
-            );
-          })
-        : <div
-            class='alert alert-primary align-items-center text-center'
-            role='alert'
-            style={{ width: "60%", margin: "auto" }}
-          >
-            Patient has No Medical Records.
-          </div>}
+      {records.length > 0 ? (
+        records.map((item, index) => {
+          return <RecordContent item={item} index={index} />;
+        })
+      ) : (
+        <div
+          class='alert alert-primary align-items-center text-center'
+          role='alert'
+          style={{ width: "60%", margin: "auto" }}
+        >
+          Patient has No Medical Records.
+        </div>
+      )}
     </div>
   );
 };

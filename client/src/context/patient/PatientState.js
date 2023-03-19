@@ -1,21 +1,25 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useContext } from "react";
 import PatientContext from "./PatientContext";
 import PatientReducer from "./PatientReducer";
 import axios from "axios";
 import * as types from "../types";
+import GlobalContext from "../global/GlobalContext";
 
 axios.defaults.withCredentials = true;
 
 const PatientState = (props) => {
   const initialState = {
-    error: null,
     relatives: [],
     records: [],
   };
 
+  const { setAlert, clearAlert, setLoading, clearLoading } =
+    useContext(GlobalContext);
+
   const [state, dispatch] = useReducer(PatientReducer, initialState);
 
   const updateProfile = async (formData) => {
+    setLoading();
     console.log("updateProfile called...");
     const config = {
       headers: {
@@ -30,32 +34,33 @@ const PatientState = (props) => {
         config
       );
       console.log(res);
-      dispatch({ type: types.UPDATE_PROFILE_SUCCESS });
+      clearLoading();
+      setAlert({ message: "Profile Updated Successfully", type: "success" });
+      setTimeout(clearAlert, 2000);
     } catch (error) {
-      dispatch({
-        type: types.UPDATE_PROFILE_FAILURE,
-        payload: error.response.data,
-      });
       console.log(error.response.data);
-      setTimeout(clearError, 2000);
+      clearLoading();
+      setAlert({ message: error.response.data, type: "error" });
+      setTimeout(clearAlert, 2000);
     }
   };
 
   const getRelatives = async () => {
+    if (state.relatives.length == 0) setLoading();
     try {
       const res = await axios.get(`/api/patient/getRelatives`);
       dispatch({ type: types.GET_RELATIVES_SUCCESS, payload: res.data });
+      clearLoading();
     } catch (error) {
-      dispatch({
-        type: types.GET_RELATIVES_FAILURE,
-        payload: error.response.data,
-      });
       console.log(error.response.data);
-      setTimeout(clearError, 2000);
+      clearLoading();
+      setAlert({ message: error.response.data, type: "error" });
+      setTimeout(clearAlert, 2000);
     }
   };
 
   const addRelative = async (formData) => {
+    setLoading();
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -70,17 +75,19 @@ const PatientState = (props) => {
       console.log(res);
       dispatch({ type: types.ADD_RELATIVE_SUCCESS });
       await getRelatives();
+      clearLoading();
+      setAlert({ message: "Relative Added Successfully", type: "success" });
+      setTimeout(clearAlert, 2000);
     } catch (error) {
-      dispatch({
-        type: types.ADD_RELATIVE_FAILURE,
-        payload: error.response.data,
-      });
       console.log(error.response.data);
-      setTimeout(clearError, 2000);
+      clearLoading();
+      setAlert({ message: error.response.data, type: "error" });
+      setTimeout(clearAlert, 2000);
     }
   };
 
   const updateRelative = async (formData) => {
+    setLoading();
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -94,52 +101,48 @@ const PatientState = (props) => {
       );
       console.log(res.data);
       await getRelatives();
-      dispatch({ type: types.UPDATE_RELATIVE_SUCCESS });
+      clearLoading();
+      setAlert({ message: "Relative Updated Successfully", type: "success" });
+      setTimeout(clearAlert, 2000);
     } catch (error) {
-      dispatch({
-        type: types.UPDATE_RELATIVE_FAILURE,
-        payload: error.response.data,
-      });
       console.log(error.response.data);
-      setTimeout(clearError, 2000);
+      clearLoading();
+      setAlert({ message: error.response.data, type: "error" });
+      setTimeout(clearAlert, 2000);
     }
   };
 
   const deleteRelative = async (id) => {
+    setLoading();
     try {
       console.log("id", id);
       const res = await axios.delete(`/api/patient/deleteRelative?id=${id}`);
       console.log("res", res);
       await getRelatives();
-      dispatch({ type: types.DELETE_RELATIVE_SUCCESS });
-      await getRelatives();
+      clearLoading();
+      setAlert({ message: "Relative Deleted Successfully", type: "success" });
+      setTimeout(clearAlert, 2000);
     } catch (error) {
-      dispatch({
-        type: types.DELETE_RELATIVE_FAILURE,
-        payload: error.response.data,
-      });
       console.log(error.response.data);
-      setTimeout(clearError, 2000);
+      clearLoading();
+      setAlert({ message: error.response.data, type: "error" });
+      setTimeout(clearAlert, 2000);
     }
   };
 
   const getRecords = async (realtion) => {
+    setLoading();
     try {
       console.log("relation form getRecords", realtion);
       const res = await axios.get(`/api/patient/getPrescription/${realtion}`);
       dispatch({ type: types.GET_RECORDS_SUCCESS, payload: res.data });
+      clearLoading();
     } catch (error) {
-      dispatch({
-        type: types.GET_RECORDS_FAILURE,
-        payload: error.response.data,
-      });
       console.log(error.response.data);
-      setTimeout(clearError, 2000);
+      clearLoading();
+      setAlert({ message: error.response.data, type: "error" });
+      setTimeout(clearAlert, 2000);
     }
-  };
-
-  const clearError = () => {
-    dispatch({ type: types.CLEAR_ERROR });
   };
 
   return (

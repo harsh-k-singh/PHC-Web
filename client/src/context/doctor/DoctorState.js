@@ -157,7 +157,7 @@ const DoctorState = (props) => {
   const getPrescription = async () => {
     if (state.allPrescription.length === 0) setLoading();
     try {
-      console.log('reached getPre');
+      console.log("reached getPre");
       const res = await axios.get(`/api/doctor/getPrescription`);
       dispatch({ type: types.GET_PRESCRIPTION_SUCCESS, payload: res.data });
       clearLoading();
@@ -177,6 +177,7 @@ const DoctorState = (props) => {
   };
 
   const getPrescriptionByID = async (id) => {
+    setLoading();
     try {
       console.log("reached getPreById", id);
       const res = await axios.get(`/api/doctor/getPrescription/${id}`);
@@ -184,19 +185,26 @@ const DoctorState = (props) => {
         type: types.GET_PRESCRIPTION_BY_ID_SUCCESS,
         payload: res.data,
       });
-      console.log(res.data, "logging from getPreById");
-    } catch (error) {
-      dispatch({
-        type: types.GET_PRESCRIPTION_BY_ID_FAILURE,
-        payload: error.response.data,
+      clearLoading();
+      setAlert({
+        type: "success",
+        message: "Prescription fetched successfully",
       });
+      setTimeout(clearAlert, 2000);
+    } catch (error) {
       console.log(error.response.data);
-      setTimeout(clearError, 2000);
+      clearLoading();
+      setAlert({ type: "error", message: error.response.data });
+      setTimeout(clearAlert, 2000);
     }
   };
 
   const clearError = () => {
     dispatch({ type: types.CLEAR_ERROR });
+  };
+
+  const clearState = () => {
+    dispatch({ type: types.CLEAR_STATE });
   };
 
   const checkPatientExists = async (roll_number) => {
@@ -209,7 +217,6 @@ const DoctorState = (props) => {
         dispatch({ type: types.CLEAR_PATIENT_EXISTS });
       }, 2000);
     } catch (error) {
-      console.log("errjjjd...");
       dispatch({
         type: types.PATIENT_EXISTS_FAILURE,
         payload: error.response.data,
@@ -218,6 +225,8 @@ const DoctorState = (props) => {
       setTimeout(() => {
         dispatch({ type: types.CLEAR_PATIENT_EXISTS });
       }, 2000);
+      setAlert({ type: "error", message: error.response.data });
+      setTimeout(clearAlert, 2000);
     }
   };
 
@@ -238,6 +247,7 @@ const DoctorState = (props) => {
         updateSchedule,
         updateAvailability,
         checkPatientExists,
+        clearState,
       }}
     >
       {props.children}

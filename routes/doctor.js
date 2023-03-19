@@ -396,12 +396,9 @@ router.post("/addPrescription", authDoctor, async (req, res) => {
 
 router.get("/getPrescription", authDoctor, async (req, res) => {
   try {
-    const { id } = req.params;
-
     let prescriptions = await Prescription.find({
-      docter_id: req.user.id,
+      doctor_id: req.user.id,
     });
-
     let pre = [];
     for (let i = 0; i < prescriptions.length; i++) {
       let prescription = prescriptions[i];
