@@ -33,7 +33,7 @@ const PatientsHistory = () => {
     <div>
       <h2 style={{ margin: "auto", textAlign: "center" }}>Past Records</h2>
       <select onChange={onChange}>
-        <option value={user._id}>Self</option>
+        <option value={user ? user._id : null}>Self</option>
         {relatives.length > 0
           ? relatives.map((relative) => {
               return (
