@@ -24,6 +24,7 @@ import DoctorsProfile from "./components/layouts/Doctor/DoctorsProfile";
 import PatientsList from "./components/layouts/Doctor/PatientsList";
 import ViewDocMedicine from "./components/layouts/Doctor/ViewDocMedicines";
 import PrescriptionForm from "./components/layouts/Doctor/PrescriptionForm";
+import CheckRecord from "./components/layouts/Doctor/CheckRecord";
 
 import Compounder from "./components/pages/Compounder";
 import CompoundersProfile from "./components/layouts/Compounder/CompoundersProfile";
@@ -82,6 +83,7 @@ const App = () => {
                         path='prescriptionForm'
                         element={<PrescriptionForm />}
                       />
+                      <Route path='checkRecord/:check_roll_number/:relation' element={<CheckRecord />} />
                     </Route>
 
                     <Route path='compounder' element={<Compounder />}>

@@ -11,6 +11,7 @@ const PatientsHistory = () => {
 
   const fetchRecords = async (id) => {
     await getRecords(id);
+    console.log(id, records);
   };
 
   useEffect(() => {
