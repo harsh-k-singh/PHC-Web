@@ -394,12 +394,11 @@ router.get("/addPrescription", authDoctor, async (req, res) => {
   }
 });
 
-router.get("/getPrescription/:id", authDoctor, async (req, res) => {
+router.get("/getPrescription", authDoctor, async (req, res) => {
   try {
-    const { id } = req.params;
 
     let prescriptions = await Prescription.find({
-      patient_id: id,
+      doctor_id: req.user.id,
     });
 
     let pre = [];
