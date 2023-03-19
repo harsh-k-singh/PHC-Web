@@ -45,7 +45,7 @@ const PrescriptionForm = () => {
   const { roll_number } = useParams();
   const [form, setForm] = useState({
     patient: roll_number,
-    relation: "self",
+    id: null,
     medicines: [],
     symptoms: "",
     diagnosis: "",
@@ -102,6 +102,7 @@ const PrescriptionForm = () => {
   };
 
   const onChange = (e) => {
+    console.log(form);
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
@@ -165,12 +166,11 @@ const PrescriptionForm = () => {
                       class='form-select'
                       aria-label='Select Relation'
                       onChange={onChange}
-                      name='relation'
-                      style={{ height: "32px" }}
+                      name='id'
                     >
-                      <option value='self'>Self</option>
+                      <option selected value={''}>Select family member</option>
                       {relative.map((rel) => (
-                        <option value={rel.relation}>
+                        <option value={rel.relative_id}>
                           {rel.name}--{rel.relation}
                         </option>
                       ))}

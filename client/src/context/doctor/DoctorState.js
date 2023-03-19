@@ -161,7 +161,22 @@ const DoctorState = (props) => {
       setTimeout(clearError, 2000);
     }
   };
-
+  
+  const getPrescriptionByID = async (id) => {
+    try {
+      console.log('reached getPreById', id);
+      const res = await axios.get(`/api/doctor/getPrescription/${id}`);
+      dispatch({ type: types.GET_PRESCRIPTION_BY_ID_SUCCESS, payload: res.data });
+      console.log(res.data, 'logging from getPreById');
+    } catch (error) {
+      dispatch({
+        type: types.GET_PRESCRIPTION_BY_ID_FAILURE,
+        payload: error.response.data,
+      });
+      console.log(error.response.data);
+      setTimeout(clearError, 2000);
+    }
+  };
   const clearError = () => {
     dispatch({ type: types.CLEAR_ERROR });
   };
@@ -195,6 +210,8 @@ const DoctorState = (props) => {
         addPrescription,
         getPrescription,
         allPrescription: state.allPrescription,
+        getPrescriptionByID,
+        prescription: state.prescription,
         getRelative,
         relative: state.relative,
         allMedicines: state.allMedicines,

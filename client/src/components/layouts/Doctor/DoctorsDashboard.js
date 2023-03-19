@@ -49,17 +49,19 @@ const DoctorsDashboard = () => {
       <div className='m-4 text-center'>
         <button
           class={`btn ${
-            option === "addRecord" ? "btn-info" : "btn-outline-info"
+            option === "addRecord" ? "btn-danger" : "btn-outline-danger"
           } mx-2 my-2`}
           onClick={() => setOption("addRecord")}
-        >
+          style={{ width: "15%" }}
+          >
           Add Record
         </button>
         <button
           class={`btn ${
-            option === "checkRecord" ? "btn-info" : "btn-outline-info"
+            option === "checkRecord" ? "btn-danger" : "btn-outline-danger"
           } mx-2 my-2`}
           onClick={() => setOption("checkRecord")}
+          style={{ width: "15%" }}
         >
           Check Record
         </button>
@@ -81,7 +83,7 @@ const DoctorsDashboard = () => {
             <div class='d-grid gap-2'>
               <button
                 type='button'
-                class='btn btn-primary my-2'
+                class='btn btn-success my-2'
                 onClick={onAddSubmit}
               >
                 Submit
@@ -121,7 +123,7 @@ const DoctorsDashboard = () => {
             <div class='d-grid gap-2'>
               <button
                 type='button'
-                class='btn btn-primary my-2'
+                class='btn btn-success my-2'
                 onClick={onCheckSubmit}
               >
                 Submit

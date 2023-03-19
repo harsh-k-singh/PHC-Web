@@ -464,13 +464,9 @@ router.get("/getPrescription", authDoctor, async (req, res) => {
   }
 });
 
-router.post("/getPrescription", authDoctor, async (req, res) => {
-  const { roll_number, id } = req.body;
+router.get("/getPrescription/:id", authDoctor, async (req, res) => {
   try {
-    const source = await Patient.findOne({ roll_number });
-    if (!source) return res.status(404).send("Invalid roll number");
-    if (source.profession == "Student" && id != source._id)
-      return res.status(400).send("Invalid relation");
+    const { id } = req.params;
 
     let prescriptions = await Prescription.find({
       patient_id: id,
@@ -530,11 +526,12 @@ router.post("/getPrescription", authDoctor, async (req, res) => {
       };
       pre.push(entry);
     }
+    // console.log("pre", pre);
     res.status(200).send(pre);
   } catch (error) {
     console.log(error.message);
     res.status(500).send("Something went wrong");
-  }
+  }
 });
 
 module.exports = router;

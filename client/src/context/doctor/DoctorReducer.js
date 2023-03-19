@@ -43,7 +43,13 @@ const DoctorReducer = (state, action) => {
       ...state,
       allPrescription:action.payload
     }
-  }else if (
+  }else if(action.type===types.GET_PRESCRIPTION_BY_ID_SUCCESS){
+    return{
+      ...state,
+      prescription:action.payload
+    }
+  }
+    else if (
     action.type ===
     (types.UPDATE_SCHEDULE_SUCCESS ||
       types.UPDATE_PROFILE_FAILURE ||
@@ -52,7 +58,8 @@ const DoctorReducer = (state, action) => {
       types.UPDATE_AVAILABILITY_FAILURE ||
       types.ADD_PRESCRIPTION_FAILURE ||
       types.GET_RELATIVES_FAILURE)|| 
-      types.GET_PRESCRIPTION_FAILURE
+      types.GET_PRESCRIPTION_FAILURE||
+      types.GET_PRESCRIPTION_BY_ID_FAILURE
   ) {
     return { ...state, error: action.payload };
   } else {

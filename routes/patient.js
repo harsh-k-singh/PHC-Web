@@ -252,9 +252,9 @@ router.get("/getPrescription/:id", authPatient, async (req, res) => {
         patient = await Relative.findById(patient_id);
         patient_relation = patient.relation;
       }
-      patient_name = patient.name;
-      patient_birth = patient.birth;
-      patient_gender = patient.gender;
+      let patient_name = patient.name;
+      let patient_birth = patient.birth;
+      let patient_gender = patient.gender;
 
       let doctor = await Doctor.findById(prescription.doctor_id);
       let doctor_name = doctor.name;

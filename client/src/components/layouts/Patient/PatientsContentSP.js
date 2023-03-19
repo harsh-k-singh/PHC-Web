@@ -43,8 +43,8 @@ const PatientsContentSP = (props) => {
         </li>
       </div>
       <h3 style={{ margin: 8 }}>Details</h3>
-      <li>{user ? user.gender : "Gender"}</li>
-      <li>Age - {user ? age : "Age"}</li>
+      <li style={{ fontSize: "1.3rem", margin: 4 }}>Gender - {user ? user.gender : "Gender"}</li>
+      <li style={{ fontSize: "1.3rem", margin: 4 }}>Age - {user ? age : "Age"}</li>
     </ul>
     <div className='mt-auto'>
       <div class='d-grid gap-2'>

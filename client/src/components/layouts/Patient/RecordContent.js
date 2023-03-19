@@ -1,36 +1,44 @@
 import React,{useState,useEffect} from 'react'
 
-const PrescriptionContent = (props) => {
-  const {item,index}=props;
-  const [data,setData]=useState(item);
-  const [age, setAge] = useState("Age here");
-  const d=new Date(data.date);
-  const time=d.toLocaleTimeString();
+const RecordContent = (props) => {
+    const {item,index}=props;
+    const [data,setData]=useState(item);
+    const [age, setAge] = useState("Age here");
+    
+    // console.log(data, 'data');
+    // console.log('item', item);
+
+    const d=new Date(data.date);
+    const date=d.toLocaleDateString();
+    const time=d.toLocaleTimeString();
+
     useEffect(() => {
-      const getAge = (dateString) => {
+        setData(item);
+    }, [item]);
+
+    useEffect(() => {
+    const getAge = (dateString) => {
         var today = new Date();
         var birthDate = new Date(dateString);
         var curr = today.getFullYear() - birthDate.getFullYear();
         var m = today.getMonth() - birthDate.getMonth();
         if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-          curr--;
+        curr--;
         }
         return curr;
-      };
-      setAge(getAge(data.patient_birth));
+    };
+    setAge(getAge(data.patient_birth));
     }, []);
-    console.log(data);
   return (
     <div class='row my-4'>
     <div class='col-xl-8' style={{ margin: "auto" }}>
         <div class="card">
             <div class="card-header text-center"> 
-            <div className="mx-2"style={{float:"left"}}>Roll/PF Number: {data.patient_roll_number}</div>
-             <>Phone : {data.patient_phone} </>
-            <div className="mx-2" style={{float:"right"}}>email : {data.patient_email}</div>
+            Prescription
             </div>
             <div class="card-body">
-                <p class="card-text text-muted"> Relation : {data.relation}<br/>Patient's Name : {data.patient_name}<br/>Age: {age}&emsp;Gender : {data.patient_gender}<br/></p>
+                <p class="card-text">Attendant : {data.doctor_name}</p>
+                <p class="card-text">Date of Diagonsis: {date}</p>
                 <p class="card-text">Time of Diagonsis: {time}</p>
                   <a class="btn btn-success btn-sm" data-bs-toggle="collapse" href={`#collapseExample-${index}`} role="button" aria-expanded="false" aria-controls="collapseExample">
                     View Details
@@ -68,5 +76,4 @@ const PrescriptionContent = (props) => {
   )
 }
 
-export default PrescriptionContent
-
+export default RecordContent
