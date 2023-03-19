@@ -6,6 +6,26 @@ const GlobalReducer = (state, action) => {
       ...state,
       doctorSchedule: action.payload,
     };
+  } else if (action.type === types.SET_ALERT) {
+    return {
+      ...state,
+      alert: action.payload,
+    };
+  } else if (action.type === types.CLEAR_ALERT) {
+    return {
+      ...state,
+      alert: null,
+    };
+  } else if (action.type === types.SET_LOADING) {
+    return {
+      ...state,
+      loading: true,
+    };
+  } else if (action.type === types.CLEAR_LOADING) {
+    return {
+      ...state,
+      loading: false,
+    };
   } else if (action.type === types.SET_COMPOUNDER_SCHEDULE_SUCCESS) {
     return {
       ...state,
