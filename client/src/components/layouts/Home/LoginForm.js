@@ -66,7 +66,7 @@ const LoginForm = () => {
         <h3 className='text-center mb-4'>
           <b>Login to PHC</b>
         </h3>
-        <div className='form-outline mb-4'>  
+        <div className='form-outline mb-4'>
           {err.msg !== null ? (
             <div
               class='alert alert-danger'
@@ -81,7 +81,6 @@ const LoginForm = () => {
             aria-label='Select Your Role'
             onChange={onChange}
             name='role'
-            style={{height:"32px"}}
           >
             <option value='' disabled selected hidden>
               Select Your Role
@@ -100,7 +99,7 @@ const LoginForm = () => {
             className='form-control'
             placeholder='Email address'
             onChange={onChange}
-            style={{height:"32px"}}
+            style={{ height: "32px" }}
           />
         </div>
         <div className='form-outline mb-4'>
@@ -115,16 +114,20 @@ const LoginForm = () => {
               aria-label='password'
               aria-describedby='basic-addon1'
               onChange={onChange}
-              style={{height:"32px"}}
+              style={{ height: "32px" }}
             />
             <div class='input-group-append'>
-              <span class='input-group-text' onClick={()=>setShow(!show)}>
-                <i class='fas fa-eye' id='show_eye' style={{height:"17px"}}></i>
+              <span class='input-group-text' onClick={() => setShow(!show)}>
+                <i
+                  class='fas fa-eye'
+                  id='show_eye'
+                  style={{ height: "17px" }}
+                ></i>
               </span>
             </div>
           </div>
         </div>
-        <div className='row mb-4'>
+        {/* <div className='row mb-4'>
           <div className='col mx-auto'>
             <div className='form-check'>
               <input
@@ -143,18 +146,14 @@ const LoginForm = () => {
           <div className='col text-end'>
             <a href='#!'>Forgot password?</a>
           </div>
-        </div>
-        <div class='d-grid gap-2'>
+        </div> */}
+        <div class='d-grid gap-2 my-5'>
           <button class='btn btn-primary' type='button' onClick={onSubmit}>
             Sign In
           </button>
         </div>
         <div className='text-center'>
-          <hr />
-          <p>
-            <strong>Not a member?</strong>
-            <a href='#!'> Register</a>
-          </p>
+          <hr style={{ marginTop: "2rem" }} />
         </div>
       </form>
     </div>

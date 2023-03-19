@@ -13,47 +13,71 @@ const GlobalState = (props) => {
     height: window.innerHeight,
     doctorSchedule: null,
     compounderSchedule: null,
-    err: null,
+    alert: null,
+    loading: false,
     available: null,
   };
 
   const [state, dispatch] = useReducer(GlobalReducer, initialState);
 
+  const setAlert = (alert) => {
+    dispatch({ type: types.SET_ALERT, payload: alert });
+  };
+
+  const clearAlert = () => {
+    dispatch({ type: types.CLEAR_ALERT });
+  };
+
+  const setLoading = () => {
+    dispatch({ type: types.SET_LOADING });
+  };
+
+  const clearLoading = () => {
+    dispatch({ type: types.CLEAR_LOADING });
+  };
+
   const getDoctorSchedule = async () => {
+    if (!state.doctorSchedule) setLoading();
     try {
       const res = await axios.get("/api/schedule/doctors");
       dispatch({ type: types.SET_DOCTOR_SCHEDULE_SUCCESS, payload: res.data });
+      clearLoading();
     } catch (err) {
+      clearLoading();
       console.log(err);
-      dispatch({
-        type: types.SET_DOCTOR_SCHEDULE_FAILURE,
-        payload: err.response.data,
-      });
+      setAlert({ type: "error", message: err.response.data });
+      clearAlert();
     }
   };
+
   const getCompounderSchedule = async () => {
+    if (!state.compounderSchedule) setLoading();
     try {
       const res = await axios.get("/api/schedule/compounders");
       dispatch({
         type: types.SET_COMPOUNDER_SCHEDULE_SUCCESS,
         payload: res.data,
       });
-    } catch (err) {
-      console.log(err);
-      dispatch({
-        type: types.SET_COMPOUNDER_SCHEDULE_FAILURE,
-        payload: err.response.data,
-      });
+      clearLoading();
+    } catch (error) {
+      clearLoading();
+      console.log(error);
+      setAlert({ type: "error", message: error.response.data });
+      clearAlert();
     }
   };
 
   const getAvailable = async () => {
+    if (!state.available) setLoading();
     try {
       const res = await axios.get("/api/schedule/available");
       dispatch({ type: types.SET_AVAILABLIITY_SUCCESS, payload: res.data });
-    } catch (err) {
-      console.log(err);
-      dispatch({ type: types.SET_AVAILABLIITY_FAILURE, payload: err.response });
+      clearLoading();
+    } catch (error) {
+      clearLoading();
+      console.log(error);
+      setAlert({ type: "error", message: error.response.data });
+      clearAlert();
     }
   };
 
@@ -84,11 +108,16 @@ const GlobalState = (props) => {
         isMobile: state.isMobile,
         width: state.width,
         height: state.height,
-        err: state.err,
+        alert: state.alert,
+        loading: state.loading,
         available: state.available,
         getDoctorSchedule,
         getCompounderSchedule,
         getAvailable,
+        setAlert,
+        clearAlert,
+        setLoading,
+        clearLoading,
       }}
     >
       {props.children}

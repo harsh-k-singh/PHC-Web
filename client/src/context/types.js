@@ -35,6 +35,10 @@ export const SET_WIDTH = "SET_WIDTH";
 export const SET_HEIGHT = "SET_HEIGHT";
 export const SET_IS_MOBILE = "SET_IS_MOBILE";
 export const SET_IS_NOT_MOBILE = "SET_IS_NOT_MOBILE";
+export const SET_ALERT = "SET_ALERT";
+export const CLEAR_ALERT = "CLEAR_ALERT";
+export const SET_LOADING = "SET_LOADING";
+export const CLEAR_LOADING = "CLEAR_LOADING";
 
 export const GET_RELATIVES_SUCCESS = "GET_RELATIVES_SUCCESS";
 export const GET_RELATIVES_FAILURE = "GET_RELATIVES_FAILURE";

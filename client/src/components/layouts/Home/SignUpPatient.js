@@ -1,10 +1,11 @@
-import React,{useState,useContext,useEffect} from 'react'
-import {useNavigate } from "react-router-dom";
+import React, { useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import AuthContext from "../../../context/auth/AuthContext";
 
 const SignUpPatient = () => {
   const authContext = useContext(AuthContext);
-  const { isAuthenicated, error, register, loading, loadUser,user} = authContext;
+  const { isAuthenicated, error, register, loading, loadUser, user } =
+    authContext;
   const navigate = useNavigate();
   const [form, setForm] = useState({
     name: "",
@@ -15,7 +16,7 @@ const SignUpPatient = () => {
     password: "",
     cnf_password: "",
     birth: "",
-    profession:"",
+    profession: "",
     guardian_phone: null,
     guarding_relation: null,
   });
@@ -27,7 +28,7 @@ const SignUpPatient = () => {
   const onChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
-  
+
   useEffect(() => {
     // If user is authenticated, redirect to dashboard
     const redirectToDashboard = async () => {
@@ -42,56 +43,74 @@ const SignUpPatient = () => {
     }
     // // If error is not null, display error
     // if (error) {
-      //   if (error.errors.length > 0) {
+    //   if (error.errors.length > 0) {
     //     alert(error.errors[0].msg);
     //   }
     // }
     // // Clear errors
     // clearErrors();
-    
+
     // eslint-disable-next-line
   }, [error, isAuthenicated, user]);
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log("prof",form.profession);
-    register(form); 
-   };
+    console.log("prof", form.profession);
+    register(form);
+  };
   return (
-    <div class='container-xl px-4'>
-    <h3 className='text-center'>Patient Signup</h3>
-    <div class='row mt-3'>
-      <div class='col-xl-8' style={{ margin: "auto" }}>
-        <div class='card mb-4'>
-          <div class='card-header'>Account Details</div>
-          <div class='card-body'>
-            <form>
-              <div class='row gx-6 mb-3'>
+    <div class='container-xl px-4 mt-5 py-3'>
+      <h3 className='text-center'>Patient Signup</h3>
+      <div class='row mt-3'>
+        <div class='col-xl-8' style={{ margin: "auto" }}>
+          <div class='card mb-4'>
+            <div class='card-header'>Account Details</div>
+            <div class='card-body'>
+              <form>
+                <div class='row gx-6 mb-3'>
                   <div class='col-md-6'>
                     <label class='small mb-1' for='inputemail'>
-                          Email address
+                      Email address
                     </label>
                     <input
-                          onChange={onChange}
-                          required={true}
-                          name='email'
-                          class='form-control'
-                          id='inputemail'
-                          type='email'
-                          placeholder='Your e-mail'
-                        />
+                      onChange={onChange}
+                      required={true}
+                      name='email'
+                      class='form-control'
+                      id='inputemail'
+                      type='email'
+                      placeholder='Your e-mail'
+                    />
                   </div>
                   <div class='col-md-6 mt-4'>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="inlineRadio1" onChange={onChange} name="profession" value="Student"/>
-                        <label class="form-check-label" for="inlineRadio1">Student</label>
-                      </div>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="inlineRadio2" onChange={onChange} name="profession" value="Faculty"/>
-                        <label class="form-check-label" for="inlineRadio2">Faculty</label>
-                      </div>
+                    <div class='form-check form-check-inline'>
+                      <input
+                        class='form-check-input'
+                        type='radio'
+                        id='inlineRadio1'
+                        onChange={onChange}
+                        name='profession'
+                        value='Student'
+                      />
+                      <label class='form-check-label' for='inlineRadio1'>
+                        Student
+                      </label>
+                    </div>
+                    <div class='form-check form-check-inline'>
+                      <input
+                        class='form-check-input'
+                        type='radio'
+                        id='inlineRadio2'
+                        onChange={onChange}
+                        name='profession'
+                        value='Faculty'
+                      />
+                      <label class='form-check-label' for='inlineRadio2'>
+                        Faculty
+                      </label>
+                    </div>
                   </div>
                 </div>
-              <div class='row gx-6 mb-3'>
+                <div class='row gx-6 mb-3'>
                   <div class='col-md-6'>
                     <label class='small mb-1' for='inputRollno'>
                       Roll No./PF No.
@@ -137,7 +156,7 @@ const SignUpPatient = () => {
                       <option>Female</option>
                       <option>Other</option>
                     </select>
-                   </div>
+                  </div>
                   <div class='col-md-4'>
                     <label class='small mb-1' for='inputBirthday'>
                       Birthday
@@ -167,83 +186,83 @@ const SignUpPatient = () => {
                     />
                   </div>
                 </div>
-                {form.profession==="Student" && (
-                <div class='row gx-3 mt-3 mb-3'>
-                  <div class='col-md-6'>
-                    <label class='small mb-1' for='inputGuardianPhone'>
-                     Guardian's Phone number
-                    </label>
-                    <input
-                      onChange={onChange}
-                      required={true}
-                      name='guardian_phone'
-                      class='form-control'
-                      id='inputGuardianPhone'
-                      type='integer'
-                      placeholder="Enter guardian's phone number"
-                    />
+                {form.profession === "Student" && (
+                  <div class='row gx-3 mt-3 mb-3'>
+                    <div class='col-md-6'>
+                      <label class='small mb-1' for='inputGuardianPhone'>
+                        Guardian's Phone number
+                      </label>
+                      <input
+                        onChange={onChange}
+                        required={true}
+                        name='guardian_phone'
+                        class='form-control'
+                        id='inputGuardianPhone'
+                        type='integer'
+                        placeholder="Enter guardian's phone number"
+                      />
+                    </div>
+                    <div class='col-md-6'>
+                      <label class='small mb-1' for='inputGuradianRelation'>
+                        Guardian's Relation
+                      </label>
+                      <input
+                        onChange={onChange}
+                        required={true}
+                        name='guardian_relation'
+                        class='form-control'
+                        id='inputGuradianRelation'
+                        type='text'
+                        placeholder='Enter relationship with guardian'
+                      />
+                    </div>
                   </div>
-                  <div class='col-md-6'>
-                  <label class='small mb-1' for='inputGuradianRelation'>
-                      Guardian's Relation
-                    </label>
-                    <input
-                      onChange={onChange}
-                      required={true}
-                      name='guardian_relation'
-                      class='form-control'
-                      id='inputGuradianRelation'
-                      type='text'
-                      placeholder='Enter relationship with guardian'
-                    />
-                  </div>
-                </div>
                 )}
-              <div class='row gx-3 mt-3 mb-3'>
-                <label class='small mb-1' for='inputAddress'>
-                  Set Password
-                </label>
-                <div class='col-md-6'>
-                  <input
-                    onChange={onChange}
-                    required={true}
-                    name='password'
-                    type='password'
-                    class='form-control'
-                    id='inputPassword'
-                    aria-label='Password'
-                    placeholder='Password'
-                  />
+                <div class='row gx-3 mt-3 mb-3'>
+                  <label class='small mb-1' for='inputAddress'>
+                    Set Password
+                  </label>
+                  <div class='col-md-6'>
+                    <input
+                      onChange={onChange}
+                      required={true}
+                      name='password'
+                      type='password'
+                      class='form-control'
+                      id='inputPassword'
+                      aria-label='Password'
+                      placeholder='Password'
+                    />
+                  </div>
+                  <div class='col-md-6'>
+                    <input
+                      onChange={onChange}
+                      required={true}
+                      name='cnf_password'
+                      type='password'
+                      class='form-control'
+                      id='inputConfirmPassword'
+                      aria-label='Password'
+                      placeholder='Confirm Password'
+                    />
+                  </div>
                 </div>
-                <div class='col-md-6'>
-                  <input
-                    onChange={onChange}
-                    required={true}
-                    name='cnf_password'
-                    type='password'
-                    class='form-control'
-                    id='inputConfirmPassword'
-                    aria-label='Password'
-                    placeholder='Confirm Password'
-                  />
+                <div class='d-grid gap-2 mt-5'>
+                  <button
+                    onClick={onSubmit}
+                    class='btn btn-primary'
+                    type='button'
+                  >
+                    Submit
+                  </button>
                 </div>
-              </div>
-              <div class='d-grid gap-2 mt-5'>
-                <button
-                  onClick={onSubmit}
-                  class='btn btn-primary'
-                  type='button'
-                 >
-                  Submit
-                </button>
-              </div>
-            </form>
+              </form>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  )
-}
+  );
+};
 
-export default SignUpPatient
+export default SignUpPatient;

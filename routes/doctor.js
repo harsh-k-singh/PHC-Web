@@ -229,7 +229,7 @@ router.get("/allMedicines", authDoctor, async (req, res) => {
   }
 });
 
-router.post("/addPrescription", authDoctor, async (req, res) => {
+router.get("/addPrescription", authDoctor, async (req, res) => {
   const { patient, id, symptoms, diagnosis, tests, remarks, medicines } =
     req.body;
 
@@ -394,12 +394,12 @@ router.post("/addPrescription", authDoctor, async (req, res) => {
   }
 });
 
-router.get("/getPrescription", authDoctor, async (req, res) => {
+router.get("/getPrescription/:id", authDoctor, async (req, res) => {
   try {
-    const doctor = await Doctor.findById(req.user.id);
-    if (!doctor) return res.status(404).send("Doctor not found");
-    const prescriptions = await Prescription.find({
-      doctor_id: req.user.id,
+    const { id } = req.params;
+
+    let prescriptions = await Prescription.find({
+      patient_id: id,
     });
 
     let pre = [];

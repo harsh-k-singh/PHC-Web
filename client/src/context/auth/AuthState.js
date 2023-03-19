@@ -1,20 +1,23 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useContext } from "react";
 import AuthContext from "./AuthContext";
 import AuthReducer from "./AuthReducer";
 import axios from "axios";
 import * as types from "../types";
+import GlobalContext from "../global/GlobalContext";
 
 const AuthState = (props) => {
   const initialState = {
     isAuthenicated: null,
-    loading: null,
     user: null,
-    error: null,
   };
+
+  const { setAlert, clearAlert, setLoading, clearLoading } =
+    useContext(GlobalContext);
 
   const [state, dispatch] = useReducer(AuthReducer, initialState);
 
   const register = async (formData) => {
+    setLoading();
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -26,10 +29,13 @@ const AuthState = (props) => {
       console.log(formData);
       loadUser();
       console.log("registerd");
+      clearLoading();
+      setAlert({ type: "success", message: "Registered successfully" });
     } catch (error) {
-      dispatch({ type: types.REGISTER_FAILURE, payload: error.response.data });
+      clearLoading();
       console.log(error.response.data);
-      setTimeout(clearError, 2000);
+      setAlert({ type: "error", message: error.response.data });
+      setTimeout(clearAlert, 2000);
     }
   };
 
@@ -37,15 +43,13 @@ const AuthState = (props) => {
     console.log("loaduser called...");
     try {
       const res = await axios.get("/api/auth");
+      setAlert({ type: "success", message: "Logged in successfully" });
+      setTimeout(clearAlert, 2000);
       dispatch({ type: types.LOAD_SUCCESS, payload: res.data });
     } catch (error) {
-      dispatch({ type: types.LOAD_ERROR, payload: error.response.data });
-      setTimeout(clearError, 2000);
+      setAlert({ type: "error", message: error.response.data });
+      setTimeout(clearAlert, 2000);
     }
-  };
-
-  const clearError = () => {
-    dispatch({ type: types.CLEAR_ERROR });
   };
 
   const login = async (formData) => {
@@ -56,24 +60,34 @@ const AuthState = (props) => {
     };
     console.log(formData);
     try {
+      setLoading();
       await axios.post("api/auth", formData, config);
       dispatch({ type: types.LOGIN_SUCCESS, payload: formData.role });
       loadUser();
+      clearLoading();
       console.log("loggged in");
     } catch (error) {
       console.log(error);
-      dispatch({ type: types.LOGIN_FAILURE, payload: error.response.data });
-      setTimeout(clearError, 2000);
+      clearLoading();
+      setAlert({ type: "error", message: error.response.data });
+      setTimeout(clearAlert, 2000);
     }
   };
 
   const logout = async () => {
     try {
       console.log("logout called from authstates");
+      setLoading();
       await axios.delete("/api/auth");
       dispatch({ type: types.LOGOUT_SUCCESS });
+      clearLoading();
+      setAlert({ type: "success", message: "Logged out successfully" });
+      setTimeout(clearAlert, 2000);
     } catch (error) {
       console.log(error);
+      clearLoading();
+      setAlert({ type: "error", message: error.response.data });
+      setTimeout(clearAlert, 2000);
     }
   };
 
@@ -81,12 +95,9 @@ const AuthState = (props) => {
     <AuthContext.Provider
       value={{
         isAuthenicated: state.isAuthenicated,
-        loading: state.loading,
         user: state.user,
-        error: state.error,
         register,
         loadUser,
-        clearError,
         login,
         logout,
       }}
