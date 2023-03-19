@@ -9,8 +9,9 @@ const PatientsHistory = () => {
   const { getRelatives, relatives, getRecords, records } = patientContext;
   const [id, setId] = useState(null);
 
-  const fetchRecords = async (rel) => {
-    await getRecords(rel);
+  const fetchRecords = async (id) => {
+    await getRecords(id);
+    console.log(id, records);
   };
 
   useEffect(() => {
