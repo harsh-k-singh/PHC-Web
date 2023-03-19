@@ -184,6 +184,12 @@ router.get("/getRelative", authDoctor, async (req, res) => {
     if (!patient)
       return res.status(404).send("No patient found with this roll number");
     const relative = patient.relative;
+    const ent = {
+      relative_id: patient._id,
+      name: patient.name,
+      relation: "self",
+    };
+    relative.unshift(ent);
     res.status(200).send(relative);
   } catch (error) {
     console.log(error.message);

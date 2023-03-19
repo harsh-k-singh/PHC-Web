@@ -113,6 +113,7 @@ const DoctorState = (props) => {
         `/api/doctor/getRelative?roll_number=${roll_number}`
       );
       dispatch({ type: types.GET_RELATIVES_SUCCESS, payload: res.data });
+      console.log(res.data, "logging from getRealive in docstate");
     } catch (error) {
       dispatch({
         type: types.GET_RELATIVES_FAILURE,
