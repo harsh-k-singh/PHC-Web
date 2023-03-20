@@ -1,4 +1,4 @@
-import React, { useReducer,useContext } from "react";
+import React, { useReducer, useContext } from "react";
 import CompounderContext from "./CompounderContext";
 import CompounderReducer from "./CompounderReducer";
 import axios from "axios";
@@ -13,14 +13,15 @@ const CompounderState = (props) => {
     patientExists: null,
     allMedicines: [],
     allPrescription: [],
-    prescription:[],
-    relative:[],
+    prescription: [],
+    relative: [],
   };
   const { setAlert, clearAlert, setLoading, clearLoading } =
     useContext(GlobalContext);
   const [state, dispatch] = useReducer(CompounderReducer, initialState);
 
   const updateProfile = async (formData) => {
+    setLoading();
     console.log("updateProfile called...");
     const config = {
       headers: {
@@ -35,18 +36,19 @@ const CompounderState = (props) => {
         config
       );
       console.log(res);
-      dispatch({ type: types.UPDATE_PROFILE_SUCCESS });
+      clearLoading();
+      setAlert({ message: "Profile Updated Successfully", type: "success" });
+      setTimeout(clearAlert, 2000);
     } catch (error) {
-      dispatch({
-        type: types.UPDATE_PROFILE_FAILURE,
-        payload: error.response.data,
-      });
       console.log(error.response.data);
-      setTimeout(clearError, 2000);
+      clearLoading();
+      setAlert({ message: error.response.data, type: "error" });
+      setTimeout(clearAlert, 2000);
     }
   };
 
   const updateSchedule = async (formData) => {
+    setLoading();
     console.log("updateScheule called...");
     const config = {
       headers: {
@@ -61,31 +63,30 @@ const CompounderState = (props) => {
         config
       );
       console.log(res);
-      dispatch({ type: types.UPDATE_SCHEDULE_SUCCESS });
+      clearLoading();
+      setAlert({ message: "Schedule Updated Successfully", type: "success" });
+      setTimeout(clearAlert, 2000);
     } catch (error) {
-      dispatch({
-        type: types.UPDATE_SCHEDULE_FAILURE,
-        payload: error.response.data,
-      });
       console.log(error.response.data);
-      setTimeout(clearError, 2000);
+      clearLoading();
+      setAlert({ message: error.response.data, type: "error" });
+      setTimeout(clearAlert, 2000);
     }
   };
 
   const getAllMedicines = async () => {
+    if (state.allMedicines.length == 0) setLoading();
     try {
       const res = await axios.get(`/api/compounder/allMedicines`);
       dispatch({ type: types.GET_ALL_MEDICINES_SUCCESS, payload: res.data });
+      clearLoading();
     } catch (error) {
-      dispatch({
-        type: types.GET_ALL_MEDICINES_FAILURE,
-        payload: error.response.data,
-      });
       console.log(error.response.data);
-      setTimeout(clearError, 2000);
+      clearLoading();
+      setAlert({ message: error.response.data, type: "error" });
     }
   };
-  
+
   const getRelative = async (roll_number) => {
     try {
       const res = await axios.get(
@@ -131,7 +132,7 @@ const CompounderState = (props) => {
   const getPrescription = async () => {
     if (state.allPrescription.length === 0) setLoading();
     try {
-      console.log('reached getPre');
+      console.log("reached getPre");
       const res = await axios.get(`/api/compounder/getPrescription`);
       dispatch({ type: types.GET_PRESCRIPTION_SUCCESS, payload: res.data });
       clearLoading();
@@ -151,6 +152,7 @@ const CompounderState = (props) => {
   };
 
   const getPrescriptionByID = async (id) => {
+    if (state.prescription.length == 0) setLoading();
     try {
       console.log("reached getPreById", id);
       const res = await axios.get(`/api/compounder/getPrescription/${id}`);
@@ -158,22 +160,27 @@ const CompounderState = (props) => {
         type: types.GET_PRESCRIPTION_BY_ID_SUCCESS,
         payload: res.data,
       });
-      console.log(res.data, "logging from getPreById");
+      clearLoading();
+      if (state.prescription.length == 0)
+        setAlert({
+          type: "success",
+          message: "Prescription fetched successfully",
+        });
+      setTimeout(clearAlert, 2000);
     } catch (error) {
-      dispatch({
-        type: types.GET_PRESCRIPTION_BY_ID_FAILURE,
-        payload: error.response.data,
-      });
       console.log(error.response.data);
-      setTimeout(clearError, 2000);
+      clearLoading();
+      setAlert({ type: "error", message: error.response.data });
+      setTimeout(clearAlert, 2000);
     }
   };
+
   const clearError = () => {
     dispatch({ type: types.CLEAR_ERROR });
   };
-  
- const checkPatientExists = async (roll_number) => {
-  console.log("checkPatientExists called...");
+
+  const checkPatientExists = async (roll_number) => {
+    console.log("checkPatientExists called...");
     try {
       const res = await axios.get(
         `/api/compounder/patientExists?roll_number=${roll_number}`
@@ -194,6 +201,7 @@ const CompounderState = (props) => {
       }, 2000);
     }
   };
+
   return (
     <CompounderContext.Provider
       value={{
