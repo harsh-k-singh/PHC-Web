@@ -3,6 +3,7 @@ const router = express.Router();
 const Joi = require("joi");
 const { Patient } = require("../models/Patient");
 const { Doctor } = require("../models/Doctor");
+const { Compounder } = require("../models/Compounder");
 const { Medicine } = require("../models/Medicine");
 const { Relative, validateRelative } = require("../models/Relative");
 const { Prescription } = require("../models/Prescription");
@@ -252,13 +253,19 @@ router.get("/getPrescription/:id", authPatient, async (req, res) => {
         patient = await Relative.findById(patient_id);
         patient_relation = patient.relation;
       }
-      let patient_name = patient.name;
-      let patient_birth = patient.birth;
-      let patient_gender = patient.gender;
-
-      let doctor = await Doctor.findById(prescription.doctor_id);
-      let doctor_name = doctor.name;
-
+      patient_name = patient.name;
+      patient_birth = patient.birth;
+      patient_gender = patient.gender;
+      
+      let compounder_name, doctor_name;
+      if(prescription.compounder_id){
+        let compounder = await Compounder.findById(prescription.compounder_id);
+        compounder_name = compounder.name;
+      }
+      else if(prescription.doctor_id){
+        let doctor = await Doctor.findById(prescription.doctor_id);
+        doctor_name = doctor.name;
+      }
       let medicines = [];
       for (let j = 0; j < prescription.medicines.length; j++) {
         let medicine = prescription.medicines[j];
@@ -272,6 +279,7 @@ router.get("/getPrescription/:id", authPatient, async (req, res) => {
       }
       let entry = {
         doctor_name,
+        compounder_name,
         patient_roll_number: source_roll_number,
         patient_email: source_email,
         patient_phone: source_phone,

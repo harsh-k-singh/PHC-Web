@@ -9,10 +9,11 @@ axios.defaults.withCredentials = true;
 
 const DoctorState = (props) => {
   const initialState = {
-    relative: [],
     patientExists: null,
     allMedicines: [],
     allPrescription: [],
+    prescription:[],
+    relative:[],
   };
 
   const { setAlert, clearAlert, setLoading, clearLoading } =

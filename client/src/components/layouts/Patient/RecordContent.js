@@ -37,7 +37,8 @@ const RecordContent = (props) => {
             Prescription
             </div>
             <div class="card-body">
-                <p class="card-text">Attendant : {data.doctor_name}</p>
+                {data.doctor_name?<p class="card-text">Doctor : {data.doctor_name}</p>
+                :<p class="card-text">Compounder : {data.compounder_name}</p>}
                 <p class="card-text">Date of Diagonsis: {date}</p>
                 <p class="card-text">Time of Diagonsis: {time}</p>
                   <a class="btn btn-success btn-sm" data-bs-toggle="collapse" href={`#collapseExample-${index}`} role="button" aria-expanded="false" aria-controls="collapseExample">

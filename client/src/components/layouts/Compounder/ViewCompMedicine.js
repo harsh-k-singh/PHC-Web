@@ -33,7 +33,7 @@ const ViewCompMedicine = () => {
       else if(action==="search"){
         setData(allMedicines.filter(item => item.name===selectedOption.value));
       }
-    },[action,selectedOption]);
+    },[action,selectedOption,allMedicines]);
     
   useEffect(() => {
       if(action==="viewAll"&&sortQuantity===false){
@@ -52,7 +52,7 @@ const ViewCompMedicine = () => {
       await getAllMedicines();
     };
     func();
-  },[action,sortQuantity,selectedOption]);
+  },[action,sortQuantity,selectedOption,allMedicines]);
 return (
   <div class='container-xl px-4'>
     

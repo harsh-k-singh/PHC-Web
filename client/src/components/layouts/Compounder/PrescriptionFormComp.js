@@ -1,19 +1,19 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import DoctorContext from "../../../context/doctor/DoctorContext";
+import CompounderContext from "../../../context/compounder/CompounderContext";
 import { useParams } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { display } from "@mui/system";
 
-const PrescriptionForm = () => {
-  const doctorContext = useContext(DoctorContext);
+const PrescriptionFormComp = () => {
+  const compounderContext = useContext(CompounderContext);
   const navigate = useNavigate();
   const [back, setBack] = useState(false);
 
   useEffect(() => {
     if (back === true) {
-      navigate(`/doctor`);
+      navigate(`/compounder`);
     }
   }, [back]);
 
@@ -23,7 +23,7 @@ const PrescriptionForm = () => {
     getRelative,
     relative,
     addPrescription,
-  } = doctorContext;
+  } = compounderContext;
   // const medOptions = allMedicines
   //   ? allMedicines.map((opt) => ({ label: opt.name, value: opt.name }))
   //   : null;
@@ -400,4 +400,4 @@ const PrescriptionForm = () => {
   );
 };
 
-export default PrescriptionForm;
+export default PrescriptionFormComp;

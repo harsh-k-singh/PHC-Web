@@ -74,17 +74,15 @@ const ViewAdminMedicine = () => {
       await getAllMedicines();
     };
     func();
-  }, [action, sortQuantity, selectedOption]);
-
-  return (
-    <div class='container-xl px-4'>
-      <div style={{ width: "40%", margin: "auto" }}>
-        <Select
-          options={medOptions}
-          placeholder='Search stock...'
-          value={action === "search" ? selectedOption : ""}
-          onChange={onChange}
-        />
+  },[action,sortQuantity,selectedOption]);
+return (
+  <div class='container-xl px-4'>
+    
+      <div style={{width:"40%",margin:"auto"}}>
+        <Select options={medOptions} 
+        placeholder="Search stock..." 
+        value={action==="search"?selectedOption:""}
+        onChange={onChange}/>
       </div>
       <div className='m-4 text-center'>
         <button

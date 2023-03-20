@@ -2,7 +2,13 @@ const express = require("express");
 const router = express.Router();
 const Joi = require("joi");
 const { Compounder } = require("../models/Compounder");
-const config = require("config");
+const { Doctor } = require("../models/Doctor");
+const { Patient } = require("../models/Patient");
+const { Relative } = require("../models/Relative");
+const {
+  Prescription,
+  validatePrescription,
+} = require("../models/Prescription");
 const { Stock } = require("../models/Stock");
 const { Medicine } = require("../models/Medicine");
 const authCompounder = require("../middleware/authCompounder");
@@ -157,6 +163,353 @@ router.get("/allMedicines", authCompounder, async (req, res) => {
       allMedicines.push({ name: medicine.name, totalQuantity });
     }
     res.status(200).send(allMedicines);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Something went wrong");
+  }
+});
+
+router.get("/patientExists", authCompounder, async (req, res) => {
+  const { roll_number } = req.query;
+  if (!roll_number) return res.status(400).send("Roll number not provided");
+  try {
+    const patient = await Patient.findOne({ roll_number });
+    if (!patient)
+      return res
+        .status(404)
+        .send("No such patient exists with this roll number");
+    res.status(200).send("Patient exists");
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Something went wrong");
+  }
+});
+
+router.get("/getRelative", authCompounder, async (req, res) => {
+  const { roll_number } = req.query;
+  if (!roll_number) return res.status(400).send("Roll number not provided");
+  try {
+    const patient = await Patient.findOne({ roll_number });
+    if (!patient)
+      return res.status(404).send("No patient found with this roll number");
+    const relative = patient.relative;
+    const ent = {
+      relative_id: patient._id,
+      name: patient.name,
+      relation: "self",
+    };
+    relative.unshift(ent);
+    res.status(200).send(relative);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Something went wrong");
+  }
+});
+
+router.post("/addPrescription", authCompounder, async (req, res) => {
+  const { patient, id, symptoms, diagnosis, tests, remarks, medicines } =
+    req.body;
+
+  if (
+    patient == null ||
+    id == null ||
+    symptoms == null ||
+    diagnosis == null ||
+    tests == null ||
+    remarks == null ||
+    medicines == null ||
+    !Array.isArray(tests) ||
+    !Array.isArray(medicines)
+  )
+    return res.status(400).send("Fields are not filled properly");
+  const source = await Patient.findOne({ roll_number: patient });
+  if (!source) return res.status(404).send("Patient not found");
+  const patient_id = id;
+  console.log(source, patient_id);
+
+  let final_medicines = [];
+  for (let i = 0; i < medicines.length; i++) {
+    // check if the medicine details are filled properly
+    if (!medicines[i].name || !medicines[i].quantity || !medicines[i].dosage)
+      return res.status(400).send("Medicine details are not filled properly");
+
+    // find the medicine in the database
+    let medicine = await Medicine.findOne({ name: medicines[i].name });
+    if (!medicine) return res.status(404).send("Medicine not found");
+    let req_quantity = medicines[i].quantity;
+
+    // create the object to be pushed in the final_medicines array
+    let final_medicine = {
+      medicine_id: medicine._id,
+      quantity: medicines[i].quantity,
+      dosage: medicines[i].dosage,
+      stocks: [],
+    };
+
+    // call the function to check if the medicine is available in sufficient quantity
+    let totalQuantity = 0;
+    for (let i = 0; i < medicine.availableStock.length; i++) {
+      let stock_id = medicine.availableStock[i];
+      let stock = await Stock.findById(stock_id);
+      const isExpired = (stock) => {
+        if (new Date(stock.expiry) <= new Date()) return true;
+        return false;
+      };
+
+      if (stock.quantity === 0 || isExpired(stock)) {
+        medicine.deadStock.push(stock_id);
+        medicine.availableStock.splice(i, 1);
+        await medicine.save();
+        i--;
+        continue;
+      }
+      totalQuantity += stock.quantity;
+    }
+    if (totalQuantity < req_quantity)
+      return res
+        .status(400)
+        .send("Medicine not available in sufficient quantity");
+
+    // find the stocks from the available stocks of the medicine
+    for (
+      let j = 0;
+      j < medicine.availableStock.length && req_quantity > 0;
+      j++
+    ) {
+      console.log("medicine ch", medicine);
+      let stock_id = medicine.availableStock[j];
+      let stock = await Stock.findById(stock_id);
+      // write a function to check if the stock is expired or not
+      const isExpired = (stock) => {
+        if (new Date(stock.expiry) <= new Date()) return true;
+        return false;
+      };
+
+      if (stock.quantity === 0 || isExpired(stock)) {
+        console.log("inside 1st if ch");
+        medicine.deadStock.push(stock_id);
+        medicine.availableStock.splice(j, 1);
+        await medicine.save();
+        j--;
+        continue;
+      }
+      if (stock.quantity >= req_quantity) {
+        console.log("inside 2nd if ch");
+        stock.quantity -= req_quantity;
+        await stock.save();
+        final_medicine.stocks.push({
+          stock_id: stock._id,
+          quantity: req_quantity,
+        });
+        break;
+      } else {
+        console.log("inside 3rd if ch");
+        req_quantity -= stock.quantity;
+        final_medicine.stocks.push({
+          stock_id: stock._id,
+          quantity: stock.quantity,
+        });
+        stock.quantity = 0;
+        await stock.save();
+        medicine.deadStock.push(stock_id);
+        medicine.availableStock.splice(j, 1);
+        await medicine.save();
+        j--;
+      }
+    }
+    console.log("fm", final_medicine);
+    final_medicines.push(final_medicine);
+  }
+
+  // validate the prescription
+  const { error } = validatePrescription({
+    source_id: source._id,
+    patient_id,
+    compounder_id: req.user.id,
+    symptoms,
+    diagnosis,
+    tests,
+    remarks,
+    medicines: final_medicines,
+  });
+  if (error) return res.status(400).send(error.details[0].message);
+
+  // save the prescription in the database
+  try {
+    const prescription = new Prescription({
+      source_id: source._id,
+      patient_id,
+      compounder_id: req.user.id,
+      symptoms,
+      diagnosis,
+      tests,
+      remarks,
+      medicines: final_medicines,
+    });
+    await prescription.save();
+
+    // save the prescription in the patient's prescriptions array
+    if (source._id == patient_id) {
+      source.prescriptions.push(prescription._id);
+      await source.save();
+    } else {
+      let rel = await Relative.findById(patient_id);
+      rel.prescriptions.push(prescription._id);
+      await rel.save();
+    }
+
+    // save the prescription in the compounder's prescriptions array
+    await Compounder.findByIdAndUpdate(req.user.id, {
+      $push: { prescriptions: prescription._id },
+    });
+
+    // send the prescription to the patient
+    res.status(200).send(prescription);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Something went wrong");
+  }
+});
+
+router.get("/getPrescription", authCompounder, async (req, res) => {
+  try {
+    let prescriptions = await Prescription.find({
+      compounder_id: req.user.id,
+    });
+
+    let pre = [];
+    for (let i = 0; i < prescriptions.length; i++) {
+      let prescription = prescriptions[i];
+      let { source_id, patient_id, symptoms, diagnosis, tests, remarks, date } =
+        prescription;
+      let source = await Patient.findById(source_id);
+      let source_roll_number = source.roll_number;
+      let source_email = source.email;
+      let source_phone = source.phone;
+
+      let patient;
+      let patient_relation = "self";
+      if (String(source_id) == String(patient_id)) {
+        patient = await Patient.findById(patient_id);
+      } else {
+        patient = await Relative.findById(patient_id);
+        patient_relation = patient.relation;
+      }
+      patient_name = patient.name;
+      patient_birth = patient.birth;
+      patient_gender = patient.gender;
+
+      let compounder = await Compounder.findById(prescription.compounder_id);
+      let compounder_name = compounder.name;
+
+      let medicines = [];
+      for (let j = 0; j < prescription.medicines.length; j++) {
+        let medicine = prescription.medicines[j];
+        let med = await Medicine.findById(medicine.medicine_id);
+        let medEntry = {
+          medicine_name: med.name,
+          quantity: medicine.quantity,
+          dosage: medicine.dosage,
+        };
+        medicines.push(medEntry);
+      }
+      let entry = {
+        compounder_name,
+        patient_roll_number: source_roll_number,
+        patient_email: source_email,
+        patient_phone: source_phone,
+        patient_name,
+        patient_gender,
+        patient_birth,
+        relation: patient_relation,
+        symptoms,
+        diagnosis,
+        tests,
+        remarks,
+        medicines,
+        date,
+      };
+      pre.push(entry);
+    }
+    // console.log("pre", pre);
+    res.status(200).send(pre);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Something went wrong");
+  }
+});
+
+router.get("/getPrescription/:id", authCompounder, async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    let prescriptions = await Prescription.find({
+      patient_id: id,
+    });
+
+    let pre = [];
+    for (let i = 0; i < prescriptions.length; i++) {
+      let prescription = prescriptions[i];
+      let { source_id, patient_id, symptoms, diagnosis, tests, remarks, date } =
+        prescription;
+      let source = await Patient.findById(source_id);
+      let source_roll_number = source.roll_number;
+      let source_email = source.email;
+      let source_phone = source.phone;
+
+      let patient;
+      let patient_relation = "self";
+      if (String(source_id) == String(patient_id)) {
+        patient = await Patient.findById(patient_id);
+      } else {
+        patient = await Relative.findById(patient_id);
+        patient_relation = patient.relation;
+      }
+      patient_name = patient.name;
+      patient_birth = patient.birth;
+      patient_gender = patient.gender;
+      
+      let compounder_name, doctor_name;
+      if(prescription.compounder_id){
+        let compounder = await Compounder.findById(prescription.compounder_id);
+        compounder_name = compounder.name;
+      }
+      else if(prescription.doctor_id){
+        let doctor = await Doctor.findById(prescription.doctor_id);
+        doctor_name = doctor.name;
+      }
+      let medicines = [];
+      for (let j = 0; j < prescription.medicines.length; j++) {
+        let medicine = prescription.medicines[j];
+        let med = await Medicine.findById(medicine.medicine_id);
+        let medEntry = {
+          medicine_name: med.name,
+          quantity: medicine.quantity,
+          dosage: medicine.dosage,
+        };
+        medicines.push(medEntry);
+      }
+      let entry = {
+        doctor_name,
+        compounder_name,
+        patient_roll_number: source_roll_number,
+        patient_email: source_email,
+        patient_phone: source_phone,
+        patient_name,
+        patient_gender,
+        patient_birth,
+        relation: patient_relation,
+        symptoms,
+        diagnosis,
+        tests,
+        remarks,
+        medicines,
+        date,
+      };
+      pre.push(entry);
+    }
+    // console.log("pre", pre);
+    res.status(200).send(pre);
   } catch (error) {
     console.log(error.message);
     res.status(500).send("Something went wrong");

@@ -33,7 +33,7 @@ const ViewStock = () => {
         else if(action==="search"){
           setData(stocks.filter(item => item.name===selectedOption.value));
         }
-      },[action,selectedOption]);
+      },[action,selectedOption,stocks]);
       
     useEffect(() => {
         if(action==="viewAll"&&sortExpiry===false){
@@ -53,7 +53,7 @@ const ViewStock = () => {
         await getMedicine();
       };
       func();
-    },[action,sortExpiry,selectedOption]);
+    },[action,sortExpiry,selectedOption,stocks]);
   return (
     <div class='container-xl px-4'>
       

@@ -31,6 +31,9 @@ import CompoundersProfile from "./components/layouts/Compounder/CompoundersProfi
 import CompoundersSchedule from "./components/layouts/Compounder/CompoundersSchedule";
 import CompoundersDashboard from "./components/layouts/Compounder/CompoundersDashboard";
 import ViewCompMedicine from "./components/layouts/Compounder/ViewCompMedicine";
+import PatientsListCompounder from "./components/layouts/Compounder/PatientsListCompounder"
+import CheckRecordComp from "./components/layouts/Compounder/CheckRecordComp";
+import PrescriptionFormComp from "./components/layouts/Compounder/PrescriptionFormComp";
 
 import Admin from "./components/pages/Admin";
 import AdminsDashboard from "./components/layouts/Admin/AdminsDashboard";
@@ -79,10 +82,6 @@ const App = () => {
                         path='viewDocMedicine'
                         element={<ViewDocMedicine />}
                       />
-                      <Route
-                        path='prescriptionForm'
-                        element={<PrescriptionForm />}
-                      />
                       <Route path='checkRecord/:check_roll_number/:relation' element={<CheckRecord />} />
                     </Route>
 
@@ -96,8 +95,13 @@ const App = () => {
                         element={<CompoundersSchedule />}
                       />
                       <Route path='profile' element={<CompoundersProfile />} />
-                      <Route path='patientsList' element={<PatientsList />} />
+                      <Route path='patientsList' element={<PatientsListCompounder/>} />
+                      <Route path='checkRecord/:check_roll_number/:relation' element={<CheckRecordComp />} />
                       <Route
+                        path='addRecord/:roll_number'
+                        element={<PrescriptionFormComp/>}
+                      />
+                       <Route
                         path='patientsHistory'
                         element={<PatientsHistory />}
                       />
