@@ -1,19 +1,27 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useContext } from "react";
 import CompounderContext from "./CompounderContext";
 import CompounderReducer from "./CompounderReducer";
 import axios from "axios";
 import * as types from "../types";
+import GlobalContext from "../global/GlobalContext";
 
 axios.defaults.withCredentials = true;
 
 const CompounderState = (props) => {
   const initialState = {
-    error: null,
+    relative: [],
+    patientExists: null,
+    allMedicines: [],
+    allPrescription: [],
   };
+
+  const { setAlert, clearAlert, setLoading, clearLoading } =
+    useContext(GlobalContext);
 
   const [state, dispatch] = useReducer(CompounderReducer, initialState);
 
   const updateProfile = async (formData) => {
+    setLoading();
     console.log("updateProfile called...");
     const config = {
       headers: {
@@ -28,18 +36,19 @@ const CompounderState = (props) => {
         config
       );
       console.log(res);
-      dispatch({ type: types.UPDATE_PROFILE_SUCCESS });
+      clearLoading();
+      setAlert({ message: "Profile Updated Successfully", type: "success" });
+      setTimeout(clearAlert, 2000);
     } catch (error) {
-      dispatch({
-        type: types.UPDATE_PROFILE_FAILURE,
-        payload: error.response.data,
-      });
       console.log(error.response.data);
-      setTimeout(clearError, 2000);
+      clearLoading();
+      setAlert({ message: error.response.data, type: "error" });
+      setTimeout(clearAlert, 2000);
     }
   };
 
   const updateSchedule = async (formData) => {
+    setLoading();
     console.log("updateScheule called...");
     const config = {
       headers: {
@@ -54,14 +63,14 @@ const CompounderState = (props) => {
         config
       );
       console.log(res);
-      dispatch({ type: types.UPDATE_SCHEDULE_SUCCESS });
+      clearLoading();
+      setAlert({ message: "Schedule Updated Successfully", type: "success" });
+      setTimeout(clearAlert, 2000);
     } catch (error) {
-      dispatch({
-        type: types.UPDATE_SCHEDULE_FAILURE,
-        payload: error.response.data,
-      });
       console.log(error.response.data);
-      setTimeout(clearError, 2000);
+      clearLoading();
+      setAlert({ message: error.response.data, type: "error" });
+      setTimeout(clearAlert, 2000);
     }
   };
 
