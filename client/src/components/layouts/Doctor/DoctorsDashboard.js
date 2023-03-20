@@ -41,7 +41,7 @@ const DoctorsDashboard = () => {
 
   const onChange = (e) => {
     setRelation(e.target.value);
-    console.log("realtion from onchange", e.target.value, relation);
+    console.log("relation from onchange", e.target.value, relation);
     // fetchRecords(e.target.value);
   };
   return (
@@ -114,11 +114,11 @@ const DoctorsDashboard = () => {
               onChange={onChange}
             >
               <option selected>Select Relation</option>
-              {relative.map((rel) => (
+              {relative ?relative.map((rel) => (
                 <option value={rel.relative_id}>
                   {rel.name}--{rel.relation}
                 </option>
-              ))}
+              )): null}
             </select>
             <div class='d-grid gap-2'>
               <button

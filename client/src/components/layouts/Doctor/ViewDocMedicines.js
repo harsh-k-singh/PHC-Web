@@ -74,7 +74,7 @@ const ViewDocMedicine = () => {
       await getAllMedicines();
     };
     func();
-  }, [action, sortQuantity, selectedOption]);
+  }, [action, sortQuantity, selectedOption,allMedicines]);
   return (
     <div class='container-xl px-4'>
       <div style={{ width: "40%", margin: "auto" }}>
