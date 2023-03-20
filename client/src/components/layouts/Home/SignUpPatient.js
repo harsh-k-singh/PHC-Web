@@ -4,8 +4,7 @@ import AuthContext from "../../../context/auth/AuthContext";
 
 const SignUpPatient = () => {
   const authContext = useContext(AuthContext);
-  const { isAuthenicated, error, register, loading, loadUser, user } =
-    authContext;
+  const { isAuthenicated, register, loadUser, user } = authContext;
   const navigate = useNavigate();
   const [form, setForm] = useState({
     name: "",
@@ -20,11 +19,7 @@ const SignUpPatient = () => {
     guardian_phone: null,
     guarding_relation: null,
   });
-  const [formLoad, setFormLoad] = useState(loading);
-  const [err, setErr] = useState({
-    type: null,
-    msg: null,
-  });
+
   const onChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -38,25 +33,17 @@ const SignUpPatient = () => {
       }
     };
 
-    if (isAuthenicated) {
+    if (isAuthenicated || localStorage.getItem("isAuthenicated")) {
       redirectToDashboard();
     }
-    // // If error is not null, display error
-    // if (error) {
-    //   if (error.errors.length > 0) {
-    //     alert(error.errors[0].msg);
-    //   }
-    // }
-    // // Clear errors
-    // clearErrors();
-
     // eslint-disable-next-line
-  }, [error, isAuthenicated, user]);
+  }, [isAuthenicated, user]);
+
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log("prof", form.profession);
     register(form);
   };
+
   return (
     <div class='container-xl px-4 mt-5 py-3'>
       <h3 className='text-center'>Patient Signup</h3>

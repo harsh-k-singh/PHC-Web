@@ -10,6 +10,9 @@ const { Prescription } = require("../models/Prescription");
 const authPatient = require("../middleware/authPatient");
 const bcrypt = require("bcryptjs");
 
+// @route   POST api/patient/register
+// @desc    Register a patient
+// @access  Public
 router.post("/updateProfile", authPatient, async (req, res) => {
   const validatepatient = (patient) => {
     const schema = Joi.object({
@@ -256,13 +259,12 @@ router.get("/getPrescription/:id", authPatient, async (req, res) => {
       patient_name = patient.name;
       patient_birth = patient.birth;
       patient_gender = patient.gender;
-      
+
       let compounder_name, doctor_name;
-      if(prescription.compounder_id){
+      if (prescription.compounder_id) {
         let compounder = await Compounder.findById(prescription.compounder_id);
         compounder_name = compounder.name;
-      }
-      else if(prescription.doctor_id){
+      } else if (prescription.doctor_id) {
         let doctor = await Doctor.findById(prescription.doctor_id);
         doctor_name = doctor.name;
       }

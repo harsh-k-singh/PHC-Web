@@ -25,7 +25,7 @@ const AuthState = (props) => {
     };
     try {
       await axios.post("/api/register", formData, config);
-      dispatch({ type: types.REGISTER_SUCCESS, payload: 4 });
+      dispatch({ type: types.REGISTER_SUCCESS, payload: "patient" });
       console.log(formData);
       loadUser();
       console.log("registerd");
@@ -40,7 +40,6 @@ const AuthState = (props) => {
   };
 
   const loadUser = async () => {
-    console.log("loaduser called...");
     try {
       const res = await axios.get("/api/auth");
       dispatch({ type: types.LOAD_SUCCESS, payload: res.data });
@@ -76,11 +75,10 @@ const AuthState = (props) => {
 
   const logout = async () => {
     try {
-      console.log("logout called from authstates");
       setLoading();
       await axios.delete("/api/auth");
-      dispatch({ type: types.LOGOUT_SUCCESS });
       clearLoading();
+      dispatch({ type: types.LOGOUT_SUCCESS });
       setAlert({ type: "success", message: "Logged out successfully" });
       setTimeout(clearAlert, 2000);
     } catch (error) {

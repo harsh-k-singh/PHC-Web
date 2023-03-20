@@ -6,9 +6,8 @@ module.exports = (req, res, next) => {
   if (!token) return res.status(401).send("No token, authorisation denied");
   try {
     const decoded = jwt.verify(token, config.get("jwtSecret"));
-    if (decoded.role != 3) return res.status(401).send("Invalid token");
+    if (decoded.role != "admin") return res.status(401).send("Invalid token");
     req.user = decoded;
-    console.log("from middleware user is:");
     console.log(req.user);
     next();
   } catch (error) {

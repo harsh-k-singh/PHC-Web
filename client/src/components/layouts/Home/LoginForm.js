@@ -6,7 +6,6 @@ import AuthContext from "../../../context/auth/AuthContext";
 const LoginForm = () => {
   const authContext = useContext(AuthContext);
   const { isAuthenicated, login, loadUser, user } = authContext;
-  const actors = [null, "doctor", "compounder", "admin", "patient"];
 
   const navigate = useNavigate();
 
@@ -63,10 +62,10 @@ const LoginForm = () => {
             <option value='' disabled selected hidden>
               Select Your Role
             </option>
-            <option value='1'>Doctor</option>
-            <option value='2'>Compounder</option>
-            <option value='3'>Admin</option>
-            <option value='4'>Patient</option>
+            <option value='patient'>Patient</option>
+            <option value='doctor'>Doctor</option>
+            <option value='compounder'>Compounder</option>
+            <option value='admin'>Admin</option>
           </select>
         </div>
         <div className='form-outline mb-4'>
