@@ -1,8 +1,9 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useContext } from "react";
 import AdminContext from "./AdminContext";
 import AdminReducer from "./AdminReducer";
 import axios from "axios";
 import * as types from "../types";
+import GlobalContext from "../global/GlobalContext";
 
 axios.defaults.withCredentials = true;
 
@@ -12,12 +13,17 @@ const AdminState = (props) => {
     specific_medicine_stock: null,
     stocks: [],
     error: null,
+    allMedicines: [],
   };
+
+  const { setAlert, clearAlert, setLoading, clearLoading } =
+    useContext(GlobalContext);
 
   const [state, dispatch] = useReducer(AdminReducer, initialState);
   const actors = [null, "addDoctor", "addCompounder", "addAdmin"];
 
   const addActor = async (formData) => {
+    setLoading();
     console.log("addActor called...");
     const config = {
       headers: {
@@ -28,6 +34,18 @@ const AdminState = (props) => {
     try {
       // remove role from formData
       const role = actors[formData.role];
+      if (!role)
+        throw {
+          response: {
+            data: "Actor not selected",
+          },
+        };
+      if (formData.password !== formData.cnf_password)
+        throw {
+          response: {
+            data: "Password and Confirm Password do not match",
+          },
+        };
       const newFormData = {
         name: formData.name,
         email: formData.email,
@@ -36,12 +54,14 @@ const AdminState = (props) => {
       console.log(newFormData);
       const res = await axios.post(`/api/admin/${role}`, newFormData, config);
       console.log(res.data);
-      dispatch({ type: types.ADD_ACTOR_SUCCESS });
+      clearLoading();
+      setAlert({ message: "User added successfully", type: "success" });
+      setTimeout(clearAlert, 2000);
     } catch (error) {
-      console.log("err", error);
-      dispatch({ type: types.ADD_ACTOR_FAILURE, payload: error.response.data });
       console.log(error.response.data);
-      setTimeout(clearError, 2000);
+      clearLoading();
+      setAlert({ message: error.response.data, type: "error" });
+      setTimeout(clearAlert, 2000);
     }
   };
 
@@ -60,16 +80,16 @@ const AdminState = (props) => {
   };
 
   const getStock = async () => {
+    if (state.stocks.length == 0) setLoading();
     try {
       const res = await axios.get(`/api/admin/getStock`);
       dispatch({ type: types.GET_STOCK_SUCCESS, payload: res.data });
+      clearLoading();
     } catch (error) {
-      dispatch({
-        type: types.GET_STOCK_FAILURE,
-        payload: error.response.data,
-      });
       console.log(error.response.data);
-      setTimeout(clearError, 2000);
+      clearLoading();
+      setAlert({ message: error.response.data, type: "error" });
+      setTimeout(clearAlert, 2000);
     }
   };
 
@@ -86,20 +106,23 @@ const AdminState = (props) => {
       setTimeout(clearError, 2000);
     }
   };
+
   const getAllMedicines = async () => {
+    if (state.allMedicines.length == 0) setLoading();
     try {
       const res = await axios.get(`/api/admin/allMedicines`);
       dispatch({ type: types.GET_ALL_MEDICINES_SUCCESS, payload: res.data });
+      clearLoading();
     } catch (error) {
-      dispatch({
-        type: types.GET_ALL_MEDICINES_FAILURE,
-        payload: error.response.data,
-      });
       console.log(error.response.data);
-      setTimeout(clearError, 2000);
+      clearLoading();
+      setAlert({ message: error.response.data, type: "error" });
+      setTimeout(clearAlert, 2000);
     }
   };
+
   const addStock = async (formData) => {
+    setLoading();
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -109,11 +132,14 @@ const AdminState = (props) => {
       const res = await axios.post(`/api/admin/addStock`, formData, config);
       console.log(res.data);
       await getStock();
-      dispatch({ type: types.ADD_STOCK_SUCCESS });
+      clearLoading();
+      setAlert({ message: "Stock added successfully", type: "success" });
+      setTimeout(clearAlert, 2000);
     } catch (error) {
-      dispatch({ type: types.ADD_STOCK_FAILURE, payload: error.response.data });
       console.log(error.response.data);
-      setTimeout(clearError, 2000);
+      clearLoading();
+      setAlert({ message: error.response.data, type: "error" });
+      setTimeout(clearAlert, 2000);
     }
   };
 
@@ -162,10 +188,10 @@ const AdminState = (props) => {
     <AdminContext.Provider
       value={{
         medicines: state.medicines,
-        getAllMedicines,
         allMedicines: state.allMedicines,
         stocks: state.stocks,
         error: state.error,
+        getAllMedicines,
         addActor,
         getMedicine,
         getStock,

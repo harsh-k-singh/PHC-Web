@@ -12,18 +12,11 @@ const AddDoctor = () => {
     password: "",
     cnf_password: "",
   });
-  const [err, setErr] = useState();
   const onChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
   const onSubmit = async (e) => {
-    console.log("in", form.role);
     e.preventDefault();
-    if (form.password !== form.cnf_password) {
-      console.log("do not match");
-      setErr("Password and Confirm Password does not match");
-      return;
-    }
     addActor(form);
   };
   return (
@@ -34,7 +27,6 @@ const AddDoctor = () => {
           <div class='card mb-4'>
             <div class='card-header'>Account Details</div>
             <div class='card-body'>
-              {err !== null ? <div> {err} </div> : null}
               <form>
                 <div className='mb-3'>
                   <select
