@@ -1,20 +1,17 @@
 const AdminsDashboard = () => {
     return (
-      <div className='text-center'>
-        <h3>ADD NEW RECORD</h3>
-        <hr className='mx-4' />
-        <div style={{ margin: "auto", width: "30%" }}>
-          <input
-            type='email'
-            className='form-control my-4'
-            id='exampleInputEmail1'
-            aria-describedby='emailHelp'
-            placeholder="Enter Patient's email"
-          />
-          <div class='d-grid gap-2'>
-            <button type='button' class='btn btn-primary my-2'>
-              Submit
-            </button>
+      <div>  
+        <div class="card text-center" style={{width:"50%",margin:"auto"}}>
+          <div class="card-header">
+            Featured
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">Title</h5>
+            <p class="card-text">Some info in dashboard</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+          <div class="card-footer text-muted">
+            Footer
           </div>
         </div>
       </div>
