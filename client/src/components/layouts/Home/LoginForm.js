@@ -1,11 +1,11 @@
-import React, { Fragment, useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import PHClogo from "../../../images/PHClogo1.png";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import AuthContext from "../../../context/auth/AuthContext";
 
 const LoginForm = () => {
   const authContext = useContext(AuthContext);
-  const { isAuthenicated, error, login, loadUser, user } = authContext;
+  const { isAuthenicated, login, loadUser, user } = authContext;
   const actors = [null, "doctor", "compounder", "admin", "patient"];
 
   const navigate = useNavigate();
@@ -15,10 +15,6 @@ const LoginForm = () => {
     role: "",
     email: "",
     password: "",
-  });
-  const [err, setErr] = useState({
-    type: null,
-    msg: null,
   });
 
   useEffect(() => {
@@ -33,17 +29,8 @@ const LoginForm = () => {
     if (isAuthenicated || localStorage.getItem("isAuthenicated")) {
       redirectToDashboard();
     }
-    // // If error is not null, display error
-    // if (error) {
-    //   if (error.errors.length > 0) {
-    //     alert(error.errors[0].msg);
-    //   }
-    // }
-    // // Clear errors
-    // clearErrors();
-
     // eslint-disable-next-line
-  }, [error, isAuthenicated, user]);
+  }, [isAuthenicated, user]);
 
   const onChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -67,15 +54,6 @@ const LoginForm = () => {
           <b>Login to PHC</b>
         </h3>
         <div className='form-outline mb-4'>
-          {err.msg !== null ? (
-            <div
-              class='alert alert-danger'
-              role='alert'
-              style={{ padding: "0.5rem" }}
-            >
-              {err.msg}
-            </div>
-          ) : null}
           <select
             class='form-select'
             aria-label='Select Your Role'
