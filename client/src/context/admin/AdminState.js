@@ -20,11 +20,9 @@ const AdminState = (props) => {
     useContext(GlobalContext);
 
   const [state, dispatch] = useReducer(AdminReducer, initialState);
-  const actors = [null, "addDoctor", "addCompounder", "addAdmin"];
 
   const addActor = async (formData) => {
     setLoading();
-    console.log("addActor called...");
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -32,12 +30,12 @@ const AdminState = (props) => {
     };
 
     try {
-      // remove role from formData
-      const role = actors[formData.role];
+      // extract role from formData
+      const { role } = formData;
       if (!role)
         throw {
           response: {
-            data: "Actor not selected",
+            data: "Designation not selected",
           },
         };
       if (formData.password !== formData.cnf_password)
@@ -51,9 +49,11 @@ const AdminState = (props) => {
         email: formData.email,
         password: formData.password,
       };
-      console.log(newFormData);
-      const res = await axios.post(`/api/admin/${role}`, newFormData, config);
-      console.log(res.data);
+      const res = await axios.post(
+        `/api/admin/addActor/${role}`,
+        newFormData,
+        config
+      );
       clearLoading();
       setAlert({ message: "User added successfully", type: "success" });
       setTimeout(clearAlert, 2000);

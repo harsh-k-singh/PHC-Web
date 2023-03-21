@@ -31,6 +31,7 @@ const AuthState = (props) => {
       console.log("registerd");
       clearLoading();
       setAlert({ type: "success", message: "Registered successfully" });
+      setTimeout(clearAlert, 2000);
     } catch (error) {
       clearLoading();
       console.log(error.response.data);

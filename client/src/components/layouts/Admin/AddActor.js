@@ -38,9 +38,9 @@ const AddDoctor = () => {
                     <option value='' disabled selected hidden>
                       Select Actor
                     </option>
-                    <option value='1'>Doctor</option>
-                    <option value='2'>Compounder</option>
-                    <option value='3'>Admin</option>
+                    <option value='doctor'>Doctor</option>
+                    <option value='compounder'>Compounder</option>
+                    <option value='admin'>Admin</option>
                   </select>
                 </div>
                 <div class='mb-3'>
