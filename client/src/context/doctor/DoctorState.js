@@ -12,8 +12,8 @@ const DoctorState = (props) => {
     patientExists: null,
     allMedicines: [],
     allPrescription: [],
-    prescription:[],
-    relative:[],
+    prescription: [],
+    relative: [],
   };
 
   const { setAlert, clearAlert, setLoading, clearLoading } =
@@ -177,6 +177,27 @@ const DoctorState = (props) => {
     }
   };
 
+  const getPrescriptionByDate = async (date) => {
+    setLoading();
+    try {
+      const res = await axios.get(`/api/doctor/getPrescriptionByDate/${date}`);
+      dispatch({ type: types.GET_PRESCRIPTION_SUCCESS, payload: res.data });
+      clearLoading();
+      // if (state.allPrescription.length === 0)
+      //   setAlert({
+      //     type: "success",
+      //     message: "Prescription fetched successfully",
+      //   });
+      // setTimeout(clearAlert, 2000);
+    } catch (error) {
+      console.log(error.response.data);
+      clearLoading();
+      // if (state.allPrescription.length === 0)
+      setAlert({ type: "error", message: error.response.data });
+      setTimeout(clearAlert, 2000);
+    }
+  };
+
   const getPrescriptionByID = async (id) => {
     setLoading();
     try {
@@ -249,6 +270,7 @@ const DoctorState = (props) => {
         updateAvailability,
         checkPatientExists,
         clearState,
+        getPrescriptionByDate,
       }}
     >
       {props.children}
