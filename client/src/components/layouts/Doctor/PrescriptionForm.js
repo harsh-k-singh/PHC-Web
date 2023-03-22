@@ -279,50 +279,9 @@ const PrescriptionForm = () => {
                   );
                 })}
                 {/* row-2-end */}
-
-                {/* row-3 -start*/}
-                <div class='row gx-3 my-3'>
-                  <div class='col-md-12'>
-                    <label class='small mb-2' for='inputDiagnosis'>
-                      Diagnosis
-                    </label>
-                    <TextField
-                      onChange={onChange}
-                      name='diagnosis'
-                      id='inputDiagnosis'
-                      type='text'
-                      size='small'
-                      fullWidth
-                      label='Diagnosis'
-                      variant='outlined'
-                    />
-                  </div>
-                </div>
-                {/* row-3-end */}
-
-                {/* row-4 start*/}
-                <div class='row gx-3 my-3'>
-                  <div class='col-md-12'>
-                    <label class='small mb-2' for='inputSymptoms'>
-                      Symptoms
-                    </label>
-                    <TextField
-                      onChange={onChange}
-                      name='symptoms'
-                      id='inputSymptoms'
-                      type='text'
-                      size='small'
-                      fullWidth
-                      label='Symptoms'
-                      variant='outlined'
-                    />
-                  </div>
-                </div>
-                {/* row-4-end */}
-
                 {/* row-5-start */}
                 <label class='small mb-2' for='inputTests'>
-                  Tests
+                  Tests (if any)
                 </label>
                 {inputTests.map((x, i) => {
                   return (
@@ -361,13 +320,54 @@ const PrescriptionForm = () => {
                   );
                 })}
                 {/* row-5 -end*/}
+
+                {/* row-3 -start*/}
+                <div class='row gx-3 my-3'>
+                  <div class='col-md-12'>
+                    {/* <label class='small mb-2' for='inputDiagnosis'>
+                      Diagnosis
+                    </label> */}
+                    <TextField
+                      onChange={onChange}
+                      name='diagnosis'
+                      id='inputDiagnosis'
+                      type='text'
+                      size='small'
+                      fullWidth
+                      label='Diagnosis'
+                      variant='outlined'
+                    />
+                  </div>
+                </div>
+                {/* row-3-end */}
+
+                {/* row-4 start*/}
+                <div class='row gx-3 my-3'>
+                  <div class='col-md-12'>
+                    {/* <label class='small mb-2' for='inputSymptoms'>
+                      Symptoms
+                    </label> */}
+                    <TextField
+                      onChange={onChange}
+                      name='symptoms'
+                      id='inputSymptoms'
+                      type='text'
+                      size='small'
+                      fullWidth
+                      label='Symptoms'
+                      variant='outlined'
+                    />
+                  </div>
+                </div>
+                {/* row-4-end */}
+
                 {/* row 6 -start*/}
 
                 <div class='row gx-3 my-3'>
                   <div class='col-md-12'>
-                    <label class='small mb-2' for='inputRemarks'>
+                    {/* <label class='small mb-2' for='inputRemarks'>
                       Remarks
-                    </label>
+                    </label> */}
                     <TextField
                       onChange={onChange}
                       name='remarks'

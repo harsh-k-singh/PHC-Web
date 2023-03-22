@@ -1,6 +1,6 @@
 const AdminsDashboard = () => {
     return (
-      <div>  
+      <div style={{ position: "relative", textAlign: "center" }}>  
         <div class="card text-center" style={{width:"50%",margin:"auto"}}>
           <div class="card-header">
             Featured
