@@ -41,16 +41,7 @@ const validateadmin = (admin) => {
   return schema.validate(admin);
 };
 
-// const validatePassword = password => {
-//     const schema = new passwordValidator();
-//     schema
-//         .has().uppercase(1, 'The password should have a minimum of 1 uppercase letter')
-//         .has().lowercase(1, 'The password should have a minimum of 1 lowercase letter')
-//         .has().digits(1, 'The password should have a minimum of 1 digit');
-//     return schema.validate(password, { details: true });
-// }
-
 module.exports = {
   Admin: mongoose.model("admin", adminSchema),
   validateadmin,
-}
+};

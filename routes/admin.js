@@ -10,105 +10,49 @@ const config = require("config");
 const authAdmin = require("../middleware/authAdmin");
 const bcrypt = require("bcryptjs");
 
-// const actors = [null, Doctor, null, null, Patient];
-
-router.post("/addDoctor", authAdmin, async (req, res) => {
-  console.log("reached till addDoc");
-  const {
-    name,
-    email,
-    password,
-    phone,
-    degree,
-    birth,
-    gender,
-    employment_details,
-    timing,
-  } = req.body;
-
-  const { error } = validatedoctor(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
-  try {
-    if ((await Doctor.findOne({ email })) !== null)
-      return res.status(401).send("Email already exist");
-
-    const hashedPass = await bcrypt.hash(password, 10);
-    let doctor = new Doctor({
-      name,
-      email,
-      phone,
-      degree,
-      birth,
-      gender,
-      employment_details,
-      timing,
-      password: hashedPass,
-    });
-    await doctor.save();
-    res.status(200).send("Doctor Added");
-  } catch (error) {
-    console.log(error.message);
-    res.status(500).send("Something went wrong");
-  }
-});
-
-router.post("/addCompounder", authAdmin, async (req, res) => {
-  const {
-    name,
-    email,
-    password,
-    phone,
-    degree,
-    birth,
-    gender,
-    employment_details,
-    timing,
-  } = req.body;
-
-  const { error } = validatecompounder(req.body);
-  if (error) return res.status(400).send(error.details[0].message);
-  try {
-    if ((await Compounder.findOne({ email })) !== null)
-      return res.status(401).send("Email already exist");
-
-    const hashedPass = await bcrypt.hash(password, 10);
-    let compounder = new Compounder({
-      name,
-      email,
-      phone,
-      degree,
-      birth,
-      gender,
-      employment_details,
-      timing,
-      password: hashedPass,
-    });
-    await compounder.save();
-    res.status(200).send("Compounder Added");
-  } catch (error) {
-    console.log(error.message);
-    res.status(500).send("Something went wrong");
-  }
-});
-
-router.post("/addAdmin", authAdmin, async (req, res) => {
+// @route   POST api/admin/addActor/:role
+// @desc    Add Actor
+// @access  Private
+router.post("/addActor/:role", authAdmin, async (req, res) => {
   const { name, email, password, phone } = req.body;
+  const role = req.params.role;
 
   const { error } = validateadmin(req.body);
   if (error) return res.status(400).send(error.details[0].message);
   try {
-    if ((await Admin.findOne({ email })) !== null)
+    let User;
+    if (role === "doctor") User = Doctor;
+    else if (role === "compounder") User = Compounder;
+    else if (role === "admin") User = Admin;
+    if ((await User.findOne({ email })) !== null)
       return res.status(401).send("Email already exist");
 
     const hashedPass = await bcrypt.hash(password, 10);
-    let admin = new Admin({
+    let user = new User({
       name,
       email,
       phone,
       password: hashedPass,
     });
-    await admin.save();
-    res.status(200).send("Admin Added");
+    await user.save();
+    res.status(200).send(`${role} Added`);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Something went wrong");
+  }
+});
+
+// @route   POST api/admin/getActors
+// @desc    Get Actors
+// @access  Private
+router.get("/getActors", authAdmin, async (req, res) => {
+  try {
+    const doctors = await Doctor.find().select(
+      "name email phone degree availability -_id"
+    );
+    const compounders = await Compounder.find().select("name email phone -_id");
+    const admins = await Admin.find().select("name email phone -_id");
+    res.status(200).send({ doctors, compounders, admins });
   } catch (error) {
     console.log(error.message);
     res.status(500).send("Something went wrong");

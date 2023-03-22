@@ -10,6 +10,9 @@ const { Prescription } = require("../models/Prescription");
 const authPatient = require("../middleware/authPatient");
 const bcrypt = require("bcryptjs");
 
+// @route   POST api/patient/register
+// @desc    Register a patient
+// @access  Public
 router.post("/updateProfile", authPatient, async (req, res) => {
   const validatepatient = (patient) => {
     const schema = Joi.object({
@@ -104,6 +107,9 @@ router.post("/updateProfile", authPatient, async (req, res) => {
   }
 });
 
+// @route POST api/patient/addRelative
+// @desc Add a relative
+// @access Private
 router.post("/addRelative", authPatient, async (req, res) => {
   const { name, relation, gender, birth } = req.body;
   const { error } = validateRelative(req.body);
@@ -145,6 +151,9 @@ router.post("/addRelative", authPatient, async (req, res) => {
   }
 });
 
+// @route GET api/patient/getRelatives
+// @desc Get all relatives of the patient
+// @access Private
 router.get("/getRelatives", authPatient, async (req, res) => {
   try {
     // create an api to get the relatives of the patient
@@ -163,6 +172,9 @@ router.get("/getRelatives", authPatient, async (req, res) => {
   }
 });
 
+// @route POST api/patient/updateRelative
+// @desc Update a relative
+// @access Private
 router.post("/updateRelative", authPatient, async (req, res) => {
   const { _id, name, relation, gender, birth } = req.body;
   const form = { name, relation, gender, birth };
@@ -193,6 +205,14 @@ router.post("/updateRelative", authPatient, async (req, res) => {
     relative.birth = birth;
     await relative.save();
 
+    // update the relative details in the patient document
+    let index = patient.relative.findIndex(
+      (relative) => relative.relative_id == _id
+    );
+    patient.relative[index].name = name;
+    patient.relative[index].relation = relation;
+    patient.markModified("relative");
+    await patient.save();
     res.status(200).send(relative);
   } catch (error) {
     console.log(error.message);
@@ -200,6 +220,10 @@ router.post("/updateRelative", authPatient, async (req, res) => {
   }
 });
 
+// @route DELETE api/patient/deleteRelative
+// @desc Delete a relative
+// @access Private
+// @remarks Delete the relative only if he has no prescriptions
 router.delete("/deleteRelative", authPatient, async (req, res) => {
   const { id } = req.query;
   try {
@@ -215,6 +239,12 @@ router.delete("/deleteRelative", authPatient, async (req, res) => {
       return res
         .status(400)
         .send("You are not authorized to delete this relative");
+
+    const prescription = await Prescription.findOne({ patient_id: id });
+    if (prescription)
+      return res
+        .status(400)
+        .send("You can't delete this relative as he has some prescriptions");
     let patient = await Patient.findById(req.user.id);
     if (!patient) return res.status(404).send("Patient not found");
     patient.relative = patient.relative.filter((rel) => rel.relative_id != id);
@@ -227,14 +257,20 @@ router.delete("/deleteRelative", authPatient, async (req, res) => {
   }
 });
 
+// @route POST api/patient/getPrescription/:id
+// @desc Get all prescriptions of the patient whose id is passed
+// @access Private
+// remarks the prescriptions are modified to include the source, patient and medicine details
 router.get("/getPrescription/:id", authPatient, async (req, res) => {
   try {
     const { id } = req.params;
 
+    // fetch the prescriptions of the patient whose id is passed
     let prescriptions = await Prescription.find({
       patient_id: id,
     });
 
+    // modify the prescriptions to include the source, patient and medicine details
     let pre = [];
     for (let i = 0; i < prescriptions.length; i++) {
       let prescription = prescriptions[i];
@@ -256,16 +292,16 @@ router.get("/getPrescription/:id", authPatient, async (req, res) => {
       patient_name = patient.name;
       patient_birth = patient.birth;
       patient_gender = patient.gender;
-      
+
       let compounder_name, doctor_name;
-      if(prescription.compounder_id){
+      if (prescription.compounder_id) {
         let compounder = await Compounder.findById(prescription.compounder_id);
         compounder_name = compounder.name;
-      }
-      else if(prescription.doctor_id){
+      } else if (prescription.doctor_id) {
         let doctor = await Doctor.findById(prescription.doctor_id);
         doctor_name = doctor.name;
       }
+
       let medicines = [];
       for (let j = 0; j < prescription.medicines.length; j++) {
         let medicine = prescription.medicines[j];
@@ -277,6 +313,7 @@ router.get("/getPrescription/:id", authPatient, async (req, res) => {
         };
         medicines.push(medEntry);
       }
+
       let entry = {
         doctor_name,
         compounder_name,
@@ -296,8 +333,11 @@ router.get("/getPrescription/:id", authPatient, async (req, res) => {
       };
       pre.push(entry);
     }
+
+    // return the modified prescriptions
     res.status(200).send(pre);
   } catch (error) {
+    // return the error if any
     console.log(error.message);
     res.status(500).send("Something went wrong here");
   }
