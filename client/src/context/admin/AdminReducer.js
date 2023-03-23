@@ -25,8 +25,12 @@ const AdminReducer = (state, action) => {
       ...state,
       allMedicines:action.payload
     })
-  }
-   else if (
+  } else if(action.type===types.GET_ACTORS_SUCCESS){
+    return({
+      ...state,
+      actors:action.payload
+    })
+  } else if (
     action.type === types.ADD_ACTOR_FAILURE ||
     action.type === types.GET_MEDICINE_FAILURE ||
     action.type === types.GET_STOCK_FAILURE ||
@@ -34,7 +38,8 @@ const AdminReducer = (state, action) => {
     action.type === types.UPDATE_STOCK_FAILURE ||
     action.type === types.DELETE_STOCK_FAILURE ||
     action.type === types.GET_MEDICINE_STOCK_FAILURE||
-    action.type === types.GET_ALL_MEDICINES_FAILURE
+    action.type === types.GET_ALL_MEDICINES_FAILURE||
+    action.type === types.GET_ACTORS_FAILURE
   ) {
     return {
       ...state,

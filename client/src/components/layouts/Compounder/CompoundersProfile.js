@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import AuthContext from "../../../context/auth/AuthContext";
 import CompounderContext from "../../../context/compounder/CompounderContext";
 
 const CompoundersProfile = () => {
+  const navigate= useNavigate();
   const authContext = useContext(AuthContext);
   const compounderContext = useContext(CompounderContext);
   const { user, loadUser } = authContext;
@@ -35,6 +37,7 @@ const CompoundersProfile = () => {
     };
     updateAndRefetch();
     setEdit(false);
+    navigate("/compounder");
   };
 
   useEffect(() => {

@@ -35,7 +35,7 @@ const DoctorsProfile = () => {
     };
     updateAndRefetch();
     setEdit(false);
-    navigate("/doctor/profile");
+    navigate("/doctor");
   };
 
   useEffect(() => {

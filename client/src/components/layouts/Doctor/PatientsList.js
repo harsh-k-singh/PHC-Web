@@ -37,13 +37,13 @@ const PatientsList = () => {
           style={{ width: "30%", margin: "auto", textAlign: "center" }}
         />
       </div>
-      {allPrescription ? (
+      {allPrescription && allPrescription.length>0? (
         allPrescription.map((item, index) => {
           return <PrescriptionContent item={item} index={index} />;
         })
       ) : (
         <div
-          class='alert alert-primary align-items-center text-center'
+          class='alert alert-success align-items-center text-center my-4'
           role='alert'
           style={{ width: "60%", margin: "auto" }}
         >

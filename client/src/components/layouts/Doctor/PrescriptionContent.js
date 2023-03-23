@@ -24,12 +24,15 @@ const PrescriptionContent = (props) => {
   }, []);
   return (
     <div class='row my-4'>
-    <div class='col-xl-8' style={{ margin: "auto" }}>
-        <div class="card">
-            <div class="card-header text-center"> 
-            <div className="mx-2"style={{float:"left"}}>Roll/PF Number: {data.patient_roll_number}</div>
-             {/* <>Phone : {data.patient_phone} </> */}
-            <div className="mx-2" style={{float:"right"}}>email : {data.patient_email}</div>
+      <div class='col-xl-8' style={{ margin: "auto" }}>
+        <div class='card'>
+          <div class='card-header text-center'>
+            <div className='mx-2' style={{ float: "left" }}>
+              Roll/PF Number: {data.patient_roll_number}
+            </div>
+            {/* <>Phone : {data.patient_phone} </> */}
+            <div className='mx-2' style={{ float: "right" }}>
+              email : {data.patient_email}
             </div>
           </div>
           <div class='card-body'>
