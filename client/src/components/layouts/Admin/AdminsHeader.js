@@ -76,11 +76,15 @@ const DoctorsHeader = () => {
                   </li>
                   <li><hr class="dropdown-divider"/></li>
                   <li className="dropdown-item">
+                  <Link class={`dropdown-item  ${location.pathname==="/admin/viewAdminMedicine"?"fw-bolder":""}`} to="/admin/viewAdminMedicine">View Medicine</Link>
+                  </li>
+                  <li><hr class="dropdown-divider"/></li>
+                  <li className="dropdown-item">
                   <Link class={`dropdown-item  ${location.pathname==="/admin/addStock"?"fw-bolder":""}`} to="/admin/addStock">Add New Stock</Link>
                   </li>
                   <li><hr class="dropdown-divider"/></li>
                   <li className="dropdown-item">
-                  <Link class={`dropdown-item  ${location.pathname==="/admin/viewAdminMedicine"?"fw-bolder":""}`} to="/admin/viewAdminMedicine">View Medicine</Link>
+                  <Link class={`dropdown-item  ${location.pathname==="/admin/addMedicine"?"fw-bolder":""}`} to="/admin/addMedicine">Add Medicine</Link>
                   </li>
                 </ul>
               </li>
