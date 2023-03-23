@@ -153,6 +153,7 @@ const AdminState = (props) => {
     }
   };
 
+  // to be checked after implementing in the frontend
   const updateStock = async (formData) => {
     setLoading();
     const config = {
@@ -167,10 +168,12 @@ const AdminState = (props) => {
       dispatch({ type: types.UPDATE_STOCK_SUCCESS });
       clearLoading();
       setAlert({ message: "Stock updated successfully", type: "success" });
+      setTimeout(clearAlert, 2000);
     } catch (error) {
       console.log(error.response.data);
       clearLoading();
       setAlert({ message: error.response.data, type: "error" });
+      setTimeout(clearAlert, 2000);
     }
   };
 

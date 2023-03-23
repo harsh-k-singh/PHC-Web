@@ -77,7 +77,7 @@ const PrescriptionContent = (props) => {
                     return (
                       <p>
                         {index + 1})&emsp;{item.medicine_name}&emsp;quantity :{" "}
-                        {item.quantity}&emsp; dosage : {item.dosage}
+                        {item.quantity}&emsp; dosage : {item.dosage.frequency}{" "}
                       </p>
                     );
                   })}
