@@ -18,10 +18,10 @@ const CompounderReducer = (state, action) => {
       ...state,
       patientExists: true,
     };
-  } else if (action.type === types.GET_ALL_MEDICINES_SUCCESS) {
+  } else if (action.type === types.GET_MEDICINE_SUCCESS) {
     return {
       ...state,
-      allMedicines: action.payload,
+      medicines: action.payload,
     };
   } else if (action.type === types.GET_RELATIVES_SUCCESS) {
     return {
@@ -38,27 +38,26 @@ const CompounderReducer = (state, action) => {
       ...state,
       patientExists: null,
     };
-  } else if(action.type===types.GET_PRESCRIPTION_SUCCESS){
-    return{
+  } else if (action.type === types.GET_PRESCRIPTION_SUCCESS) {
+    return {
       ...state,
-      allPrescription:action.payload
-    }
-  }else if(action.type===types.GET_PRESCRIPTION_BY_ID_SUCCESS){
-    return{
+      allPrescription: action.payload,
+    };
+  } else if (action.type === types.GET_PRESCRIPTION_BY_ID_SUCCESS) {
+    return {
       ...state,
-      prescription:action.payload
-    }
-  }
-    else if (
+      prescription: action.payload,
+    };
+  } else if (
     action.type ===
-    (types.UPDATE_SCHEDULE_SUCCESS ||
-      types.UPDATE_PROFILE_FAILURE ||
-      types.GET_ALL_MEDICINES_FAILURE ||
-      types.UPDATE_SCHEDULE_FAILURE ||
-      types.ADD_PRESCRIPTION_FAILURE ||
-      types.GET_RELATIVES_FAILURE)|| 
-      types.GET_PRESCRIPTION_FAILURE||
-      types.GET_PRESCRIPTION_BY_ID_FAILURE
+      (types.UPDATE_SCHEDULE_SUCCESS ||
+        types.UPDATE_PROFILE_FAILURE ||
+        types.GET_ALL_MEDICINES_FAILURE ||
+        types.UPDATE_SCHEDULE_FAILURE ||
+        types.ADD_PRESCRIPTION_FAILURE ||
+        types.GET_RELATIVES_FAILURE) ||
+    types.GET_PRESCRIPTION_FAILURE ||
+    types.GET_PRESCRIPTION_BY_ID_FAILURE
   ) {
     return { ...state, error: action.payload };
   } else {

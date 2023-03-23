@@ -10,7 +10,7 @@ axios.defaults.withCredentials = true;
 const DoctorState = (props) => {
   const initialState = {
     patientExists: null,
-    allMedicines: [],
+    medicines: [],
     allPrescription: [],
     prescription: [],
     relative: [],
@@ -100,11 +100,11 @@ const DoctorState = (props) => {
     }
   };
 
-  const getAllMedicines = async () => {
-    if (state.allMedicines.length === 0) setLoading();
+  const getMedicines = async () => {
+    if (state.medicines.length == 0) setLoading();
     try {
-      const res = await axios.get(`/api/doctor/allMedicinesWithQuantity`);
-      dispatch({ type: types.GET_ALL_MEDICINES_SUCCESS, payload: res.data });
+      const res = await axios.get(`/api/doctor/getMedicine`);
+      dispatch({ type: types.GET_MEDICINE_SUCCESS, payload: res.data });
       clearLoading();
     } catch (error) {
       console.log(error.response.data);
@@ -255,7 +255,7 @@ const DoctorState = (props) => {
   return (
     <DoctorContext.Provider
       value={{
-        getAllMedicines,
+        getMedicines,
         addPrescription,
         getPrescription,
         allPrescription: state.allPrescription,
@@ -263,7 +263,7 @@ const DoctorState = (props) => {
         prescription: state.prescription,
         getRelative,
         relative: state.relative,
-        allMedicines: state.allMedicines,
+        medicines: state.medicines,
         patientExists: state.patientExists,
         updateProfile,
         updateSchedule,

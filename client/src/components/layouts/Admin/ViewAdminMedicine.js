@@ -4,15 +4,15 @@ import Select from "react-select";
 
 const ViewAdminMedicine = () => {
   const adminContext = useContext(AdminContext);
-  const { getAllMedicines, allMedicines } = adminContext;
-  const [data, setData] = useState(allMedicines);
+  const { getMedicines, medicines } = adminContext;
+  const [data, setData] = useState(medicines);
 
   const [action, setAction] = useState("viewAll");
 
   const [sortQuantity, setSortQuantity] = useState(false);
 
-  const medOptions = allMedicines
-    ? allMedicines.map((opt) => ({ label: opt.name, value: opt.name }))
+  const medOptions = medicines
+    ? medicines.map((opt) => ({ label: opt.name, value: opt.name }))
     : null;
 
   const [selectedOption, setSelectedOption] = useState(null);
@@ -20,69 +20,57 @@ const ViewAdminMedicine = () => {
     setAction("search");
     setSelectedOption(e);
   };
-  console.log("allMedicines", allMedicines);
   useEffect(() => {
     const func = async () => {
-      await getAllMedicines();
+      await getMedicines();
     };
     func();
   }, []);
   useEffect(() => {
     if (action === "viewAll") {
-      setData(allMedicines);
+      setData(medicines);
     } else if (action === "search") {
-      setData(
-        allMedicines.filter((item) => item.name === selectedOption.value)
-      );
+      setData(medicines.filter((item) => item.name === selectedOption.value));
     }
   }, [action, selectedOption]);
 
   useEffect(() => {
     if (action === "viewAll" && sortQuantity === false) {
-      setData(allMedicines);
+      setData(medicines);
     } else if (action === "viewAll" && sortQuantity === true) {
       setData(
-        allMedicines
+        medicines
           .sort((q1, q2) =>
-            q1.totalQuantity < q2.totalQuantity
-              ? 1
-              : q1.totalQuantity > q2.totalQuantity
-              ? -1
-              : 0
+            q1.quantity < q2.quantity ? 1 : q1.quantity > q2.quantity ? -1 : 0
           )
           .reverse()
       );
     } else if (action === "search" && sortQuantity === false) {
-      setData(
-        allMedicines.filter((item) => item.name === selectedOption.value)
-      );
+      setData(medicines.filter((item) => item.name === selectedOption.value));
     } else if (action === "search" && sortQuantity === true) {
       setData(
-        allMedicines
+        medicines
           .filter((item) => item.name === selectedOption.value)
           .sort((q1, q2) =>
-            q1.totalQuantity < q2.totalQuantity
-              ? 1
-              : q1.totalQuantity > q2.totalQuantity
-              ? -1
-              : 0
+            q1.quantity < q2.quantity ? 1 : q1.quantity > q2.quantity ? -1 : 0
           )
           .reverse()
       );
     }
     const func = async () => {
-      await getAllMedicines();
+      await getMedicines();
     };
     func();
-  },[action,sortQuantity,selectedOption]);
-return (
-  <div class='container-xl px-4'>
-    
-      <div style={{width:"40%",margin:"auto"}}>
-        <Select options={medOptions} 
-        placeholder="Search stock..." 
-        value={action==="search"?selectedOption:""}
-        onChange={onChange}/>
+  }, [action, sortQuantity, selectedOption]);
+  return (
+    <div class='container-xl px-4'>
+      <div style={{ width: "40%", margin: "auto" }}>
+        <Select
+          options={medOptions}
+          placeholder='Search stock...'
+          value={action === "search" ? selectedOption : ""}
+          onChange={onChange}
+        />
       </div>
       <div className='m-4 text-center'>
         <button
@@ -129,7 +117,7 @@ return (
                   <tr>
                     <th scope='row'>{index + 1}</th>
                     <td>{item.name}</td>
-                    <td>{item.totalQuantity}</td>
+                    <td>{item.quantity}</td>
                   </tr>
                 );
               })

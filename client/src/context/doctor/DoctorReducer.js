@@ -18,10 +18,10 @@ const DoctorReducer = (state, action) => {
       ...state,
       patientExists: true,
     };
-  } else if (action.type === types.GET_ALL_MEDICINES_SUCCESS) {
+  } else if (action.type === types.GET_MEDICINE_SUCCESS) {
     return {
       ...state,
-      allMedicines: action.payload,
+      medicines: action.payload,
     };
   } else if (action.type === types.GET_RELATIVES_SUCCESS) {
     return {

@@ -26,7 +26,6 @@ const stockSchema = mongoose.Schema({
   },
   seller: {
     type: String,
-    required: true,
   },
   expired: {
     type: Boolean,
@@ -42,11 +41,11 @@ const validateStock = (stock) => {
   const schema = Joi.object({
     medicine_id: Joi.string().required(),
     name: Joi.string().required(),
-    price: Joi.number().required(),
+    price: Joi.number(),
     expiry: Joi.date().required(),
     initialQuantity: Joi.number().required(),
     quantity: Joi.number(),
-    seller: Joi.string().required(),
+    seller: Joi.string(),
   });
   return schema.validate(stock);
 };

@@ -14,6 +14,41 @@ const { Medicine } = require("../models/Medicine");
 const authCompounder = require("../middleware/authCompounder");
 const bcrypt = require("bcryptjs");
 
+// function to check if stock is expired
+const isExpired = (stock) => {
+  if (new Date(stock.expiry) <= new Date()) return true;
+  return false;
+};
+
+// @route GET api/admin/getMedicine
+// @desc Get Medicine
+// @access Private
+router.get("/getMedicine", authCompounder, async (req, res) => {
+  try {
+    // check if any stock expired and substract quantity from medicine
+    const stocks = await Stock.find();
+    for (let i = 0; i < stocks.length; i++) {
+      let stock = stocks[i];
+      if (!stock.expired && isExpired(stock)) {
+        stock.expired = true;
+
+        // substract quantity from medicine
+        const medicine = await Medicine.findById(stock.medicine_id);
+        medicine.quantity -= stock.quantity;
+        await medicine.save();
+
+        await stock.save();
+      }
+    }
+
+    const medicines = await Medicine.find();
+    res.status(200).send(medicines);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Something went wrong");
+  }
+});
+
 router.post("/updateProfile", authCompounder, async (req, res) => {
   const validatecompounder = (compounder) => {
     const schema = Joi.object({
@@ -468,13 +503,12 @@ router.get("/getPrescription/:id", authCompounder, async (req, res) => {
       patient_name = patient.name;
       patient_birth = patient.birth;
       patient_gender = patient.gender;
-      
+
       let compounder_name, doctor_name;
-      if(prescription.compounder_id){
+      if (prescription.compounder_id) {
         let compounder = await Compounder.findById(prescription.compounder_id);
         compounder_name = compounder.name;
-      }
-      else if(prescription.doctor_id){
+      } else if (prescription.doctor_id) {
         let doctor = await Doctor.findById(prescription.doctor_id);
         doctor_name = doctor.name;
       }

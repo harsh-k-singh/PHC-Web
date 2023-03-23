@@ -14,6 +14,41 @@ const { Medicine } = require("../models/Medicine");
 const authDoctor = require("../middleware/authDoctor");
 const bcrypt = require("bcryptjs");
 
+// function to check if stock is expired
+const isExpired = (stock) => {
+  if (new Date(stock.expiry) <= new Date()) return true;
+  return false;
+};
+
+// @route GET api/admin/getMedicine
+// @desc Get Medicine
+// @access Private
+router.get("/getMedicine", authDoctor, async (req, res) => {
+  try {
+    // check if any stock expired and substract quantity from medicine
+    const stocks = await Stock.find();
+    for (let i = 0; i < stocks.length; i++) {
+      let stock = stocks[i];
+      if (!stock.expired && isExpired(stock)) {
+        stock.expired = true;
+
+        // substract quantity from medicine
+        const medicine = await Medicine.findById(stock.medicine_id);
+        medicine.quantity -= stock.quantity;
+        await medicine.save();
+
+        await stock.save();
+      }
+    }
+
+    const medicines = await Medicine.find();
+    res.status(200).send(medicines);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Something went wrong");
+  }
+});
+
 router.post("/updateProfile", authDoctor, async (req, res) => {
   const validatedoctor = (doctor) => {
     const schema = Joi.object({
@@ -192,38 +227,6 @@ router.get("/getRelative", authDoctor, async (req, res) => {
     };
     relative.unshift(ent);
     res.status(200).send(relative);
-  } catch (error) {
-    console.log(error.message);
-    res.status(500).send("Something went wrong");
-  }
-});
-
-router.get("/allMedicines", authDoctor, async (req, res) => {
-  try {
-    const medicines = await Medicine.find();
-    let allMedicines = [];
-    for (let i = 0; i < medicines.length; i++) {
-      let medicine = medicines[i];
-      let totalQuantity = 0;
-      for (let j = 0; j < medicine.availableStock.length; j++) {
-        let stock_id = medicine.availableStock[j];
-        let stock = await Stock.findById(stock_id);
-        const isExpired = (stock) => {
-          if (new Date(stock.expiry) <= new Date()) return true;
-          return false;
-        };
-        if (stock.quantity === 0 || isExpired(stock)) {
-          medicine.deadStock.push(stock_id);
-          medicine.availableStock.splice(j, 1);
-          await medicine.save();
-          j--;
-          continue;
-        }
-        totalQuantity += stock.quantity;
-      }
-      allMedicines.push({ name: medicine.name, totalQuantity });
-    }
-    res.status(200).send(allMedicines);
   } catch (error) {
     console.log(error.message);
     res.status(500).send("Something went wrong");
