@@ -12,7 +12,6 @@ const AdminState = (props) => {
     medicines: [],
     specific_medicine_stock: null,
     stocks: [],
-    allMedicines: [],
     actors: {},
   };
 
@@ -82,6 +81,29 @@ const AdminState = (props) => {
       setTimeout(clearAlert, 2000);
     }
   };
+
+  const addMedicine = async (formData) => {
+    setLoading();
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    try {
+      const res = await axios.post(`/api/admin/addMedicine`, formData, config);
+      console.log(res.data);
+      await getMedicines();
+      clearLoading();
+      setAlert({ message: "Medicine added successfully", type: "success" });
+      setTimeout(clearAlert, 2000);
+    } catch (error) {
+      console.log(error.response.data);
+      clearLoading();
+      setAlert({ message: error.response.data, type: "error" });
+      setTimeout(clearAlert, 2000);
+    }
+  };
+
   const getMedicines = async () => {
     if (state.medicines.length == 0) setLoading();
     try {
@@ -92,20 +114,6 @@ const AdminState = (props) => {
       console.log(error.response.data);
       clearLoading();
       setAlert({ message: error.response.data, type: "error" });
-    }
-  };
-
-  const getStock = async () => {
-    if (state.stocks.length == 0) setLoading();
-    try {
-      const res = await axios.get(`/api/admin/getStock`);
-      dispatch({ type: types.GET_STOCK_SUCCESS, payload: res.data });
-      clearLoading();
-    } catch (error) {
-      console.log(error.response.data);
-      clearLoading();
-      setAlert({ message: error.response.data, type: "error" });
-      setTimeout(clearAlert, 2000);
     }
   };
 
@@ -131,7 +139,22 @@ const AdminState = (props) => {
     }
   };
 
+  const getStock = async () => {
+    if (state.stocks.length == 0) setLoading();
+    try {
+      const res = await axios.get(`/api/admin/getStock`);
+      dispatch({ type: types.GET_STOCK_SUCCESS, payload: res.data });
+      clearLoading();
+    } catch (error) {
+      console.log(error.response.data);
+      clearLoading();
+      setAlert({ message: error.response.data, type: "error" });
+      setTimeout(clearAlert, 2000);
+    }
+  };
+
   const updateStock = async (formData) => {
+    setLoading();
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -142,52 +165,44 @@ const AdminState = (props) => {
       console.log(res.data);
       await getStock();
       dispatch({ type: types.UPDATE_STOCK_SUCCESS });
+      clearLoading();
+      setAlert({ message: "Stock updated successfully", type: "success" });
     } catch (error) {
-      dispatch({
-        type: types.UPDATE_STOCK_FAILURE,
-        payload: error.response.data,
-      });
       console.log(error.response.data);
-      setTimeout(clearError, 2000);
+      clearLoading();
+      setAlert({ message: error.response.data, type: "error" });
     }
   };
 
   const deleteStock = async (id) => {
+    setLoading();
     try {
       const res = await axios.delete(`/api/admin/deleteStock/${id}`);
-      console.log(res.data);
       await getStock();
       dispatch({ type: types.DELETE_STOCK_SUCCESS });
+      clearLoading();
+      setAlert({ message: "Stock deleted successfully", type: "success" });
     } catch (error) {
-      dispatch({
-        type: types.DELETE_STOCK_FAILURE,
-        payload: error.response.data,
-      });
       console.log(error.response.data);
-      setTimeout(clearError, 2000);
+      clearLoading();
+      setAlert({ message: error.response.data, type: "error" });
     }
-  };
-
-  const clearError = () => {
-    dispatch({ type: types.CLEAR_ERROR });
   };
 
   return (
     <AdminContext.Provider
       value={{
         medicines: state.medicines,
-        allMedicines: state.allMedicines,
         stocks: state.stocks,
-        error: state.error,
+        actors: state.actors,
         addActor,
         getActors,
-        actors: state.actors,
+        addMedicine,
         getMedicines,
-        getStock,
         addStock,
+        getStock,
         updateStock,
         deleteStock,
-        clearError,
       }}
     >
       {props.children}
