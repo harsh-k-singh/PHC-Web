@@ -12,48 +12,48 @@ const AdminsDashboard = () => {
   }, []);
 
   const renderActors = () => {
-    if (actors) {
-      if (actorType === "doctor") {
-        return actors.doctors.map((item, index) => {
-          return (
-            <tr>
-              <th scope='row'>{index + 1}</th>
-              <td>{item.name}</td>
-              <td>{item.degree ? item.degree : "NA"}</td>
-              <td>{item.email}</td>
-              <td>{item.phone ? item.phone : "NA"}</td>
-              <td
-                class={`${item.availability ? "text-success" : "text-danger"}`}
-              >
-                {item.availability ? "Available" : "Unavailable"}
-              </td>
-            </tr>
-          );
-        });
-      } else if (actorType === "compounder") {
-        return actors.compounders.map((item, index) => {
-          return (
-            <tr>
-              <th scope='row'>{index + 1}</th>
-              <td>{item.name}</td>
-              <td>{item.email}</td>
-              <td>{item.phone ? item.phone : "NA"}</td>
-            </tr>
-          );
-        });
-      } else {
-        return actors.admins.map((item, index) => {
-          return (
-            <tr>
-              <th scope='row'>{index + 1}</th>
-              <td>{item.name}</td>
-              <td>{item.email}</td>
-              <td>{item.phone ? item.phone : "NA"}</td>
-            </tr>
-          );
-        });
-      }
-    }
+    // if (actors) {
+    //   if (actorType === "doctor") {
+    //     return actors.doctors.map((item, index) => {
+    //       return (
+    //         <tr>
+    //           <th scope='row'>{index + 1}</th>
+    //           <td>{item.name}</td>
+    //           <td>{item.degree ? item.degree : "NA"}</td>
+    //           <td>{item.email}</td>
+    //           <td>{item.phone ? item.phone : "NA"}</td>
+    //           <td
+    //             class={`${item.availability ? "text-success" : "text-danger"}`}
+    //           >
+    //             {item.availability ? "Available" : "Unavailable"}
+    //           </td>
+    //         </tr>
+    //       );
+    //     });
+    //   } else if (actorType === "compounder") {
+    //     return actors.compounders.map((item, index) => {
+    //       return (
+    //         <tr>
+    //           <th scope='row'>{index + 1}</th>
+    //           <td>{item.name}</td>
+    //           <td>{item.email}</td>
+    //           <td>{item.phone ? item.phone : "NA"}</td>
+    //         </tr>
+    //       );
+    //     });
+    //   } else {
+    //     return actors.admins.map((item, index) => {
+    //       return (
+    //         <tr>
+    //           <th scope='row'>{index + 1}</th>
+    //           <td>{item.name}</td>
+    //           <td>{item.email}</td>
+    //           <td>{item.phone ? item.phone : "NA"}</td>
+    //         </tr>
+    //       );
+    //     });
+    //   }
+    // }
   };          
     return (
       <div className='container'>
