@@ -6,12 +6,12 @@ const AdminsProfile = () => {
   const { user } = authContext;
 
   const [edit, setEdit] = useState(false);
-  const onEdit = () => {
-    setEdit(true);
-  };
-  const onSave = () => {
-    setEdit(false);
-  };
+  // const onEdit = () => {
+  //   setEdit(true);
+  // };
+  // const onSave = () => {
+  //   setEdit(false);
+  // };
 
   const [form, setForm] = useState({
     email: "",
@@ -37,7 +37,7 @@ const AdminsProfile = () => {
           <div class='card mb-4'>
             <div class='card-header'>
               Account Details
-              <div className='ms-auto' style={{ float: "right" }}>
+              {/* <div className='ms-auto' style={{ float: "right" }}>
                 {" "}
                 {edit ? (
                   <i
@@ -52,7 +52,7 @@ const AdminsProfile = () => {
                     style={{ color: "blue" }}
                   ></i>
                 )}
-              </div>
+              </div> */}
             </div>
             <div class='card-body'>
               <form>

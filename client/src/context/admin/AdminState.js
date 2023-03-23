@@ -13,6 +13,7 @@ const AdminState = (props) => {
     specific_medicine_stock: null,
     stocks: [],
     allMedicines: [],
+    actors: {},
   };
 
   const { setAlert, clearAlert, setLoading, clearLoading } =
@@ -64,6 +65,23 @@ const AdminState = (props) => {
     }
   };
 
+  const getActors = async () => {
+    setLoading();
+    try {
+      const res = await axios.get(`/api/admin/getActors`);
+      dispatch({ type: types.GET_ACTORS_SUCCESS, payload: res.data });
+      clearLoading();
+    } catch (error) {
+      console.log(error.response.data);
+      clearLoading();
+      dispatch({
+        type: types.GET_ACTORS_FAILURE,
+        payload: error.response.data,
+      });
+      // setAlert({ message: error.response.data, type: "error" });
+      setTimeout(clearAlert, 2000);
+    }
+  };
   const getMedicines = async () => {
     if (state.medicines.length == 0) setLoading();
     try {
@@ -162,6 +180,8 @@ const AdminState = (props) => {
         stocks: state.stocks,
         error: state.error,
         addActor,
+        getActors,
+        actors: state.actors,
         getMedicines,
         getStock,
         addStock,

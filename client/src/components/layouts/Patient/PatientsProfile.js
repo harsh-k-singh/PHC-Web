@@ -40,7 +40,7 @@ const PatientsProfile = () => {
     };
     updateAndRefetch();
     setEdit(false);
-    navigate("/patient/profile");
+    navigate("/patient");
   };
 
   useEffect(() => {

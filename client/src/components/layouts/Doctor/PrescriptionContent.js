@@ -30,7 +30,7 @@ const PrescriptionContent = (props) => {
             <div className='mx-2' style={{ float: "left" }}>
               Roll/PF Number: {data.patient_roll_number}
             </div>
-            <>Phone : {data.patient_phone} </>
+            {/* <>Phone : {data.patient_phone} </> */}
             <div className='mx-2' style={{ float: "right" }}>
               email : {data.patient_email}
             </div>
