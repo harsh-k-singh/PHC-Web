@@ -6,19 +6,49 @@ const medicineSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  availableStock: {
-    type: Array,
-    default: [],
+  quantity: {
+    type: Number,
+    default: 0,
   },
-  deadStock: {
-    type: Array,
-    default: [],
+  type: {
+    type: String,
+    required: true,
+  },
+  category: {
+    type: String,
+    required: true,
+  },
+  composition: {
+    type: String,
+  },
+  company: {
+    type: String,
+  },
+  description: {
+    type: String,
   },
 });
 
 const validateMedicine = (medicine) => {
   const schema = Joi.object({
     name: Joi.string().required(),
+    type: Joi.string()
+      .required()
+      .valid(
+        "Tablet",
+        "Capsule",
+        "Syrup",
+        "Injection",
+        "Drops",
+        "Cream",
+        "Ointment",
+        "Powder",
+        "Other"
+      ),
+    category: Joi.string().required().valid("Generic", "Brand"),
+    company: Joi.string(),
+    composition: Joi.string(),
+    description: Joi.string(),
   });
   return schema.validate(medicine);
 };

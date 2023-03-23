@@ -270,29 +270,11 @@ router.post("/addPrescription", authDoctor, async (req, res) => {
       stocks: [],
     };
 
-    // call the function to check if the medicine is available in sufficient quantity
-    let totalQuantity = 0;
-    for (let i = 0; i < medicine.availableStock.length; i++) {
-      let stock_id = medicine.availableStock[i];
-      let stock = await Stock.findById(stock_id);
-      const isExpired = (stock) => {
-        if (new Date(stock.expiry) <= new Date()) return true;
-        return false;
-      };
-
-      if (stock.quantity === 0 || isExpired(stock)) {
-        medicine.deadStock.push(stock_id);
-        medicine.availableStock.splice(i, 1);
-        await medicine.save();
-        i--;
-        continue;
-      }
-      totalQuantity += stock.quantity;
-    }
-    if (totalQuantity < req_quantity)
+    // check if the medicine is available in sufficient quantity
+    if (medicine.quantity < req_quantity)
       return res
         .status(400)
-        .send("Medicine not available in sufficient quantity");
+        .send(`${medicine} not available in sufficient quantity`);
 
     // find the stocks from the available stocks of the medicine
     for (

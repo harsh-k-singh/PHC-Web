@@ -1,14 +1,18 @@
 const express = require("express");
 const router = express.Router();
-const Joi = require("joi");
+const authAdmin = require("../middleware/authAdmin");
+const bcrypt = require("bcryptjs");
 const { Doctor, validatedoctor } = require("../models/Doctor");
 const { Compounder, validatecompounder } = require("../models/Compounder");
 const { Admin, validateadmin } = require("../models/Admin");
 const { Stock, validateStock } = require("../models/Stock");
 const { Medicine, validateMedicine } = require("../models/Medicine");
-const config = require("config");
-const authAdmin = require("../middleware/authAdmin");
-const bcrypt = require("bcryptjs");
+
+// function to check if stock is expired
+const isExpired = (stock) => {
+  if (new Date(stock.expiry) <= new Date()) return true;
+  return false;
+};
 
 // @route   POST api/admin/addActor/:role
 // @desc    Add Actor
@@ -35,7 +39,7 @@ router.post("/addActor/:role", authAdmin, async (req, res) => {
       password: hashedPass,
     });
     await user.save();
-    res.status(200).send(`${role} Added`);
+    res.status(200).send(`${role} added`);
   } catch (error) {
     console.log(error.message);
     res.status(500).send("Something went wrong");
@@ -59,26 +63,93 @@ router.get("/getActors", authAdmin, async (req, res) => {
   }
 });
 
-router.post("/addStock", authAdmin, async (req, res) => {
-  const { name, price, expiry, quantity, seller } = req.body;
-  const { error } = validateStock(req.body);
+// @route   POST api/admin/addMedicine
+// @desc    Add Medicine
+// @access  Private
+router.post("/addMedicine", authAdmin, async (req, res) => {
+  const { name, type, category, description, composition, company } = req.body;
+  const { error } = validateMedicine(req.body);
   if (error) return res.status(400).send(error.details[0].message);
   try {
-    let medicine = await Medicine.findOne({ name });
-    if (medicine === null) {
-      medicine = new Medicine({ name });
-      await medicine.save();
+    const medicine = new Medicine({
+      name,
+      type,
+      category,
+      description,
+      composition,
+      company,
+    });
+    await medicine.save();
+    res.status(200).send("Medicine Added");
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Something went wrong");
+  }
+});
+
+// @route GET api/admin/getMedicine
+// @desc Get Medicine
+// @access Private
+router.get("/getMedicine", authAdmin, async (req, res) => {
+  try {
+    // check if any stock expired and substract quantity from medicine
+    const stocks = await Stock.find();
+    for (let i = 0; i < stocks.length; i++) {
+      let stock = stocks[i];
+      if (!stock.expired && isExpired(stock)) {
+        stock.expired = true;
+
+        // substract quantity from medicine
+        const medicine = await Medicine.findById(stock.medicine_id);
+        medicine.quantity -= stock.quantity;
+        await medicine.save();
+
+        await stock.save();
+      }
     }
+
+    const medicines = await Medicine.find();
+    res.status(200).send(medicines);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Something went wrong");
+  }
+});
+
+// @route   POST api/admin/addStock
+// @desc    Add Stock
+// @access  Private
+router.post("/addStock", authAdmin, async (req, res) => {
+  const { medicine_id, name, price, expiry, quantity, seller } = req.body;
+  const initialQuantity = quantity;
+
+  const { error } = validateStock({
+    medicine_id,
+    name,
+    price,
+    expiry,
+    initialQuantity,
+    quantity,
+    seller,
+  });
+  if (error) return res.status(400).send(error.details[0].message);
+
+  try {
+    let medicine = await Medicine.findById(medicine_id);
+    if (!medicine) return res.status(400).send("Medicine not found");
+    if (medicine.name !== name)
+      return res.status(400).send("Medicine name does not match");
     let stock = new Stock({
+      medicine_id,
       name,
       price,
       expiry,
+      initialQuantity,
       quantity,
       seller,
-      medicine_id: medicine._id,
     });
+    medicine.quantity += initialQuantity;
     await stock.save();
-    medicine.availableStock.push(stock._id);
     await medicine.save();
     res.status(200).send("Stock Added");
   } catch (error) {
@@ -87,16 +158,9 @@ router.post("/addStock", authAdmin, async (req, res) => {
   }
 });
 
-router.get("/getMedicine", authAdmin, async (req, res) => {
-  try {
-    const medicine = await Medicine.find();
-    res.status(200).send(medicine);
-  } catch (error) {
-    console.log(error.message);
-    res.status(500).send("Something went wrong");
-  }
-});
-
+// @route   POST api/admin/getStock
+// @desc    Get Stock
+// @access  Private
 router.get("/getStock", authAdmin, async (req, res) => {
   try {
     const stock = await Stock.find();
@@ -107,32 +171,30 @@ router.get("/getStock", authAdmin, async (req, res) => {
   }
 });
 
-router.get("/getMedicineStock/:name", authAdmin, async (req, res) => {
-  try {
-    console.log(req.query);
-    const stock = await Stock.find({ name: req.params.name });
-    // stock.sort((a, b) => {
-    //   return a.expiry - b.expiry;
-    // });
-    res.status(200).send(stock);
-  } catch (error) {
-    console.log(error.message);
-    res.status(500).send("Something went wrong");
-  }
-});
-
+// @route   POST api/admin/updateStock
+// @desc    Update Stock
+// @access  Private
 router.post("/updateStock", authAdmin, async (req, res) => {
   const { id, name, price, expiry, quantity, seller } = req.body;
   try {
     const stock = await Stock.findById(id);
     if (!stock) return res.status(404).send("Stock not found");
     if (name !== stock.name) {
-      res.status(400).send("Name cannot be changed");
+      return res.status(400).send("Name cannot be changed");
+    }
+    if (String(new Date(expiry)) !== String(new Date(stock.expiry))) {
+      return res.status(400).send("Expiry cannot be changed");
     }
     stock.price = price;
-    stock.expiry = expiry;
-    stock.quantity = quantity;
     stock.seller = seller;
+
+    if (quantity != stock.quantity) {
+      const medicine = await Medicine.findById(stock.medicine_id);
+      medicine.quantity = medicine.quantity - stock.quantity + quantity;
+      stock.quantity = quantity;
+      await medicine.save();
+    }
+
     await stock.save();
     res.status(200).send("Stock Updated");
   } catch (error) {
@@ -141,19 +203,16 @@ router.post("/updateStock", authAdmin, async (req, res) => {
   }
 });
 
+// @route   POST api/admin/deleteStock
+// @desc    Delete Stock
+// @access  Private
 router.delete("/deleteStock", authAdmin, async (req, res) => {
   const { id } = req.query;
   try {
     const stock = await Stock.findById(id);
     if (!stock) return res.status(404).send("Stock not found");
-    const medicine = await Medicine.findOne({ name: stock.name });
-    medicine.availableStock = medicine.availableStock.filter((stock_id) => {
-      return stock_id != id;
-    });
-    console.log(medicine.availableStock);
-    medicine.deadStock = medicine.deadStock.filter((stock_id) => {
-      return stock_id !== id;
-    });
+    const medicine = await Medicine.findById(stock.medicine_id);
+    medicine.quantity -= stock.quantity;
     await medicine.save();
     await stock.remove();
     res.status(200).send("Stock Deleted");
@@ -163,6 +222,53 @@ router.delete("/deleteStock", authAdmin, async (req, res) => {
   }
 });
 
+// not required
+router.get("/allMedicinesWithQuantity", authAdmin, async (req, res) => {
+  try {
+    const medicines = await Medicine.find();
+
+    let allMedicinesWithQuantity = [];
+    for (let i = 0; i < medicines.length; i++) {
+      let medicine = medicines[i];
+      let totalQuantity = 0;
+      for (let j = 0; j < medicine.availableStock.length; j++) {
+        let stock_id = medicine.availableStock[j];
+        let stock = await Stock.findById(stock_id);
+        const isExpired = (stock) => {
+          if (new Date(stock.expiry) <= new Date()) return true;
+          return false;
+        };
+        if (stock.quantity === 0 || isExpired(stock)) {
+          medicine.deadStock.push(stock_id);
+          medicine.availableStock.splice(j, 1);
+          await medicine.save();
+          j--;
+          continue;
+        }
+        totalQuantity += stock.quantity;
+      }
+      allMedicinesWithQuantity.push({ name: medicine.name, totalQuantity });
+    }
+    res.status(200).send(allMedicinesWithQuantity);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Something went wrong");
+  }
+});
+
+// not used
+router.get("/getMedicineStock/:name", authAdmin, async (req, res) => {
+  try {
+    console.log(req.query);
+    const stock = await Stock.find({ name: req.params.name });
+    res.status(200).send(stock);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Something went wrong");
+  }
+});
+
+// not used
 router.get("/totalQuantity/:name", authAdmin, async (req, res) => {
   const { name } = req.params;
   try {
@@ -187,38 +293,6 @@ router.get("/totalQuantity/:name", authAdmin, async (req, res) => {
       totalQuantity += stock.quantity;
     }
     res.status(200).send({ totalQuantity });
-  } catch (error) {
-    console.log(error.message);
-    res.status(500).send("Something went wrong");
-  }
-});
-
-router.get("/allMedicines", authAdmin, async (req, res) => {
-  try {
-    const medicines = await Medicine.find();
-    let allMedicines = [];
-    for (let i = 0; i < medicines.length; i++) {
-      let medicine = medicines[i];
-      let totalQuantity = 0;
-      for (let j = 0; j < medicine.availableStock.length; j++) {
-        let stock_id = medicine.availableStock[j];
-        let stock = await Stock.findById(stock_id);
-        const isExpired = (stock) => {
-          if (new Date(stock.expiry) <= new Date()) return true;
-          return false;
-        };
-        if (stock.quantity === 0 || isExpired(stock)) {
-          medicine.deadStock.push(stock_id);
-          medicine.availableStock.splice(j, 1);
-          await medicine.save();
-          j--;
-          continue;
-        }
-        totalQuantity += stock.quantity;
-      }
-      allMedicines.push({ name: medicine.name, totalQuantity });
-    }
-    res.status(200).send(allMedicines);
   } catch (error) {
     console.log(error.message);
     res.status(500).send("Something went wrong");

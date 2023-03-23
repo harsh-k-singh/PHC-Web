@@ -103,7 +103,7 @@ const DoctorState = (props) => {
   const getAllMedicines = async () => {
     if (state.allMedicines.length === 0) setLoading();
     try {
-      const res = await axios.get(`/api/doctor/allMedicines`);
+      const res = await axios.get(`/api/doctor/allMedicinesWithQuantity`);
       dispatch({ type: types.GET_ALL_MEDICINES_SUCCESS, payload: res.data });
       clearLoading();
     } catch (error) {

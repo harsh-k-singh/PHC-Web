@@ -93,24 +93,10 @@ const AdminState = (props) => {
     }
   };
 
-  const getStockByMedicine = async (name) => {
-    try {
-      const res = await axios.get(`/api/admin/getStock/${name}`);
-      dispatch({ type: types.GET_MEDICINE_STOCK_SUCCESS, payload: res.data });
-    } catch (error) {
-      dispatch({
-        type: types.GET_MEDICINE_STOCK_FAILURE,
-        payload: error.response.data,
-      });
-      console.log(error.response.data);
-      setTimeout(clearError, 2000);
-    }
-  };
-
   const getAllMedicines = async () => {
     if (state.allMedicines.length == 0) setLoading();
     try {
-      const res = await axios.get(`/api/admin/allMedicines`);
+      const res = await axios.get(`/api/admin/allMedicinesWithQuantity`);
       dispatch({ type: types.GET_ALL_MEDICINES_SUCCESS, payload: res.data });
       clearLoading();
     } catch (error) {
@@ -195,7 +181,6 @@ const AdminState = (props) => {
         addActor,
         getMedicine,
         getStock,
-        getStockByMedicine,
         addStock,
         updateStock,
         deleteStock,
