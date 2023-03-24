@@ -148,7 +148,7 @@ router.post("/addStock", authAdmin, async (req, res) => {
       quantity,
       seller,
     });
-    medicine.quantity += initialQuantity;
+    medicine.quantity += Number(initialQuantity);
     await stock.save();
     await medicine.save();
     res.status(200).send("Stock Added");
@@ -185,13 +185,18 @@ router.post("/updateStock", authAdmin, async (req, res) => {
     if (String(new Date(expiry)) !== String(new Date(stock.expiry))) {
       return res.status(400).send("Expiry cannot be changed");
     }
+    if (quantity > stock.initialQuantity) {
+      return res
+        .status(400)
+        .send("Quantity cannot be greater than initial quantity");
+    }
     stock.price = price;
     stock.seller = seller;
 
     if (quantity != stock.quantity) {
       const medicine = await Medicine.findById(stock.medicine_id);
-      medicine.quantity = medicine.quantity - stock.quantity + quantity;
-      stock.quantity = quantity;
+      medicine.quantity = medicine.quantity - stock.quantity + Number(quantity);
+      stock.quantity = Number(quantity);
       await medicine.save();
     }
 

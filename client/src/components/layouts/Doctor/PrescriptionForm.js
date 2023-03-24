@@ -17,26 +17,22 @@ const PrescriptionForm = () => {
     }
   }, [back]);
 
-  const {
-    getAllMedicines,
-    allMedicines,
-    getRelative,
-    relative,
-    addPrescription,
-  } = doctorContext;
-  // const medOptions = allMedicines
-  //   ? allMedicines.map((opt) => ({ label: opt.name, value: opt.name }))
+  const { getMedicines, medicines, getRelative, relative, addPrescription } =
+    doctorContext;
+  // const medOptions = medicines
+  //   ? medicines.map((opt) => ({ label: opt.name, value: opt.name }))
   //   : null;
   // const [selectedOption, setSelectedOption] = useState([null]);
 
   const [medicineList, setMedicineList] = useState(
-    allMedicines.map((med) => {
-      return med.name;
+    medicines.map((med) => {
+      const medName = med.type + " " + med.name;
+      return medName;
     })
   );
   // const editSearchTerm = (e) => {
   //   const { value } = e.target;
-  //   const medicineList = allMedicines.map((med) => {
+  //   const medicineList = medicines.map((med) => {
   //     return med.name.toLowerCase();
   //   });
   //   setMedicineList(medicineList);
@@ -54,7 +50,15 @@ const PrescriptionForm = () => {
   });
 
   const [inputMedicine, setInputMedicine] = useState([
-    { name: "", quantity: "", dosage: "" },
+    {
+      name: "",
+      quantity: "",
+      dosage: {
+        frequency: "",
+        amount: "",
+        dosage_time: "",
+      },
+    },
   ]);
   const [inputTests, setInputTests] = useState([{ test: "" }]);
 
@@ -124,7 +128,7 @@ const PrescriptionForm = () => {
   useEffect(() => {
     const func = async () => {
       await getRelative(roll_number);
-      await getAllMedicines();
+      await getMedicines();
     };
     func();
   }, []);
@@ -132,10 +136,10 @@ const PrescriptionForm = () => {
   useEffect(() => {
     const func = async () => {
       await getRelative(roll_number);
-      await getAllMedicines();
+      await getMedicines();
     };
     func();
-  }, [allMedicines]);
+  }, [medicines]);
 
   return (
     <div class='container-xl px-4'>
@@ -194,11 +198,13 @@ const PrescriptionForm = () => {
                       <option selected value={""}>
                         Select family member
                       </option>
-                      {relative.map((rel) => (
-                        <option value={rel.relative_id}>
-                          {rel.name}--{rel.relation}
-                        </option>
-                      ))}
+                      {relative
+                        ? relative.map((rel) => (
+                            <option value={rel.relative_id}>
+                              {rel.name}--{rel.relation}
+                            </option>
+                          ))
+                        : null}
                     </select>
                   </div>
                 </div>
@@ -206,78 +212,79 @@ const PrescriptionForm = () => {
                 <label class='small mb-1' for='inputMedicine'>
                   Medicine
                 </label>
-                {inputMedicine.map((x, i) => {
-                  return (
-                    <div class='row gx-6 my-2'>
-                      <div class='col-md-4'>
-                        <Autocomplete
-                          autoComplete
-                          autoHighlight
-                          freeSolo
-                          name='name'
-                          onChange={(e, value) => {
-                            const list = [...inputMedicine];
-                            list[i].name = value;
-                            setInputMedicine(list);
-                            console.log(inputMedicine);
-                          }}
-                          options={medicineList}
-                          renderInput={(data) => (
+                {inputMedicine
+                  ? inputMedicine.map((x, i) => {
+                      return (
+                        <div class='row gx-6 my-2'>
+                          <div class='col-md-4'>
+                            <Autocomplete
+                              autoComplete
+                              autoHighlight
+                              freeSolo
+                              name='name'
+                              onChange={(e, value) => {
+                                const list = [...inputMedicine];
+                                list[i].name = value;
+                                setInputMedicine(list);
+                              }}
+                              options={medicineList}
+                              renderInput={(data) => (
+                                <TextField
+                                  {...data}
+                                  variant='outlined'
+                                  label='Medicine Name'
+                                  size='small'
+                                  fullWidth
+                                />
+                              )}
+                            />
+                          </div>
+                          <div class='col-md-2'>
                             <TextField
-                              {...data}
+                              type='number'
+                              InputProps={{ inputProps: { min: 1 } }}
                               variant='outlined'
-                              label='Medicine Name'
+                              label='Quantity'
                               size='small'
                               fullWidth
+                              name='quantity'
+                              value={x.quantity}
+                              onChange={(e) => handleInputChange(e, i)}
                             />
-                          )}
-                        />
-                      </div>
-                      <div class='col-md-2'>
-                        <TextField
-                          type='number'
-                          InputProps={{ inputProps: { min: 1 } }}
-                          variant='outlined'
-                          label='Quantity'
-                          size='small'
-                          fullWidth
-                          name='quantity'
-                          value={x.quantity}
-                          onChange={(e) => handleInputChange(e, i)}
-                        />
-                      </div>
-                      <div class='col-md-5'>
-                        <TextField
-                          type='text'
-                          variant='outlined'
-                          label='Dosage'
-                          size='small'
-                          fullWidth
-                          name='dosage'
-                          value={x.dosage}
-                          onChange={(e) => handleInputChange(e, i)}
-                        />
-                      </div>
+                          </div>
+                          <div class='col-md-5'>
+                            <TextField
+                              type='text'
+                              variant='outlined'
+                              label='Dosage'
+                              size='small'
+                              fullWidth
+                              name='dosage'
+                              value={x.dosage}
+                              onChange={(e) => handleInputChange(e, i)}
+                            />
+                          </div>
 
-                      <div className='col-md-1'>
-                        {inputMedicine.length !== 1 && (
-                          <i
-                            class='fa-solid fa-lg fa-circle-minus mx-1 my-1'
-                            style={{ color: "#DC4C64" }}
-                            onClick={() => handleRemoveClick(i)}
-                          ></i>
-                        )}
-                        {inputMedicine.length - 1 === i && (
-                          <i
-                            class='fa-solid fa-lg fa-circle-plus mx-1 my-1'
-                            style={{ color: "green" }}
-                            onClick={handleAddClick}
-                          ></i>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
+                          <div className='col-md-1'>
+                            {inputMedicine.length !== 1 && (
+                              <i
+                                class='fa-solid fa-lg fa-circle-minus mx-1 my-1'
+                                style={{ color: "#DC4C64" }}
+                                onClick={() => handleRemoveClick(i)}
+                              ></i>
+                            )}
+                            {inputMedicine.length - 1 === i && (
+                              <i
+                                class='fa-solid fa-lg fa-circle-plus mx-1 my-1'
+                                style={{ color: "green" }}
+                                onClick={handleAddClick}
+                              ></i>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })
+                  : null}
                 {/* row-2-end */}
                 {/* row-5-start */}
                 <label class='small mb-2' for='inputTests'>

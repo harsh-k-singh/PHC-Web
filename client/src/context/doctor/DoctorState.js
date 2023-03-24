@@ -23,20 +23,17 @@ const DoctorState = (props) => {
 
   const updateProfile = async (formData) => {
     setLoading();
-    console.log("updateProfile called...");
     const config = {
       headers: {
         "Content-Type": "application/json",
       },
     };
     try {
-      console.log(formData);
       const res = await axios.post(
         `/api/doctor/updateProfile`,
         formData,
         config
       );
-      console.log(res);
       clearLoading();
       setAlert({ message: "Profile Updated Successfully", type: "success" });
       setTimeout(clearAlert, 2000);
@@ -50,20 +47,17 @@ const DoctorState = (props) => {
 
   const updateSchedule = async (formData) => {
     setLoading();
-    console.log("updateScheule called...");
     const config = {
       headers: {
         "Content-Type": "application/json",
       },
     };
     try {
-      console.log(formData);
       const res = await axios.post(
         `/api/doctor/updateSchedule`,
         formData,
         config
       );
-      console.log(res);
       clearLoading();
       setAlert({ message: "Schedule Updated Successfully", type: "success" });
       setTimeout(clearAlert, 2000);
@@ -76,7 +70,6 @@ const DoctorState = (props) => {
   };
 
   const updateAvailability = async (formData) => {
-    console.log("updateAvailability called...");
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -89,7 +82,6 @@ const DoctorState = (props) => {
         formData,
         config
       );
-      console.log(res);
     } catch (error) {
       dispatch({
         type: types.UPDATE_AVAILABILITY_FAILURE,
@@ -113,23 +105,34 @@ const DoctorState = (props) => {
     }
   };
 
+  const checkPatientExists = async (roll_number) => {
+    try {
+      const res = await axios.get(
+        `/api/doctor/patientExists?roll_number=${roll_number}`
+      );
+      dispatch({ type: types.PATIENT_EXISTS_SUCCESS, payload: res.data });
+      setTimeout(() => {
+        dispatch({ type: types.CLEAR_PATIENT_EXISTS });
+      }, 2000);
+    } catch (error) {
+      console.log(error.response.data);
+      setAlert({ type: "error", message: error.response.data });
+      setTimeout(clearAlert, 2000);
+    }
+  };
+
   const getRelative = async (roll_number) => {
     try {
       const res = await axios.get(
         `/api/doctor/getRelative?roll_number=${roll_number}`
       );
       dispatch({ type: types.GET_RELATIVES_SUCCESS, payload: res.data });
-      console.log(res.data, "logging from getRealive in docstate");
     } catch (error) {
-      dispatch({
-        type: types.GET_RELATIVES_FAILURE,
-        payload: error.response.data,
-      });
       console.log(error.response.data);
-      setTimeout(clearError, 2000);
     }
   };
 
+  // to check
   const addPrescription = async (formData) => {
     setLoading();
     const config = {
@@ -229,42 +232,19 @@ const DoctorState = (props) => {
     dispatch({ type: types.CLEAR_STATE });
   };
 
-  const checkPatientExists = async (roll_number) => {
-    try {
-      const res = await axios.get(
-        `/api/doctor/patientExists?roll_number=${roll_number}`
-      );
-      dispatch({ type: types.PATIENT_EXISTS_SUCCESS, payload: res.data });
-      setTimeout(() => {
-        dispatch({ type: types.CLEAR_PATIENT_EXISTS });
-      }, 2000);
-    } catch (error) {
-      dispatch({
-        type: types.PATIENT_EXISTS_FAILURE,
-        payload: error.response.data,
-      });
-      console.log(error.response.data);
-      setTimeout(() => {
-        dispatch({ type: types.CLEAR_PATIENT_EXISTS });
-      }, 2000);
-      setAlert({ type: "error", message: error.response.data });
-      setTimeout(clearAlert, 2000);
-    }
-  };
-
   return (
     <DoctorContext.Provider
       value={{
-        getMedicines,
-        addPrescription,
-        getPrescription,
         allPrescription: state.allPrescription,
-        getPrescriptionByID,
         prescription: state.prescription,
-        getRelative,
         relative: state.relative,
         medicines: state.medicines,
         patientExists: state.patientExists,
+        getMedicines,
+        addPrescription,
+        getPrescription,
+        getPrescriptionByID,
+        getRelative,
         updateProfile,
         updateSchedule,
         updateAvailability,

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import AdminContext from "../../../context/admin/AdminContext";
 const AdminsDashboard = () => {
   const adminContext = useContext(AdminContext);
-  const { getActors,actors } = adminContext;
+  const { getActors, actors } = adminContext;
   const [actorType, setActorType] = useState("doctor");
   useEffect(() => {
     const func = async () => {
@@ -63,8 +63,8 @@ const AdminsDashboard = () => {
           <ul class='nav nav-tabs card-header-tabs'>
             <li class='nav-item'>
               <a
-                class={`nav-link ${actorType==="doctor"? "active" : ""}`}
-                aria-current={actorType==="doctor" ? "true" : "false"}
+                class={`nav-link ${actorType === "doctor" ? "active" : ""}`}
+                aria-current={actorType === "doctor" ? "true" : "false"}
                 href='#'
                 onClick={() => setActorType("doctor")}
               >
@@ -73,8 +73,8 @@ const AdminsDashboard = () => {
             </li>
             <li class='nav-item'>
               <a
-                class={`nav-link ${actorType==="compounder" ? "active" : ""}`}
-                aria-current={actorType==="compounder" ? "true" : "false"}
+                class={`nav-link ${actorType === "compounder" ? "active" : ""}`}
+                aria-current={actorType === "compounder" ? "true" : "false"}
                 href='#'
                 onClick={() => setActorType("compounder")}
               >
@@ -83,8 +83,8 @@ const AdminsDashboard = () => {
             </li>
             <li class='nav-item'>
               <a
-                class={`nav-link ${actorType==="admin" ? "active" : ""}`}
-                aria-current={actorType==="admin" ? "true" : "false"}
+                class={`nav-link ${actorType === "admin" ? "active" : ""}`}
+                aria-current={actorType === "admin" ? "true" : "false"}
                 href='#'
                 onClick={() => setActorType("admin")}
               >
@@ -102,10 +102,12 @@ const AdminsDashboard = () => {
               <tr>
                 <th scope='col'>S.No</th>
                 <th scope='col'>Name</th>
-                {actorType==="doctor"?<th scope='col'>Degree</th>:null}
+                {actorType === "doctor" ? <th scope='col'>Degree</th> : null}
                 <th scope='col'>Email</th>
                 <th scope='col'>Phone</th>
-                {actorType==="doctor"?<th scope='col'>Present Availability</th>:null}
+                {actorType === "doctor" ? (
+                  <th scope='col'>Present Availability</th>
+                ) : null}
               </tr>
             </thead>
             <tbody>
@@ -148,8 +150,7 @@ const AdminsDashboard = () => {
         </div>
       </div>
     </div>
-    );
-  };
+  );
+};
 
 export default AdminsDashboard;
-  

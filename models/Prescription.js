@@ -34,21 +34,19 @@ const prescriptionSchema = mongoose.Schema({
         required: true,
       },
       dosage: {
-        type: String,
-        required: true,
-      },
-      stocks: [
-        {
-          stock_id: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Stock",
-          },
-          quantity: {
-            type: Number,
-            required: true,
-          },
+        frequency: {
+          type: String,
+          required: true,
         },
-      ],
+        amount: {
+          type: String,
+          required: true,
+        },
+        dosage_time: {
+          type: String,
+          required: true,
+        },
+      },
     },
   ],
   symptoms: {
@@ -75,10 +73,12 @@ const validatePrescription = (prescription) => {
     medicines: Joi.array().items({
       medicine_id: Joi.required(),
       quantity: Joi.number().required(),
-      dosage: Joi.string().required(),
-      stocks: Joi.array().items({
-        stock_id: Joi.required(),
-        quantity: Joi.number().required(),
+      dosage: Joi.object({
+        frequency: Joi.string()
+          .required()
+          .valid("Every 24 hours", "Every 12 hours", "Every 8 hours"),
+        amount: Joi.string().required(),
+        dosage_time: Joi.string().required().valid("Before Food", "After Food"),
       }),
     }),
     symptoms: Joi.string().required(),
