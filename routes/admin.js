@@ -120,8 +120,8 @@ router.get("/getMedicine", authAdmin, async (req, res) => {
 // @desc    Add Stock
 // @access  Private
 router.post("/addStock", authAdmin, async (req, res) => {
-  const { medicine_id, name, price, expiry, quantity, seller } = req.body;
-  const initialQuantity = quantity;
+  const { medicine_id, name, price, expiry, initialQuantity, seller } = req.body;
+  const quantity = initialQuantity;
 
   const { error } = validateStock({
     medicine_id,
@@ -175,9 +175,9 @@ router.get("/getStock", authAdmin, async (req, res) => {
 // @desc    Update Stock
 // @access  Private
 router.post("/updateStock", authAdmin, async (req, res) => {
-  const { id, name, price, expiry, quantity, seller } = req.body;
+  const { _id, name, price, expiry, quantity, seller } = req.body;
   try {
-    const stock = await Stock.findById(id);
+    const stock = await Stock.findById(_id);
     if (!stock) return res.status(404).send("Stock not found");
     if (name !== stock.name) {
       return res.status(400).send("Name cannot be changed");

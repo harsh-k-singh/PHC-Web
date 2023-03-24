@@ -106,7 +106,9 @@ const ViewDocMedicine = () => {
         <thead class='table-dark'>
           <tr>
             <th scope='col'>S.No</th>
+            <th scope='col'>Type</th>
             <th scope='col'>Medicine</th>
+            <th scope='col'>Category</th>
             <th scope='col'>Quantity</th>
           </tr>
         </thead>
@@ -116,7 +118,9 @@ const ViewDocMedicine = () => {
                 return (
                   <tr>
                     <th scope='row'>{index + 1}</th>
+                    <td>{item.type}</td>
                     <td>{item.name}</td>
+                    <td>{item.category}</td>
                     <td>{item.quantity}</td>
                   </tr>
                 );

@@ -4,7 +4,7 @@ import StockContent from './StockContent';
 import Select from 'react-select';
 const ViewStock = () => {
     const adminContext = useContext(AdminContext);
-    const { getStock,stocks,getMedicine,medicines} = adminContext;
+    const { getStock,stocks,getMedicine,medicines,updateStock} = adminContext;
     const [data,setData]=useState(stocks);
 
     const [action,setAction]=useState("viewAll");
@@ -27,13 +27,17 @@ const ViewStock = () => {
       func();
     },[]);
     useEffect(() => {
+      setData(stocks);
+    },[stocks]);
+
+    useEffect(() => {
         if(action==="viewAll"){
           setData(stocks);
         }
         else if(action==="search"){
           setData(stocks.filter(item => item.name===selectedOption.value));
         }
-      },[action,selectedOption,stocks]);
+      },[action,selectedOption]);
       
     useEffect(() => {
         if(action==="viewAll"&&sortExpiry===false){
@@ -53,7 +57,7 @@ const ViewStock = () => {
         await getMedicine();
       };
       func();
-    },[action,sortExpiry,selectedOption,stocks]);
+    },[action,sortExpiry,selectedOption]);
   return (
     <div class='container-xl px-4'>
       

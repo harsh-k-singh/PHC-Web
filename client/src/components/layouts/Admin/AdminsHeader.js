@@ -84,7 +84,7 @@ const DoctorsHeader = () => {
                   </li>
                   <li><hr class="dropdown-divider"/></li>
                   <li className="dropdown-item">
-                  <Link class={`dropdown-item  ${location.pathname==="/admin/addMedicine"?"fw-bolder":""}`} to="/admin/addMedicine">Add Medicine</Link>
+                  <Link class={`dropdown-item  ${location.pathname==="/admin/addMedicine"?"fw-bolder":""}`} to="/admin/addMedicine">Add New Medicine</Link>
                   </li>
                 </ul>
               </li>
