@@ -195,8 +195,8 @@ router.post("/updateStock", authAdmin, async (req, res) => {
 
     if (quantity != stock.quantity) {
       const medicine = await Medicine.findById(stock.medicine_id);
-      medicine.quantity = medicine.quantity - stock.quantity + quantity;
-      stock.quantity = quantity;
+      medicine.quantity = medicine.quantity - stock.quantity + Number(quantity);
+      stock.quantity = Number(quantity);
       await medicine.save();
     }
 

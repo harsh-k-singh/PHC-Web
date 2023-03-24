@@ -404,7 +404,7 @@ router.get("/getPrescription", authCompounder, async (req, res) => {
 // @route   GET /api/prescription/getPrescriptionByDate/:date
 // @desc    Get all prescriptions of a doctor on a particular date
 // @access  Private
-router.get("/getPrescriptionByDate/:date", authDoctor, async (req, res) => {
+router.get("/getPrescriptionByDate/:date", authCompounder, async (req, res) => {
   const date = new Date(req.params.date);
   try {
     let prescriptions = await Prescription.find({
