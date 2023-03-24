@@ -21,45 +21,45 @@ const ViewStock = () => {
     setSelectedOption(e);
   };
 
-    useEffect(() => {
-      const func = async () => {
-        await getStock();
-        await getMedicine();
-      };
-      func();
-    },[]);
-    useEffect(() => {
-      setData(stocks);
-    },[stocks]);
+  useEffect(() => {
+    const func = async () => {
+      await getStock();
+      await getMedicines();
+    };
+    func();
+  }, []);
+  useEffect(() => {
+    setData(stocks);
+  }, [stocks]);
 
-    useEffect(() => {
-        if(action==="viewAll"){
-          setData(stocks);
-        }
-        else if(action==="search"){
-          setData(stocks.filter(item => item.name===selectedOption.value));
-        }
-      },[action,selectedOption]);
-      
-    useEffect(() => {
-        if(action==="viewAll"&&sortExpiry===false){
-          setData(stocks);
-        }
-        else if(action==="viewAll"&&sortExpiry===true){
-          setData(stocks.sort((a,b) => new Date(a.expiry) - new Date(b.expiry)));
-        }
-        else if(action==="search" && sortExpiry===false){
-          setData(stocks.filter(item => item.name===selectedOption.value));
-        }
-        else if(action==="search" && sortExpiry===true){
-          setData(stocks.filter(item => item.name===selectedOption.value).sort((a,b) => new Date(a.expiry) - new Date(b.expiry)));
-        }
-      const func = async () => {
-        await getStock();
-        await getMedicine();
-      };
-      func();
-    },[action,sortExpiry,selectedOption]);
+  useEffect(() => {
+    if (action === "viewAll") {
+      setData(stocks);
+    } else if (action === "search") {
+      setData(stocks.filter((item) => item.name === selectedOption.value));
+    }
+  }, [action, selectedOption]);
+
+  useEffect(() => {
+    if (action === "viewAll" && sortExpiry === false) {
+      setData(stocks);
+    } else if (action === "viewAll" && sortExpiry === true) {
+      setData(stocks.sort((a, b) => new Date(a.expiry) - new Date(b.expiry)));
+    } else if (action === "search" && sortExpiry === false) {
+      setData(stocks.filter((item) => item.name === selectedOption.value));
+    } else if (action === "search" && sortExpiry === true) {
+      setData(
+        stocks
+          .filter((item) => item.name === selectedOption.value)
+          .sort((a, b) => new Date(a.expiry) - new Date(b.expiry))
+      );
+    }
+    const func = async () => {
+      await getStock();
+      await getMedicines();
+    };
+    func();
+  }, [action, sortExpiry, selectedOption]);
   return (
     <div class='container-xl px-4'>
       <div style={{ width: "40%", margin: "auto" }}>
