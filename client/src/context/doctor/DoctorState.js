@@ -115,14 +115,7 @@ const DoctorState = (props) => {
         dispatch({ type: types.CLEAR_PATIENT_EXISTS });
       }, 2000);
     } catch (error) {
-      dispatch({
-        type: types.PATIENT_EXISTS_FAILURE,
-        payload: error.response.data,
-      });
       console.log(error.response.data);
-      setTimeout(() => {
-        dispatch({ type: types.CLEAR_PATIENT_EXISTS });
-      }, 2000);
       setAlert({ type: "error", message: error.response.data });
       setTimeout(clearAlert, 2000);
     }

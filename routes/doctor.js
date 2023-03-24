@@ -248,8 +248,8 @@ router.get("/getRelative", authDoctor, async (req, res) => {
   }
 });
 
-// @route GET api/doctor/getPatient
-// @desc Get patient details
+// @route GET api/doctor/addPrescription
+// @desc Add prescription to patient
 // @access Private
 router.post("/addPrescription", authDoctor, async (req, res) => {
   const { patient, id, symptoms, diagnosis, tests, remarks, medicines } =
