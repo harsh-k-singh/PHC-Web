@@ -105,7 +105,7 @@ const AdminState = (props) => {
   };
 
   const getMedicines = async () => {
-    if (state.medicines.length == 0) setLoading();
+    if (state.medicines.length === 0) setLoading();
     try {
       const res = await axios.get(`/api/admin/getMedicine`);
       dispatch({ type: types.GET_MEDICINE_SUCCESS, payload: res.data });
@@ -180,15 +180,17 @@ const AdminState = (props) => {
   const deleteStock = async (id) => {
     setLoading();
     try {
-      const res = await axios.delete(`/api/admin/deleteStock/${id}`);
+      const res = await axios.delete(`/api/admin/deleteStock?id=${id}`);
       await getStock();
       dispatch({ type: types.DELETE_STOCK_SUCCESS });
       clearLoading();
       setAlert({ message: "Stock deleted successfully", type: "success" });
+      setTimeout(clearAlert, 2000);
     } catch (error) {
       console.log(error.response.data);
       clearLoading();
       setAlert({ message: error.response.data, type: "error" });
+      setTimeout(clearAlert, 2000);
     }
   };
 

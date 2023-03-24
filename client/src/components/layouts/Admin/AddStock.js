@@ -1,28 +1,36 @@
 import React,{useContext,useEffect,useState} from 'react'
 import AdminContext from '../../../context/admin/AdminContext';
+import Select from 'react-select';
 
 const AddStock = () => {
   const adminContext = useContext(AdminContext);
-    const {stocks,getStock,addStock } = adminContext;
+    const {stocks,getStock,addStock,getMedicine,medicines } = adminContext;
     
     const [form, setForm] = useState({
+        medicine_id: null,
         name: "",
-        price: "",
-        quantity: "",
-        seller: "",
-        expiry: "",
+        intialQuantity: null,
+        // price: "",
+        // seller: "",
+        // expiry: "",
     });
+    const [selectedOption, setSelectedOption] = useState(null);
+    const medOptions = medicines
+    ? medicines.map((opt) => ({ label: opt.name, value: opt._id }))
+    : null;
     const onChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
     const onSubmit = async (e) => {
         e.preventDefault();
         addStock(form);
+        console.log(form,"form...")
         console.log(stocks)
     };
     useEffect(() => {
       const func = async () => {
         await getStock();
+        await getMedicine();
         // console.log(relatives);
       };
       func();
@@ -49,7 +57,7 @@ const AddStock = () => {
                 />
             </div>
             <div class='col-md-6'>
-                <label class='small mb-1' for='inputName'>
+                {/* <label class='small mb-1' for='inputName'>
                 Name*
                 </label>
                 <input
@@ -59,7 +67,19 @@ const AddStock = () => {
                 placeholder='Enter your full name'
                 name='name'
                 onChange={onChange}
-                />
+                /> */}
+                 <label class='small mb-1' for='inputName'>
+                Name*
+                </label>
+                 <Select
+                    options={medOptions}
+                    placeholder='Search Medicine...'
+                    value={selectedOption}
+                    onChange={(e,value)=>{
+                        setForm({ ...form, name: e.label,medicine_id:e.value});
+                        setSelectedOption(e);
+                    }}
+                 />
             </div>
             </div>
             <div class='row gx-3 mb-3'>
@@ -86,13 +106,13 @@ const AddStock = () => {
                 id='inputQuantity'
                 type='integer'
                 placeholder='Enter Quantity'
-                name='quantity'
+                name='initialQuantity'
                 onChange={onChange}
                 />
             </div>
             <div class='col-md-4'>
                 <label class='small mb-1' for='inputPrice'>
-                Price*
+                Price 
                 </label>
                 <input
                 class='form-control'
