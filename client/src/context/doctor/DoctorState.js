@@ -140,6 +140,7 @@ const DoctorState = (props) => {
         "Content-Type": "application/json",
       },
     };
+    console.log("fd", formData);
     try {
       const res = await axios.post(
         `/api/doctor/addPrescription`,

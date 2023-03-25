@@ -274,8 +274,16 @@ router.get("/getPrescription/:id", authPatient, async (req, res) => {
     let pre = [];
     for (let i = 0; i < prescriptions.length; i++) {
       let prescription = prescriptions[i];
-      let { source_id, patient_id, symptoms, diagnosis, tests, remarks, date } =
-        prescription;
+      let {
+        source_id,
+        patient_id,
+        symptoms,
+        diagnosis,
+        tests,
+        remarks,
+        date,
+        medicines,
+      } = prescription;
       let source = await Patient.findById(source_id);
       let source_roll_number = source.roll_number;
       let source_email = source.email;
@@ -293,30 +301,11 @@ router.get("/getPrescription/:id", authPatient, async (req, res) => {
       patient_birth = patient.birth;
       patient_gender = patient.gender;
 
-      let compounder_name, doctor_name;
-      if (prescription.compounder_id) {
-        let compounder = await Compounder.findById(prescription.compounder_id);
-        compounder_name = compounder.name;
-      } else if (prescription.doctor_id) {
-        let doctor = await Doctor.findById(prescription.doctor_id);
-        doctor_name = doctor.name;
-      }
-
-      let medicines = [];
-      for (let j = 0; j < prescription.medicines.length; j++) {
-        let medicine = prescription.medicines[j];
-        let med = await Medicine.findById(medicine.medicine_id);
-        let medEntry = {
-          medicine_name: med.name,
-          quantity: medicine.quantity,
-          dosage: medicine.dosage,
-        };
-        medicines.push(medEntry);
-      }
+      let doctor = await Doctor.findById(prescription.doctor_id);
+      let doctor_name = doctor.name;
 
       let entry = {
         doctor_name,
-        compounder_name,
         patient_roll_number: source_roll_number,
         patient_email: source_email,
         patient_phone: source_phone,
