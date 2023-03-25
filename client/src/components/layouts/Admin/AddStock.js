@@ -4,7 +4,7 @@ import Select from 'react-select';
 
 const AddStock = () => {
   const adminContext = useContext(AdminContext);
-    const {stocks,getStock,addStock,getMedicine,medicines } = adminContext;
+    const {stocks,getStock,addStock,getMedicines,medicines } = adminContext;
     
     const [form, setForm] = useState({
         medicine_id: null,
@@ -23,14 +23,20 @@ const AddStock = () => {
     };
     const onSubmit = async (e) => {
         e.preventDefault();
-        addStock(form);
-        console.log(form,"form...")
-        console.log(stocks)
+        // addStock(form);
+        const updateAndRefetch = async () => {
+            await addStock(form);
+            getStock();
+            getMedicines();
+        };
+        updateAndRefetch();
+        // console.log(form,"form...")
+        // console.log(stocks)
     };
     useEffect(() => {
       const func = async () => {
         await getStock();
-        await getMedicine();
+        await getMedicines();
         // console.log(relatives);
       };
       func();
