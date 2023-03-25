@@ -89,10 +89,12 @@ const validatePrescription = (prescription) => {
         "Every 24 hours",
         "Every 12 hours",
         "Every 8 hours",
+        "As and When Required",
+        "Other",
         null
       ),
       amount: Joi.string(),
-      dosage_time: Joi.string().valid("Before Food", "After Food"),
+      dosage_time: Joi.string().valid("Before Food", "After Food","Before Sleep","Other"),
     }),
     symptoms: Joi.string(),
     diagnosis: Joi.string(),

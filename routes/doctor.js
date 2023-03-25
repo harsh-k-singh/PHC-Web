@@ -495,7 +495,7 @@ router.get("/getPrescriptionByDate/:date", authDoctor, async (req, res) => {
       };
       pre.push(entry);
     }
-    res.status(200).send(pre);
+    res.status(200).send(pre.reverse());
   } catch (error) {
     console.log(error.message);
     res.status(500).send("Something went wrong");
@@ -572,7 +572,7 @@ router.get("/getPrescription/:id", authDoctor, async (req, res) => {
       pre.push(entry);
     }
     // console.log("pre", pre);
-    res.status(200).send(pre);
+    res.status(200).send(pre.reverse());
   } catch (error) {
     console.log(error.message);
     res.status(500).send("Something went wrong");

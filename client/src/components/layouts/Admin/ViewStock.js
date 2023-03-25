@@ -102,7 +102,11 @@ const ViewStock = () => {
 
       {data
         ? data.map((item, index) => {
-            return <StockContent item={item} index={index} />;
+            return <>
+            {item.quantity!==0&&item.expired===false?
+            <StockContent item={item} index={index} />:null}
+            </>
+           
           })
         : null}
     </div>

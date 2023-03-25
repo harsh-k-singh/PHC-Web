@@ -283,6 +283,8 @@ const PrescriptionForm = () => {
                                 <option value='Every 24 hours'>Every 24 hours</option>
                                 <option value='Every 12 hours'>Every 12 hours</option>
                                 <option value='Every 8 hours'>Every 8 hours</option>
+                                <option value='As and When Required'>As and When Required</option>
+                                <option value='Other'>Other</option>
                               </select>
                           </div>
                           <div class='col-md-3'>
@@ -320,6 +322,8 @@ const PrescriptionForm = () => {
                                 </option>
                                 <option value='Before Food'>Before Food</option>
                                 <option value='After Food'>After Food</option>
+                                <option value='Before Sleep'>Before Sleep</option>
+                                <option value='Other'>Other</option>
                               </select>
                           </div>
                           <div className='col-md-1'>

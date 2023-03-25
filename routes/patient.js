@@ -331,7 +331,7 @@ router.get("/getPrescription/:id", authPatient, async (req, res) => {
     }
 
     // return the modified prescriptions
-    res.status(200).send(pre);
+    res.status(200).send(pre.reverse());
   } catch (error) {
     // return the error if any
     console.log(error.message);
