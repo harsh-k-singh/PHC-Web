@@ -3,11 +3,13 @@ import AdminContext from "../../../context/admin/AdminContext";
 import RenderActor from "./RenderActor";
 const AdminsDashboard = () => {
   const adminContext = useContext(AdminContext);
-  const { getActors, actors } = adminContext;
+  const { getActors, actors, getStock,getMedicines } = adminContext;
   const [actorType, setActorType] = useState("doctor");
   useEffect(() => {
     const func = async () => {
       await getActors();
+      await getStock();
+      await getMedicines();
     };
     func();
   }, []);

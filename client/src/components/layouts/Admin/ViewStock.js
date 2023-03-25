@@ -30,10 +30,6 @@ const ViewStock = () => {
   }, []);
 
   useEffect(() => {
-    setData(stocks);
-  }, [stocks]);
-
-  useEffect(() => {
     if (action === "viewAll") {
       setData(stocks);
     } else if (action === "search") {

@@ -4,7 +4,7 @@ import CompounderContext from "../../../context/compounder/CompounderContext";
 
 const CompoundersDashboard = () => {
   const compounderContext = useContext(CompounderContext);
-  const { patientExists, checkPatientExists, getRelative, relative } =
+  const { patientExists, checkPatientExists, getRelative, relative ,getMedicines} =
     compounderContext;
 
   const [option, setOption] = useState("addRecord");
@@ -13,6 +13,13 @@ const CompoundersDashboard = () => {
   const [check_roll_number, setCheckRollno] = useState("");
   const [relation, setRelation] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const func = async () => {
+      await getMedicines();
+    };
+    func();
+  }, []);
 
   useEffect(() => {
     const func = async () => {
