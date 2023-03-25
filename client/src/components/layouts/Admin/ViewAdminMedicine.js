@@ -4,7 +4,7 @@ import Select from "react-select";
 
 const ViewAdminMedicine = () => {
   const adminContext = useContext(AdminContext);
-  const { getMedicines, medicines } = adminContext;
+  const {getMedicines, medicines } = adminContext;
   const [data, setData] = useState(medicines);
 
   const [action, setAction] = useState("viewAll");
@@ -20,13 +20,15 @@ const ViewAdminMedicine = () => {
     setAction("search");
     setSelectedOption(e);
   };
+
   useEffect(() => {
     const func = async () => {
       await getMedicines();
-      console.log(medicines);
+      // setData(medicines);
     };
     func();
   }, []);
+
   useEffect(() => {
     if (action === "viewAll") {
       setData(medicines);
@@ -68,7 +70,7 @@ const ViewAdminMedicine = () => {
       <div style={{ width: "40%", margin: "auto" }}>
         <Select
           options={medOptions}
-          placeholder='Search stock...'
+          placeholder='Search medicine...'
           value={action === "search" ? selectedOption : ""}
           onChange={onChange}
         />

@@ -28,6 +28,7 @@ const ViewStock = () => {
     };
     func();
   }, []);
+
   useEffect(() => {
     setData(stocks);
   }, [stocks]);
