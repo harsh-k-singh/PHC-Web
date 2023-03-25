@@ -54,7 +54,9 @@ const prescriptionSchema = mongoose.Schema({
   diagnosis: {
     type: String,
   },
-  tests: [{ test: { type: String } }],
+  tests: {
+    type: String,
+  },
   remarks: {
     type: String,
   },
@@ -94,9 +96,7 @@ const validatePrescription = (prescription) => {
     }),
     symptoms: Joi.string(),
     diagnosis: Joi.string(),
-    tests: Joi.array().items({
-      test: Joi.string(),
-    }),
+    tests: Joi.string(),
     remarks: Joi.string(),
   });
   return schema.validate(prescription);

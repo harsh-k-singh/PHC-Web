@@ -50,7 +50,6 @@ const PrescriptionForm = () => {
       quantity: "",
     },
   ]);
-  const [inputTests, setInputTests] = useState([{ test: "" }]);
 
   // handle input change
   const handleInputChange = (e, index) => {
@@ -81,25 +80,25 @@ const PrescriptionForm = () => {
     ]);
   };
 
-  //handling Tests
-  const handleTestsChange = (e, index) => {
-    const { name, value } = e.target;
-    const list = [...inputTests];
-    list[index][name] = value;
-    setInputTests(list);
-  };
+  // //handling Tests
+  // const handleTestsChange = (e, index) => {
+  //   const { name, value } = e.target;
+  //   const list = [...inputTests];
+  //   list[index][name] = value;
+  //   setInputTests(list);
+  // };
 
-  //tests remove click
-  const handleRemoveTests = (index) => {
-    const list = [...inputTests];
-    list.splice(index, 1);
-    setInputTests(list);
-  };
+  // //tests remove click
+  // const handleRemoveTests = (index) => {
+  //   const list = [...inputTests];
+  //   list.splice(index, 1);
+  //   setInputTests(list);
+  // };
 
-  // tests add click
-  const handleAddTests = () => {
-    setInputTests([...inputTests, { test: "" }]);
-  };
+  // // tests add click
+  // const handleAddTests = () => {
+  //   setInputTests([...inputTests, { test: "" }]);
+  // };
 
   const onChange = (e) => {
     console.log(form);
@@ -108,17 +107,16 @@ const PrescriptionForm = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    setForm({ ...form, medicines: inputMedicine, tests: inputTests });
+    setForm({ ...form, medicines: inputMedicine});
     console.log(form);
     addPrescription(form);
   };
 
   useEffect(
     () => {
-      setForm({ ...form, medicines: inputMedicine, tests: inputTests });
+      setForm({ ...form, medicines: inputMedicine});
     },
     [inputMedicine],
-    [inputTests]
   );
 
   useEffect(() => {
@@ -347,7 +345,7 @@ const PrescriptionForm = () => {
                   : null}
                 {/* row-2-end */}
                 {/* row-5-start */}
-                <label class='small mb-2' for='inputTests'>
+                {/* <label class='small mb-2' for='inputTests'>
                   Tests (if any)
                 </label>
                 {inputTests.map((x, i) => {
@@ -385,8 +383,26 @@ const PrescriptionForm = () => {
                       </div>
                     </div>
                   );
-                })}
+                })} */}
                 {/* row-5 -end*/}
+
+                <div class='row gx-3 my-3'>
+                  <div class='col-md-12'>
+                    {/* <label class='small mb-2' for='inputDiagnosis'>
+                      Diagnosis
+                    </label> */}
+                    <TextField
+                      onChange={onChange}
+                      name='tests'
+                      id='inputTests'
+                      type='text'
+                      size='small'
+                      fullWidth
+                      label='Tests'
+                      variant='outlined'
+                    />
+                  </div>
+                </div>
 
                 {/* row-3 -start*/}
                 <div class='row gx-3 my-3'>

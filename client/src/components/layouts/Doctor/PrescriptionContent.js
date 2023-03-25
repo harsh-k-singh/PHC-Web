@@ -77,11 +77,11 @@ const PrescriptionContent = (props) => {
             </a>
             <div class='collapse my-3' id={`collapseExample-${index}`}>
               <div class='card card-body'>
-                <p>
+                {data.diagnosis?<p>
                   <strong>Diagnosis</strong>
                   <br />
                   {data.diagnosis}
-                </p>
+                </p>:null}
                 <p>
                   <strong>Medicines</strong>
                   <br />
@@ -105,38 +105,30 @@ const PrescriptionContent = (props) => {
                             <td>{item.name}</td>
                             <td>{item.type}</td>
                             <td>{item.quantity}</td>
-                            <td>{item.frequency}</td>
-                            <td>{item.amount}</td>
-                            <td>{item.dosage_time}</td>
-                            {/* {index + 1})&emsp;{item.name}&emsp;quantity :{" "}
-                            {item.quantity}&emsp; dosage : {item.frequency}{" "} */}
+                            <td>{item.frequency?item.frequency:'-'}</td>
+                            <td>{item.amount?item.amount:'-'}</td>
+                            <td>{item.dosage_time?item.dosage_time:'-'}</td>
                           </tr>
                         );
                       })}
                     </tbody>
                   </table>
                 </p>
-                <p>
+                {data.test?<p>
                   <strong>Tests</strong>
                   <br />
-                  {data.tests.map((item, index) => {
-                    return (
-                      <p>
-                        {index + 1})&emsp;{item.test}
-                      </p>
-                    );
-                  })}
-                </p>
-                <p>
+                  {data.test}
+                </p>:null}
+                {data.symptoms?<p>
                   <strong>Symptoms</strong>
                   <br />
                   {data.symptoms}
-                </p>
-                <p>
+                </p>:null}
+                {data.remarks?<p>
                   <strong>Remarks</strong>
                   <br />
                   {data.remarks}
-                </p>
+                </p>:null}
               </div>
             </div>
           </div>

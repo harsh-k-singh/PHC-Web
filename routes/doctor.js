@@ -436,6 +436,7 @@ router.get("/getPrescriptionByDate/:date", authDoctor, async (req, res) => {
       doctor_id: req.user.id,
       date: { $gte: date, $lt: new Date(date.getTime() + 86400000) },
     });
+    console.log(prescriptions);
     let pre = [];
     for (let i = 0; i < prescriptions.length; i++) {
       let prescription = prescriptions[i];
