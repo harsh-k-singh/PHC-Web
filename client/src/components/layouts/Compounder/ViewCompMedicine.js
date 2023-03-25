@@ -27,13 +27,15 @@ const ViewCompMedicine = () => {
     };
     func();
   }, []);
+
+
   useEffect(() => {
     if (action === "viewAll") {
       setData(medicines);
     } else if (action === "search") {
       setData(medicines.filter((item) => item.name === selectedOption.value));
     }
-  }, [action, selectedOption, medicines]);
+  }, [action, selectedOption]);
 
   useEffect(() => {
     if (action === "viewAll" && sortQuantity === false) {
@@ -62,7 +64,7 @@ const ViewCompMedicine = () => {
       await getMedicines();
     };
     func();
-  }, [action, sortQuantity, selectedOption, medicines]);
+  }, [action, sortQuantity, selectedOption]);
   return (
     <div class='container-xl px-4'>
       <div style={{ width: "40%", margin: "auto" }}>

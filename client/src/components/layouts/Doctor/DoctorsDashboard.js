@@ -4,7 +4,7 @@ import DoctorContext from "../../../context/doctor/DoctorContext";
 
 const DoctorsDashboard = () => {
   const doctorContext = useContext(DoctorContext);
-  const { patientExists, checkPatientExists, getRelative, relative } =
+  const { patientExists, checkPatientExists, getRelative, relative ,getMedicines} =
     doctorContext;
 
   const [option, setOption] = useState("addRecord");
@@ -13,6 +13,13 @@ const DoctorsDashboard = () => {
   const [check_roll_number, setCheckRollno] = useState("");
   const [relation, setRelation] = useState(null);
   const navigate = useNavigate();
+  
+  useEffect(() => {
+    const func = async () => {
+      await getMedicines();
+    };
+    func();
+  }, []);
 
   useEffect(() => {
     const func = async () => {

@@ -27,7 +27,7 @@ const PrescriptionForm = () => {
 
   const [medicineList, setMedicineList] = useState(
     medicines.map((med) => {
-      const medName = med.type + " " + med.name;
+      const medName = med.name;
       return medName;
     })
   );
