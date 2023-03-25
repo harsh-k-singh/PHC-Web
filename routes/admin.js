@@ -109,7 +109,7 @@ router.get("/getMedicine", authAdmin, async (req, res) => {
     }
 
     const medicines = await Medicine.find();
-    res.status(200).send(medicines);
+    res.status(200).send(medicines.reverse());
   } catch (error) {
     console.log(error.message);
     res.status(500).send("Something went wrong");
@@ -164,7 +164,8 @@ router.post("/addStock", authAdmin, async (req, res) => {
 router.get("/getStock", authAdmin, async (req, res) => {
   try {
     const stock = await Stock.find();
-    res.status(200).send(stock);
+
+    res.status(200).send(stock.reverse());
   } catch (error) {
     console.log(error.message);
     res.status(500).send("Something went wrong");

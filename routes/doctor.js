@@ -42,7 +42,7 @@ router.get("/getMedicine", authDoctor, async (req, res) => {
     }
 
     const medicines = await Medicine.find();
-    res.status(200).send(medicines);
+    res.status(200).send(medicines.reverse());
   } catch (error) {
     console.log(error.message);
     res.status(500).send("Something went wrong");
@@ -258,12 +258,7 @@ router.post("/addPrescription", authDoctor, async (req, res) => {
   if (
     patient == null ||
     id == null ||
-    symptoms == null ||
-    diagnosis == null ||
-    tests == null ||
-    remarks == null ||
     medicines == null ||
-    !Array.isArray(tests) ||
     !Array.isArray(medicines)
   )
     return res.status(400).send("Fields are not filled properly");

@@ -20,14 +20,19 @@ const ViewStock = () => {
     setAction("search");
     setSelectedOption(e);
   };
-
-  useEffect(() => {
-    const func = async () => {
-      await getStock();
-      await getMedicines();
-    };
-    func();
-  }, []);
+  
+//  helps to show update and delete effect instantly
+  // useEffect(() => {
+  //   setData(stocks);
+  // }, [stocks]);
+           
+  // useEffect(() => {
+  //   const func = async () => {
+  //     await getStock();
+  //     await getMedicines();
+  //   };
+  //   func();
+  // }, []);
 
   useEffect(() => {
     if (action === "viewAll") {
@@ -35,7 +40,7 @@ const ViewStock = () => {
     } else if (action === "search") {
       setData(stocks.filter((item) => item.name === selectedOption.value));
     }
-  }, [action, selectedOption]);
+  }, [action, selectedOption,stocks]);
 
   useEffect(() => {
     if (action === "viewAll" && sortExpiry === false) {
@@ -56,7 +61,8 @@ const ViewStock = () => {
       await getMedicines();
     };
     func();
-  }, [action, sortExpiry, selectedOption]);
+  }, [action, sortExpiry, selectedOption,stocks]);
+    
   return (
     <div class='container-xl px-4'>
       <div style={{ width: "40%", margin: "auto" }}>

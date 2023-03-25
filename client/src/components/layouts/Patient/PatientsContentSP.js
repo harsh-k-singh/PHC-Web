@@ -1,5 +1,6 @@
 import React, { useContext,useState,useEffect} from "react";
 import PatientsDP from "../../../images/patientsDP.jpg";
+import GirlPatient from "../../../images/GirlPatient.png";
 import styles from "../../../CSSFiles/SideProfile.module.css";
 import AuthContext from "../../../context/auth/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -30,7 +31,7 @@ const PatientsContentSP = (props) => {
         <li>
           <img
             className='text-center rounded-circle my-2'
-            src={PatientsDP}
+            src={user&&user.gender=='Male'?PatientsDP:GirlPatient}
             width='45%'
             height='80%'
             border='2px solid black'

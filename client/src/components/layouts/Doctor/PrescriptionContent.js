@@ -22,17 +22,29 @@ const PrescriptionContent = (props) => {
     };
     setAge(getAge(data.patient_birth));
   }, []);
+
+  // const Print = () =>{     
+  //   //console.log('print');  
+  //   let printContents = document.getElementById('printablediv').innerHTML;
+  //   let originalContents = document.body.innerHTML;
+  //   document.body.innerHTML = printContents;
+  //   window.print();
+  //   document.body.innerHTML = originalContents;   
+  // }
+
   return (
     <div class='row my-4'>
       <div class='col-xl-8' style={{ margin: "auto" }}>
-        <div class='card'>
+        <div class='card' id='printablediv'>
           <div class='card-header text-center'>
             <div className='mx-2' style={{ float: "left" }}>
               Roll/PF Number: {data.patient_roll_number}
             </div>
+            {/* <button onClick={Print}>PRINT</button> */}
             {/* <>Phone : {data.patient_phone} </> */}
-            <div className='mx-2' style={{ float: "right" }}>
+            <div style={{ float: "right" }}>
               email : {data.patient_email}
+              {/* <i class="fa-solid fa-file-pdf fa-lg mx-2" onClick={Print}></i> */}
             </div>
           </div>
           <div class='card-body'>
@@ -73,14 +85,36 @@ const PrescriptionContent = (props) => {
                 <p>
                   <strong>Medicines</strong>
                   <br />
-                  {data.medicines.map((item, index) => {
-                    return (
-                      <p>
-                        {index + 1})&emsp;{item.medicine_name}&emsp;quantity :{" "}
-                        {item.quantity}&emsp; dosage : {item.dosage.frequency}{" "}
-                      </p>
-                    );
-                  })}
+                  <table class="table text-center table-bordered">
+                    <thead>
+                      <tr>
+                        <th scope="col">S.no</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Frequency</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Dosage Time</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {data.medicines.map((item, index) => {
+                        return (
+                          <tr>
+                            <td>{index+1}</td>
+                            <td>{item.name}</td>
+                            <td>{item.type}</td>
+                            <td>{item.quantity}</td>
+                            <td>{item.frequency}</td>
+                            <td>{item.amount}</td>
+                            <td>{item.dosage_time}</td>
+                            {/* {index + 1})&emsp;{item.name}&emsp;quantity :{" "}
+                            {item.quantity}&emsp; dosage : {item.frequency}{" "} */}
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
                 </p>
                 <p>
                   <strong>Tests</strong>

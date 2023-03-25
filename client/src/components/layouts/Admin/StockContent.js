@@ -4,7 +4,7 @@ import AuthContext from '../../../context/auth/AuthContext';
 
 const StockContent = (props) => {
     const adminContext = useContext(AdminContext);
-    const {updateStock,deleteStock,getStock,getMedicines} = adminContext;
+    const {updateStock,deleteStock,getStock,getMedicines,stocks} = adminContext;
 
     const authContext = useContext(AuthContext);
     const {loadUser } = authContext;
@@ -13,7 +13,7 @@ const StockContent = (props) => {
     const [edit,setEdit]=useState(false);
     const [data,setData]=useState(item);
 
-    console.log(item);
+    // console.log(item);
 
     const onEdit = () => {
         setEdit(true);
@@ -22,19 +22,21 @@ const StockContent = (props) => {
     const onSave = () => {
         const updateAndRefetch = async () => {
           await updateStock(data);
-          // await getStock();
+          await getStock();
           await getMedicines();
-          await loadUser();
+          // await loadUser();
         };
         updateAndRefetch();
+        setData(item)
         setEdit(false);
     }
 
     const onDelete=()=>{
       const updateAndRefetch = async () => {
           await deleteStock(data._id);
-          getStock();
-          getMedicines();
+          await loadUser();
+          // getStock();
+          // getMedicines();
       };
       updateAndRefetch();
   };
@@ -43,9 +45,9 @@ const StockContent = (props) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
-  useEffect(() => {
-    setData(item);
-  }, [item]);
+  // useEffect(() => {
+  //    setData(item)
+  // }, [stocks]);
   
   return (
     <div class='row'>

@@ -9,7 +9,7 @@ const AddStock = () => {
     const [form, setForm] = useState({
         medicine_id: null,
         name: "",
-        intialQuantity: null,
+        initialQuantity: null,
         // price: "",
         // seller: "",
         // expiry: "",
@@ -30,9 +30,19 @@ const AddStock = () => {
             getMedicines();
         };
         updateAndRefetch();
-        // console.log(form,"form...")
+        setSelectedOption("");
+        setForm({
+            medicine_id: null,
+            name: "",
+            initialQuantity: "",
+            seller: "",
+            expiry: "",
+            price:""
+        })
+        console.log(form,"form...")
         // console.log(stocks)
     };
+
     useEffect(() => {
       const func = async () => {
         await getStock();
@@ -58,6 +68,7 @@ const AddStock = () => {
                 id='inputSeller'
                 type='text'
                 placeholder='Enter Seller'
+                value={form.seller}
                 name='seller'
                 onChange={onChange}
                 />
@@ -99,6 +110,7 @@ const AddStock = () => {
                 id='inputExpiry'
                 type='date'
                 placeholder='Enter Expiry Date'
+                value={form.expiry}
                 name='expiry'
                 onChange={onChange}
                 />
@@ -112,6 +124,7 @@ const AddStock = () => {
                 id='inputQuantity'
                 type='integer'
                 placeholder='Enter Quantity'
+                value={form.initialQuantity}
                 name='initialQuantity'
                 onChange={onChange}
                 />
@@ -125,6 +138,7 @@ const AddStock = () => {
                 id='inputPrice'
                 type='integer'
                 placeholder='Enter Total Price in Rs.'
+                value={form.price}
                 name='price'
                 onChange={onChange}
                 />

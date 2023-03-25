@@ -50,11 +50,9 @@ const prescriptionSchema = mongoose.Schema({
   ],
   symptoms: {
     type: String,
-    required: true,
   },
   diagnosis: {
     type: String,
-    required: true,
   },
   tests: [{ test: { type: String } }],
   remarks: {
@@ -88,17 +86,18 @@ const validatePrescription = (prescription) => {
       frequency: Joi.string().valid(
         "Every 24 hours",
         "Every 12 hours",
-        "Every 8 hours"
+        "Every 8 hours",
+        null
       ),
       amount: Joi.string(),
       dosage_time: Joi.string().valid("Before Food", "After Food"),
     }),
-    symptoms: Joi.string().required(),
-    diagnosis: Joi.string().required(),
+    symptoms: Joi.string(),
+    diagnosis: Joi.string(),
     tests: Joi.array().items({
       test: Joi.string(),
     }),
-    remarks: Joi.string().allow(""),
+    remarks: Joi.string(),
   });
   return schema.validate(prescription);
 };

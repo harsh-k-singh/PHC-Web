@@ -62,14 +62,36 @@ const RecordContent = (props) => {
                 <p>
                   <strong>Medicines</strong>
                   <br />
-                  {data.medicines.map((item, index) => {
-                    return (
-                      <p>
-                        {index + 1})&emsp;{item.medicine_name}&emsp;quantity :{" "}
-                        {item.quantity}&emsp; dosage : {item.dosage.frequency}
-                      </p>
-                    );
-                  })}
+                  <table class="table text-center table-bordered">
+                    <thead>
+                      <tr>
+                        <th scope="col">S.no</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Frequency</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Dosage Time</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {data.medicines.map((item, index) => {
+                        return (
+                          <tr>
+                            <td>{index+1}</td>
+                            <td>{item.name}</td>
+                            <td>{item.type}</td>
+                            <td>{item.quantity}</td>
+                            <td>{item.frequency}</td>
+                            <td>{item.amount}</td>
+                            <td>{item.dosage_time}</td>
+                            {/* {index + 1})&emsp;{item.name}&emsp;quantity :{" "}
+                            {item.quantity}&emsp; dosage : {item.frequency}{" "} */}
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
                 </p>
                 <p>
                   <strong>Tests</strong>

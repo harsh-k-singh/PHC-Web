@@ -182,6 +182,27 @@ const CompounderState = (props) => {
     }
   };
 
+  const getPrescriptionByDate = async (date) => {
+    if(state.allPrescription.length === 0) setLoading();
+    try {
+      const res = await axios.get(`/api/compounder/getPrescriptionByDate/${date}`);
+      dispatch({ type: types.GET_PRESCRIPTION_SUCCESS, payload: res.data });
+      clearLoading();
+      // if (state.allPrescription.length === 0)
+      //   setAlert({
+      //     type: "success",
+      //     message: "Prescription fetched successfully",
+      //   });
+      // setTimeout(clearAlert, 2000);
+    } catch (error) {
+      console.log(error.response.data);
+      clearLoading();
+      // if (state.allPrescription.length === 0)
+      setAlert({ type: "error", message: error.response.data });
+      setTimeout(clearAlert, 2000);
+    }
+  };
+
   return (
     <CompounderContext.Provider
       value={{
@@ -198,6 +219,7 @@ const CompounderState = (props) => {
         updateProfile,
         updateSchedule,
         checkPatientExists,
+        getPrescriptionByDate,
       }}
     >
       {props.children}

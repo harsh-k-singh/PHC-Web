@@ -201,7 +201,7 @@ const PatientsProfile = () => {
                   </div>
                 </div>
                 )}
-                <div class='row gx-3 mb-3 my-3'>
+                {/* <div class='row gx-3 mb-3 my-3'>
                   <label class='small mb-1' for='inputAddress'>
                     Update Profile Picture
                   </label>
@@ -222,7 +222,7 @@ const PatientsProfile = () => {
                       Upload
                     </button>
                   </div>
-                </div>
+                </div> */}
                 <hr />
                 <div class='row gx-3 mb-3'>
                   <label class='small mb-1' for='inputAddress'>

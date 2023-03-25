@@ -17,6 +17,14 @@ const AddMedicine = () => {
     const onSubmit = async (e) => {
         e.preventDefault();
         addMedicine(form);
+        setForm({
+            name:"",
+            type:"",
+            category:"",
+            description:"",
+            composition:"",
+            company:"",
+        })
         // console.log(medicines);
     };
   return (
@@ -36,6 +44,7 @@ const AddMedicine = () => {
                             class='form-select'
                             aria-label='Select Type'
                             onChange={onChange}
+                            value={form.type}
                             name='type'
                         >
                             <option value='' disabled selected hidden>
@@ -62,6 +71,7 @@ const AddMedicine = () => {
                     type='text'
                     placeholder='Enter Medicine Name'
                     name='name'
+                    value={form.name}
                     onChange={onChange}
                     />
                 </div>
@@ -78,6 +88,7 @@ const AddMedicine = () => {
                         aria-label='Select Category'
                         onChange={onChange}
                         name='category'
+                        value={form.category}
                     >
                         <option value='' disabled selected hidden>
                         Select Category
@@ -96,6 +107,7 @@ const AddMedicine = () => {
                     type='text'
                     placeholder='Enter Company'
                     name='company'
+                    value={form.company}
                     onChange={onChange}
                     />
                 </div>
@@ -113,6 +125,7 @@ const AddMedicine = () => {
                     type='text'
                     placeholder='Enter Composition'
                     name='composition'
+                    value={form.composition}
                     onChange={onChange}
                     />
                 </div>
@@ -126,6 +139,7 @@ const AddMedicine = () => {
                     type='text'
                     placeholder='Enter Description'
                     name='description'
+                    value={form.description}
                     onChange={onChange}
                     />
                 </div>

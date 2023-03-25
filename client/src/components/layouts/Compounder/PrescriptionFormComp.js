@@ -4,7 +4,6 @@ import CompounderContext from "../../../context/compounder/CompounderContext";
 import { useParams } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import { display } from "@mui/system";
 
 const PrescriptionFormComp = () => {
   const compounderContext = useContext(CompounderContext);
@@ -17,26 +16,21 @@ const PrescriptionFormComp = () => {
     }
   }, [back]);
 
-  const {
-    getAllMedicines,
-    allMedicines,
-    getRelative,
-    relative,
-    addPrescription,
-  } = compounderContext;
-  // const medOptions = allMedicines
-  //   ? allMedicines.map((opt) => ({ label: opt.name, value: opt.name }))
+  const { getMedicines, medicines, getRelative, relative, addPrescription } =
+    compounderContext;
+  // const medOptions = medicines
+  //   ? medicines.map((opt) => ({ label: opt.name, value: opt.name }))
   //   : null;
   // const [selectedOption, setSelectedOption] = useState([null]);
 
   const [medicineList, setMedicineList] = useState(
-    allMedicines.map((med) => {
+    medicines.map((med) => {
       return med.name;
     })
   );
   // const editSearchTerm = (e) => {
   //   const { value } = e.target;
-  //   const medicineList = allMedicines.map((med) => {
+  //   const medicineList = medicines.map((med) => {
   //     return med.name.toLowerCase();
   //   });
   //   setMedicineList(medicineList);
@@ -47,14 +41,14 @@ const PrescriptionFormComp = () => {
     patient: roll_number,
     id: null,
     medicines: [],
-    symptoms: "",
-    diagnosis: "",
-    remarks: "",
     tests: [],
   });
 
   const [inputMedicine, setInputMedicine] = useState([
-    { name: "", quantity: "", dosage: "" },
+    {
+      name: "",
+      quantity: "",
+    },
   ]);
   const [inputTests, setInputTests] = useState([{ test: "" }]);
 
@@ -77,7 +71,13 @@ const PrescriptionFormComp = () => {
   const handleAddClick = () => {
     setInputMedicine([
       ...inputMedicine,
-      { name: "", quantity: "", duration: "" },
+      {
+        name: "",
+        quantity: "",
+        frequency: "",
+        amount: null,
+        dosage_time: "",
+      },
     ]);
   };
 
@@ -124,7 +124,7 @@ const PrescriptionFormComp = () => {
   useEffect(() => {
     const func = async () => {
       await getRelative(roll_number);
-      await getAllMedicines();
+      await getMedicines();
     };
     func();
   }, []);
@@ -132,10 +132,10 @@ const PrescriptionFormComp = () => {
   useEffect(() => {
     const func = async () => {
       await getRelative(roll_number);
-      await getAllMedicines();
+      await getMedicines();
     };
     func();
-  }, [allMedicines]);
+  }, [medicines]);
 
   return (
     <div class='container-xl px-4'>
@@ -194,11 +194,13 @@ const PrescriptionFormComp = () => {
                       <option selected value={""}>
                         Select family member
                       </option>
-                      {relative.map((rel) => (
-                        <option value={rel.relative_id}>
-                          {rel.name}--{rel.relation}
-                        </option>
-                      ))}
+                      {relative
+                        ? relative.map((rel) => (
+                            <option value={rel.relative_id}>
+                              {rel.name}--{rel.relation}
+                            </option>
+                          ))
+                        : null}
                     </select>
                   </div>
                 </div>
@@ -206,123 +208,153 @@ const PrescriptionFormComp = () => {
                 <label class='small mb-1' for='inputMedicine'>
                   Medicine
                 </label>
-                {inputMedicine.map((x, i) => {
-                  return (
-                    <div class='row gx-6 my-2'>
-                      <div class='col-md-4'>
-                        <Autocomplete
-                          autoComplete
-                          autoHighlight
-                          freeSolo
-                          name='name'
-                          onChange={(e, value) => {
-                            const list = [...inputMedicine];
-                            list[i].name = value;
-                            setInputMedicine(list);
-                            console.log(inputMedicine);
-                          }}
-                          options={medicineList}
-                          renderInput={(data) => (
-                            <TextField
-                              {...data}
-                              variant='outlined'
-                              label='Medicine Name'
-                              size='small'
-                              fullWidth
-                            />
-                          )}
-                        />
-                      </div>
-                      <div class='col-md-2'>
-                        <TextField
-                          type='number'
-                          InputProps={{ inputProps: { min: 1 } }}
-                          variant='outlined'
-                          label='Quantity'
-                          size='small'
-                          fullWidth
-                          name='quantity'
-                          value={x.quantity}
-                          onChange={(e) => handleInputChange(e, i)}
-                        />
-                      </div>
-                      <div class='col-md-5'>
-                        <TextField
-                          type='text'
-                          variant='outlined'
-                          label='Dosage'
-                          size='small'
-                          fullWidth
-                          name='dosage'
-                          value={x.dosage}
-                          onChange={(e) => handleInputChange(e, i)}
-                        />
-                      </div>
-
-                      <div className='col-md-1'>
-                        {inputMedicine.length !== 1 && (
-                          <i
-                            class='fa-solid fa-lg fa-circle-minus mx-1 my-1'
-                            style={{ color: "#DC4C64" }}
-                            onClick={() => handleRemoveClick(i)}
-                          ></i>
-                        )}
-                        {inputMedicine.length - 1 === i && (
-                          <i
-                            class='fa-solid fa-lg fa-circle-plus mx-1 my-1'
-                            style={{ color: "green" }}
-                            onClick={handleAddClick}
-                          ></i>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
+                {inputMedicine
+                  ? inputMedicine.map((x, i) => {
+                      return (
+                        <>
+                          <div class='row gx-6 my-3c'>
+                            <div class='col-md-6'>
+                              <Autocomplete
+                                autoComplete
+                                autoHighlight
+                                freeSolo
+                                name='name'
+                                onChange={(e, value) => {
+                                  const list = [...inputMedicine];
+                                  list[i].name = value;
+                                  setInputMedicine(list);
+                                }}
+                                options={medicineList}
+                                renderInput={(data) => (
+                                  <TextField
+                                    {...data}
+                                    variant='outlined'
+                                    label='Medicine Name'
+                                    size='small'
+                                    fullWidth
+                                  />
+                                )}
+                              />
+                            </div>
+                            <div class='col-md-3'>
+                              <select
+                                class='form-select'
+                                aria-label='Select type'
+                                name='type'
+                                onChange={(e) => handleInputChange(e, i)}
+                              >
+                                <option value='' disabled selected hidden>
+                                  Select Type
+                                </option>
+                                <option value='Tablet'>Tablet</option>
+                                <option value='Capsule'>Capsule</option>
+                                <option value='Syrup'>Syrup</option>
+                                <option value='Injection'>Injection</option>
+                                <option value='Drops'>Drops</option>
+                                <option value='Cream'>Cream</option>
+                                <option value='Ointment'>Ointment</option>
+                                <option value='Powder'>Powder</option>
+                                <option value='Other'>Other</option>
+                              </select>
+                            </div>
+                            <div class='col-md-3'>
+                              <TextField
+                                type='number'
+                                InputProps={{ inputProps: { min: 1 } }}
+                                variant='outlined'
+                                label='Quantity'
+                                size='small'
+                                fullWidth
+                                name='quantity'
+                                value={x.quantity}
+                                onChange={(e) => handleInputChange(e, i)}
+                              />
+                            </div>
+                          </div>
+                          <div class='row gx-6 my-2'>
+                            <div class='col-md-5'>
+                              <select
+                                class='form-select'
+                                aria-label='Select Fequency'
+                                name='frequency'
+                                onChange={(e) => handleInputChange(e, i)}
+                              >
+                                <option value='' disabled selected hidden>
+                                  Frequency
+                                </option>
+                                <option value='Every 24 hours'>
+                                  Every 24 hours
+                                </option>
+                                <option value='Every 12 hours'>
+                                  Every 12 hours
+                                </option>
+                                <option value='Every 8 hours'>
+                                  Every 8 hours
+                                </option>
+                              </select>
+                            </div>
+                            <div class='col-md-3'>
+                              {/* <input
+                                type='number'
+                                class='form-control'
+                                id='inputAmount'
+                                placeholder='Amount'
+                                // name='amount'
+                                value={x.dosage.amount}
+                                onChange={(e,i)=>{
+                                  const list = [...inputMedicine];
+                                  list[i].dosage.amount = e.target.value;
+                                  setInputMedicine(list);
+                                }}
+                              /> */}
+                              <input
+                                class='form-control'
+                                id='inputAmount'
+                                type='number'
+                                placeholder='Enter Amount'
+                                name='amount'
+                                onChange={(e) => handleInputChange(e, i)}
+                              />
+                            </div>
+                            <div class='col-md-3'>
+                              <select
+                                class='form-select'
+                                aria-label='Select dosageTime'
+                                name='dosage_time'
+                                onChange={(e) => handleInputChange(e, i)}
+                              >
+                                <option value='' disabled selected hidden>
+                                  Dosage Time
+                                </option>
+                                <option value='Before Food'>Before Food</option>
+                                <option value='After Food'>After Food</option>
+                              </select>
+                            </div>
+                            <div className='col-md-1'>
+                              {inputMedicine.length !== 1 && (
+                                <i
+                                  class='fa-solid fa-lg fa-circle-minus mx-1 my-1'
+                                  style={{ color: "#DC4C64" }}
+                                  onClick={() => handleRemoveClick(i)}
+                                ></i>
+                              )}
+                              {inputMedicine.length - 1 === i && (
+                                <i
+                                  class='fa-solid fa-lg fa-circle-plus mx-1 my-1'
+                                  style={{ color: "green" }}
+                                  onClick={handleAddClick}
+                                ></i>
+                              )}
+                            </div>
+                          </div>
+                        </>
+                      );
+                    })
+                  : null}
                 {/* row-2-end */}
-
-                {/* row-3 -start*/}
-                <div class='row gx-3 my-3'>
-                  <div class='col-md-12'>
-                    <label class='small mb-2' for='inputDiagnosis'>
-                      Diagnosis
-                    </label>
-                    <TextField
-                      onChange={onChange}
-                      name='diagnosis'
-                      id='inputDiagnosis'
-                      type='text'
-                      size='small'
-                      fullWidth
-                      label='Diagnosis'
-                      variant='outlined'
-                    />
-                  </div>
-                </div>
-                {/* row-3-end */}
-
-                {/* row-4 start*/}
-                <div class='row gx-3 my-3'>
-                  <div class='col-md-12'>
-                    <label class='small mb-2' for='inputSymptoms'>
-                      Symptoms
-                    </label>
-                    <TextField
-                      onChange={onChange}
-                      name='symptoms'
-                      id='inputSymptoms'
-                      type='text'
-                      size='small'
-                      fullWidth
-                      label='Symptoms'
-                      variant='outlined'
-                    />
-                  </div>
-                </div>
-                {/* row-4-end */}
-
                 {/* row-5-start */}
                 <label class='small mb-2' for='inputTests'>
-                  Tests
+                  Tests (if any)
                 </label>
                 {inputTests.map((x, i) => {
                   return (
@@ -361,13 +393,54 @@ const PrescriptionFormComp = () => {
                   );
                 })}
                 {/* row-5 -end*/}
+
+                {/* row-3 -start*/}
+                <div class='row gx-3 my-3'>
+                  <div class='col-md-12'>
+                    {/* <label class='small mb-2' for='inputDiagnosis'>
+                      Diagnosis
+                    </label> */}
+                    <TextField
+                      onChange={onChange}
+                      name='diagnosis'
+                      id='inputDiagnosis'
+                      type='text'
+                      size='small'
+                      fullWidth
+                      label='Diagnosis'
+                      variant='outlined'
+                    />
+                  </div>
+                </div>
+                {/* row-3-end */}
+
+                {/* row-4 start*/}
+                <div class='row gx-3 my-3'>
+                  <div class='col-md-12'>
+                    {/* <label class='small mb-2' for='inputSymptoms'>
+                      Symptoms
+                    </label> */}
+                    <TextField
+                      onChange={onChange}
+                      name='symptoms'
+                      id='inputSymptoms'
+                      type='text'
+                      size='small'
+                      fullWidth
+                      label='Symptoms'
+                      variant='outlined'
+                    />
+                  </div>
+                </div>
+                {/* row-4-end */}
+
                 {/* row 6 -start*/}
 
                 <div class='row gx-3 my-3'>
                   <div class='col-md-12'>
-                    <label class='small mb-2' for='inputRemarks'>
+                    {/* <label class='small mb-2' for='inputRemarks'>
                       Remarks
-                    </label>
+                    </label> */}
                     <TextField
                       onChange={onChange}
                       name='remarks'

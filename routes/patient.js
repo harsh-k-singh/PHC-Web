@@ -301,11 +301,18 @@ router.get("/getPrescription/:id", authPatient, async (req, res) => {
       patient_birth = patient.birth;
       patient_gender = patient.gender;
 
-      let doctor = await Doctor.findById(prescription.doctor_id);
-      let doctor_name = doctor.name;
+      let compounder_name, doctor_name;
+      if (prescription.compounder_id) {
+        let compounder = await Compounder.findById(prescription.compounder_id);
+        compounder_name = compounder.name;
+      } else if (prescription.doctor_id) {
+        let doctor = await Doctor.findById(prescription.doctor_id);
+        doctor_name = doctor.name;
+      }
 
       let entry = {
         doctor_name,
+        compounder_name,
         patient_roll_number: source_roll_number,
         patient_email: source_email,
         patient_phone: source_phone,
