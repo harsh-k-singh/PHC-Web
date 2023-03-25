@@ -4,6 +4,7 @@ import DoctorContext from "../../../context/doctor/DoctorContext";
 import { useParams } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
+import { Select,MenuItem,InputLabel } from "@mui/material";
 import { display } from "@mui/system";
 
 const PrescriptionForm = () => {
@@ -44,7 +45,7 @@ const PrescriptionForm = () => {
     id: null,
     medicines: [],
     symptoms: "",
-    diagnosis: "",
+    diagnosis:"",
     remarks: "",
     tests: [],
   });
@@ -53,11 +54,10 @@ const PrescriptionForm = () => {
     {
       name: "",
       quantity: "",
-      dosage: {
-        frequency: "",
-        amount: "",
-        dosage_time: "",
-      },
+      frequency: "",
+      amount: "",
+      dosage_time: "",
+      
     },
   ]);
   const [inputTests, setInputTests] = useState([{ test: "" }]);
@@ -81,7 +81,13 @@ const PrescriptionForm = () => {
   const handleAddClick = () => {
     setInputMedicine([
       ...inputMedicine,
-      { name: "", quantity: "", duration: "" },
+      {
+         name: "", 
+         quantity: "",
+         frequency: "",
+         amount: null,
+         dosage_time: "",
+    },
     ]);
   };
 
@@ -215,8 +221,9 @@ const PrescriptionForm = () => {
                 {inputMedicine
                   ? inputMedicine.map((x, i) => {
                       return (
-                        <div class='row gx-6 my-2'>
-                          <div class='col-md-4'>
+                        <>
+                        <div class='row gx-6 my-3c'>
+                          <div class='col-md-6'>
                             <Autocomplete
                               autoComplete
                               autoHighlight
@@ -239,7 +246,28 @@ const PrescriptionForm = () => {
                               )}
                             />
                           </div>
-                          <div class='col-md-2'>
+                          <div class='col-md-3'>
+                              <select
+                                class='form-select'
+                                aria-label='Select type'
+                                name="type"
+                                onChange={(e) => handleInputChange(e, i)}
+                              >
+                                <option value='' disabled selected hidden>
+                                Select Type
+                                </option>
+                                <option value='Tablet'>Tablet</option>
+                                <option value='Capsule'>Capsule</option>
+                                <option value='Syrup'>Syrup</option>
+                                <option value='Injection'>Injection</option>
+                                <option value='Drops'>Drops</option>
+                                <option value='Cream'>Cream</option>
+                                <option value='Ointment'>Ointment</option>
+                                <option value='Powder'>Powder</option>
+                                <option value='Other'>Other</option>
+                              </select>
+                          </div>
+                          <div class='col-md-3'>
                             <TextField
                               type='number'
                               InputProps={{ inputProps: { min: 1 } }}
@@ -252,19 +280,60 @@ const PrescriptionForm = () => {
                               onChange={(e) => handleInputChange(e, i)}
                             />
                           </div>
+                        </div>
+                        <div class='row gx-6 my-2'>
                           <div class='col-md-5'>
-                            <TextField
-                              type='text'
-                              variant='outlined'
-                              label='Dosage'
-                              size='small'
-                              fullWidth
-                              name='dosage'
-                              value={x.dosage}
-                              onChange={(e) => handleInputChange(e, i)}
-                            />
+                              <select
+                                class='form-select'
+                                aria-label='Select Fequency'
+                                name='frequency'
+                                onChange={(e) => handleInputChange(e, i)}
+                              >
+                               <option value='' disabled selected hidden>
+                                Frequency
+                                </option>
+                                <option value='Every 24 hours'>Every 24 hours</option>
+                                <option value='Every 12 hours'>Every 12 hours</option>
+                                <option value='Every 8 hours'>Every 8 hours</option>
+                              </select>
                           </div>
-
+                          <div class='col-md-3'>
+                              {/* <input
+                                type='number'
+                                class='form-control'
+                                id='inputAmount'
+                                placeholder='Amount'
+                                // name='amount'
+                                value={x.dosage.amount}
+                                onChange={(e,i)=>{
+                                  const list = [...inputMedicine];
+                                  list[i].dosage.amount = e.target.value;
+                                  setInputMedicine(list);
+                                }}
+                              /> */}
+                               <input
+                                class='form-control'
+                                id='inputAmount'
+                                type='number'
+                                placeholder='Enter Amount'
+                                name='amount'
+                                onChange={(e) => handleInputChange(e, i)}
+                                />
+                          </div>
+                          <div class='col-md-3'>
+                              <select
+                                class='form-select'
+                                aria-label='Select dosageTime'
+                                name="dosage_time"
+                                onChange={(e) => handleInputChange(e, i)}
+                              >
+                                <option value='' disabled selected hidden>
+                                Dosage Time
+                                </option>
+                                <option value='Before Food'>Before Food</option>
+                                <option value='After Food'>After Food</option>
+                              </select>
+                          </div>
                           <div className='col-md-1'>
                             {inputMedicine.length !== 1 && (
                               <i
@@ -282,6 +351,7 @@ const PrescriptionForm = () => {
                             )}
                           </div>
                         </div>
+                        </>
                       );
                     })
                   : null}

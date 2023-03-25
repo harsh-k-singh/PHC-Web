@@ -4,7 +4,7 @@ import AuthContext from '../../../context/auth/AuthContext';
 
 const StockContent = (props) => {
     const adminContext = useContext(AdminContext);
-    const {updateStock,deleteStock,getStock} = adminContext;
+    const {updateStock,deleteStock,getStock,getMedicines} = adminContext;
 
     const authContext = useContext(AuthContext);
     const {loadUser } = authContext;
@@ -12,29 +12,41 @@ const StockContent = (props) => {
     const {item,index}=props;
     const [edit,setEdit]=useState(false);
     const [data,setData]=useState(item);
+
     console.log(item);
+
     const onEdit = () => {
         setEdit(true);
     }
+
     const onSave = () => {
         const updateAndRefetch = async () => {
           await updateStock(data);
+          // await getStock();
+          await getMedicines();
           await loadUser();
         };
         updateAndRefetch();
         setEdit(false);
     }
+
     const onDelete=()=>{
       const updateAndRefetch = async () => {
           await deleteStock(data._id);
           getStock();
+          getMedicines();
       };
       updateAndRefetch();
   };
-    const onChange = (index) => (e) => {
-      setData({ ...data, [e.target.name]: e.target.value });
-    };
 
+  const onChange = (index) => (e) => {
+    setData({ ...data, [e.target.name]: e.target.value });
+  };
+
+  useEffect(() => {
+    setData(item);
+  }, [item]);
+  
   return (
     <div class='row'>
       <div class='col-xl-6' style={{ margin: "auto" }}>
@@ -43,7 +55,7 @@ const StockContent = (props) => {
               <span class="badge text-bg-success m-2" style={{fontSize:"1rem"}}>{item.name}</span>
 
               <span class="badge text-bg-danger m-2" style={{fontSize:"1rem"}}>
-                Remaining Quantity : {data.quantity}
+                Remaining Quantity : {item.quantity}
                 </span>
 
               <div className="ms-auto" style={{float:"right"}}> {edit ? <i class="fa-solid fa-lg fa-square-check mx-3" style={{color:"green"}}  onClick={onSave}></i>

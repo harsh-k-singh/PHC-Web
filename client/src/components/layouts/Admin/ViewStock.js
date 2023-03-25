@@ -24,10 +24,11 @@ const ViewStock = () => {
     useEffect(() => {
       const func = async () => {
         await getStock();
-        await getMedicine();
+        await getMedicines();
       };
       func();
     },[]);
+
     useEffect(() => {
       setData(stocks);
     },[stocks]);
@@ -56,7 +57,7 @@ const ViewStock = () => {
         }
       const func = async () => {
         await getStock();
-        await getMedicine();
+        await getMedicines();
       };
       func();
     },[action,sortExpiry,selectedOption]);

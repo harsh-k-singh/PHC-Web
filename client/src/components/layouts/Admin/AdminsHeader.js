@@ -56,7 +56,7 @@ const DoctorsHeader = () => {
                   Add actor
                 </button>
               </li>
-              <li className="nav-item">
+              {/* <li className="nav-item">
               <button
                   className={`nav-link ${location.pathname==="/admin/profile"?"fw-bolder text-primary active":""}`}
                   aria-current='page'
@@ -65,7 +65,7 @@ const DoctorsHeader = () => {
                 >
                   Profile
                 </button>
-              </li>
+              </li> */}
               <li class="nav-item dropdown">
                 <a class={`nav-link dropdown-toggle  ${(location.pathname==="/admin/viewStock"||location.pathname==="/admin/addStock"||location.pathname==="/admin/viewMedicine")?"fw-bolder text-primary active":""}`} href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Stock
