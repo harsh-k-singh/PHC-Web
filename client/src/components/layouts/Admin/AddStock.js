@@ -37,7 +37,7 @@ const AddStock = () => {
             initialQuantity: "",
             seller: "",
             expiry: "",
-            price:""
+            price:null
         })
         console.log(form,"form...")
         // console.log(stocks)
@@ -138,7 +138,7 @@ const AddStock = () => {
                 id='inputPrice'
                 type='integer'
                 placeholder='Enter Total Price in Rs.'
-                value={form.price}
+                value={form.price?form.price:""}
                 name='price'
                 onChange={onChange}
                 />
