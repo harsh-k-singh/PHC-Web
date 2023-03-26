@@ -434,9 +434,11 @@ router.get("/getPrescriptionByDate/:date", authDoctor, async (req, res) => {
   try {
     let prescriptions = await Prescription.find({
       doctor_id: req.user.id,
-      date: { $gte: date, $lt: new Date(date.getTime() + 86400000) },
+      date: {
+        $gte: new Date(date.getTime() - 19800000),
+        $lt: new Date(date.getTime() + 66600000),
+      },
     });
-    console.log(prescriptions);
     let pre = [];
     for (let i = 0; i < prescriptions.length; i++) {
       let prescription = prescriptions[i];
@@ -454,7 +456,6 @@ router.get("/getPrescriptionByDate/:date", authDoctor, async (req, res) => {
       let source_roll_number = source.roll_number;
       let source_email = source.email;
       let source_phone = source.phone;
-
       let patient;
       let patient_relation = "self";
       if (String(source_id) == String(patient_id)) {

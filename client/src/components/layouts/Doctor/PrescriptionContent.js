@@ -23,13 +23,13 @@ const PrescriptionContent = (props) => {
     setAge(getAge(data.patient_birth));
   }, []);
 
-  // const Print = () =>{     
-  //   //console.log('print');  
+  // const Print = () =>{
+  //   //console.log('print');
   //   let printContents = document.getElementById('printablediv').innerHTML;
   //   let originalContents = document.body.innerHTML;
   //   document.body.innerHTML = printContents;
   //   window.print();
-  //   document.body.innerHTML = originalContents;   
+  //   document.body.innerHTML = originalContents;
   // }
 
   return (
@@ -77,58 +77,66 @@ const PrescriptionContent = (props) => {
             </a>
             <div class='collapse my-3' id={`collapseExample-${index}`}>
               <div class='card card-body'>
-                {data.diagnosis?<p>
-                  <strong>Diagnosis</strong>
-                  <br />
-                  {data.diagnosis}
-                </p>:null}
+                {data.diagnosis ? (
+                  <p>
+                    <strong>Diagnosis</strong>
+                    <br />
+                    {data.diagnosis}
+                  </p>
+                ) : null}
                 <p>
                   <strong>Medicines</strong>
                   <br />
-                  <table class="table text-center table-bordered">
+                  <table class='table text-center table-bordered'>
                     <thead>
                       <tr>
-                        <th scope="col">S.no</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Type</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Frequency</th>
-                        <th scope="col">Amount</th>
-                        <th scope="col">Dosage Time</th>
+                        <th scope='col'>S.no</th>
+                        <th scope='col'>Name</th>
+                        <th scope='col'>Type</th>
+                        <th scope='col'>Quantity</th>
+                        <th scope='col'>Frequency</th>
+                        <th scope='col'>Amount</th>
+                        <th scope='col'>Dosage Time</th>
                       </tr>
                     </thead>
                     <tbody>
-                        {data.medicines.map((item, index) => {
+                      {data.medicines.map((item, index) => {
                         return (
                           <tr>
-                            <td>{index+1}</td>
+                            <td>{index + 1}</td>
                             <td>{item.name}</td>
                             <td>{item.type}</td>
                             <td>{item.quantity}</td>
-                            <td>{item.frequency?item.frequency:'-'}</td>
-                            <td>{item.amount?item.amount:'-'}</td>
-                            <td>{item.dosage_time?item.dosage_time:'-'}</td>
+                            <td>{item.frequency ? item.frequency : "-"}</td>
+                            <td>{item.amount ? item.amount : "-"}</td>
+                            <td>{item.dosage_time ? item.dosage_time : "-"}</td>
                           </tr>
                         );
                       })}
                     </tbody>
                   </table>
                 </p>
-                {data.test?<p>
-                  <strong>Tests</strong>
-                  <br />
-                  {data.test}
-                </p>:null}
-                {data.symptoms?<p>
-                  <strong>Symptoms</strong>
-                  <br />
-                  {data.symptoms}
-                </p>:null}
-                {data.remarks?<p>
-                  <strong>Remarks</strong>
-                  <br />
-                  {data.remarks}
-                </p>:null}
+                {data.test ? (
+                  <p>
+                    <strong>Tests</strong>
+                    <br />
+                    {data.test}
+                  </p>
+                ) : null}
+                {data.symptoms ? (
+                  <p>
+                    <strong>Symptoms</strong>
+                    <br />
+                    {data.symptoms}
+                  </p>
+                ) : null}
+                {data.remarks ? (
+                  <p>
+                    <strong>Remarks</strong>
+                    <br />
+                    {data.remarks}
+                  </p>
+                ) : null}
               </div>
             </div>
           </div>
