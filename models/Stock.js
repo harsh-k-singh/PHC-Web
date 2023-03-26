@@ -41,7 +41,7 @@ const validateStock = (stock) => {
   const schema = Joi.object({
     medicine_id: Joi.string().required(),
     name: Joi.string().required(),
-    price: Joi.number(),
+    price: Joi.number().allow(null),
     expiry: Joi.date().required(),
     initialQuantity: Joi.number().required(),
     quantity: Joi.number(),

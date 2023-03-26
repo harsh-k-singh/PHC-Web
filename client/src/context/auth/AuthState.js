@@ -88,6 +88,9 @@ const AuthState = (props) => {
       setAlert({ type: "error", message: error.response.data });
       setTimeout(clearAlert, 2000);
     }
+    setTimeout(() => {
+      window.location.reload();
+    },200);
   };
 
   return (
