@@ -29,9 +29,9 @@ const CompoundersDashboard = () => {
   }, [check_roll_number]);
 
   useEffect(() => {
-    if (patientExists === true && option === "addRecord") {
+    if (patientExists === true && option === "addRecord" && add_roll_number && add_roll_number.length !== 0) {
       navigate(`/compounder/addRecord/${add_roll_number}`);
-    } else if (patientExists === true && option === "checkRecord") {
+    } else if (patientExists === true && option === "checkRecord" && check_roll_number && check_roll_number.length !== 0) {
       navigate(`/compounder/checkRecord/${check_roll_number}/${relation}`);
     }
   }, [patientExists]);

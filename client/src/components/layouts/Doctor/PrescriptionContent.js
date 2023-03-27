@@ -23,14 +23,25 @@ const PrescriptionContent = (props) => {
     setAge(getAge(data.patient_birth));
   }, []);
 
-  // const Print = () =>{
-  //   //console.log('print');
-  //   let printContents = document.getElementById('printablediv').innerHTML;
-  //   let originalContents = document.body.innerHTML;
-  //   document.body.innerHTML = printContents;
-  //   window.print();
-  //   document.body.innerHTML = originalContents;
-  // }
+  const Print = () => {
+    let printContents = document.getElementById('printablediv').innerHTML;
+    let originalContents = document.body.innerHTML;
+    let printWindow = window.open('', '_blank', 'width=800,height=600');
+    printWindow.document.write('<html><head><title>Print</title>');
+    printWindow.document.write('<style>table {border-collapse: collapse;} th, td {border: 1px solid black;}</style>');
+    printWindow.document.write('</head><body>');
+    printWindow.document.write(printContents);
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.print();
+    printWindow.addEventListener('afterprint', () => {
+      document.body.innerHTML = originalContents;
+    });
+  };
+  
+  
+  
 
   return (
     <div class='row my-4'>
@@ -44,12 +55,12 @@ const PrescriptionContent = (props) => {
             {/* <>Phone : {data.patient_phone} </> */}
             <div style={{ float: "right" }}>
               email : {data.patient_email}
-              {/* <i class="fa-solid fa-file-pdf fa-lg mx-2" onClick={Print}></i> */}
+              <i class="fa-solid fa-file-pdf fa-lg mx-2 px-2" onClick={Print}></i>
             </div>
           </div>
           <div class='card-body'>
             <p class='card-text text-muted'>
-              {" "}
+              <br/>
               Relation : {data.relation}
               <br />
               Patient's Name : {data.patient_name}
@@ -73,7 +84,7 @@ const PrescriptionContent = (props) => {
               aria-expanded='false'
               aria-controls='collapseExample'
             >
-              View Details
+              Details
             </a>
             <div class='collapse my-3' id={`collapseExample-${index}`}>
               <div class='card card-body'>
