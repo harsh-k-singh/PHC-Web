@@ -31,7 +31,7 @@ const RecordContent = (props) => {
   }, []);
 
   const Print = () => {
-    let printContents = document.getElementById('printablediv').innerHTML;
+    let printContents = document.getElementById(`printDiv${index}`).innerHTML;
     let originalContents = document.body.innerHTML;
     let printWindow = window.open('', '_blank', 'width=800,height=600');
     printWindow.document.write('<html><head><title>Print</title>');
@@ -50,7 +50,7 @@ const RecordContent = (props) => {
   return (
     <div class='row my-4'>
       <div class='col-xl-8' style={{ margin: "auto" }}>
-        <div class='card'  id='printablediv'>
+        <div class='card'  id={`printDiv${index}`}>
           <div class='card-header text-center'>
             Prescription
             <div style={{ float: "right" }}>
