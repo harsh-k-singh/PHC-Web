@@ -27,7 +27,7 @@ const PatientsListCompounder = () => {
     <div class='container-xl px-4'>
       <div className='text-center'>
         <label for='date'>
-          <h5>Select Record Date</h5>
+          <h4>Select Record Date</h4>
         </label>
         <br />
         <input

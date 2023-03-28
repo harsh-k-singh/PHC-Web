@@ -11,13 +11,13 @@ const MedicineReport = () => {
     const [to,setTo]=useState('');
 
     const onSubmit=()=>{
-        if(from&&to&&from!==''&&to!==''){
-            const func=async()=>{
-                await getAllMedicineDetails({from,to});
-            }
-            func();
-            navigate('/admin/reportContent');
-        }
+      const func=async()=>{
+          await getAllMedicineDetails({from,to});
+      }
+      func();
+      if(from!==''&& to!=='' &&from<=to){
+      navigate('/admin/reportContent');
+      }
         // console.log("dates in report",from,to);
     }
   return (

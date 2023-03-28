@@ -62,7 +62,7 @@ const LoginForm = () => {
             <option value='' disabled selected hidden>
               Select Your Role
             </option>
-            <option value='patient'>Patient</option>
+            <option value='patient'>Student/Faculty</option>
             <option value='doctor'>Doctor</option>
             <option value='compounder'>Compounder</option>
             <option value='admin'>Admin</option>

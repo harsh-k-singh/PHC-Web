@@ -234,6 +234,12 @@ router.delete("/deleteStock", authAdmin, async (req, res) => {
 // @access  Private
 router.post("/getAllMedicineDetails", authAdmin, async (req, res) => {
   const { from, to } = req.body;
+  if(from===undefined || to===undefined || from==="" || to===""){
+    return res.status(400).send("Please select dates");
+  }
+  if(from>to){
+    return res.status(400).send("From date cannot be greater than to date");
+  }
   console.log('reached get all med details');
   console.log(from,to);
   const fromDate = new Date(from);
@@ -257,6 +263,8 @@ router.post("/getAllMedicineDetails", authAdmin, async (req, res) => {
           totalExpendQuantity += Number(stock.initialQuantity - stock.quantity);
           totalQuantity += Number(stock.quantity);
       }
+      if(stocks.length===0) continue;
+
       allMedicineDetails.push({
         name: medicine.name,
         type: medicine.type,

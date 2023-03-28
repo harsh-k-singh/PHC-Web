@@ -28,7 +28,7 @@ const CompoundersContentSP = (props) => {
           Compounder
         </li>
       </div>
-         <h3 style={{ margin: 8 }}>Schedule</h3>
+         <h4 style={{ margin: 8 }}>Schedule</h4>
        <div class="card mt-2 mb-4 border-2 shadow-sm" style={{width: '18rem',margin:"auto", fontSize:"1.1rem",fontFamily:"monospace"}}>
         <ul class="list-group list-group-flush">
           <li class="list-group-item">Monday - {user ? user.timing.monAT : "name"} - {user ? user.timing.monDT : "name"}</li>
