@@ -21,9 +21,6 @@ const AddMedicine = () => {
             name:"",
             type:"",
             category:"",
-            description:"",
-            composition:"",
-            company:"",
         })
         // console.log(medicines);
     };
@@ -107,7 +104,8 @@ const AddMedicine = () => {
                     type='text'
                     placeholder='Enter Company'
                     name='company'
-                    value={form.company}
+                    // value={form.company}
+                    value={form.company?form.company:""}
                     onChange={onChange}
                     />
                 </div>
@@ -125,7 +123,8 @@ const AddMedicine = () => {
                     type='text'
                     placeholder='Enter Composition'
                     name='composition'
-                    value={form.composition}
+                    // value={form.composition}
+                    value={form.composition?form.composition:""}
                     onChange={onChange}
                     />
                 </div>
@@ -139,7 +138,8 @@ const AddMedicine = () => {
                     type='text'
                     placeholder='Enter Description'
                     name='description'
-                    value={form.description}
+                    // value={form.description}
+                    value={form.composition?form.composition:""}
                     onChange={onChange}
                     />
                 </div>

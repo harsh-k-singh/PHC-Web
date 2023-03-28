@@ -228,6 +228,52 @@ router.delete("/deleteStock", authAdmin, async (req, res) => {
   }
 });
 
+//get medinine with initial quantity expended quantity and remaining quantity form stock within 2 dates
+// @route   POST api/admin/getMedicineWithQuantity
+// @desc    Get Medicine with quantity
+// @access  Private
+router.post("/getAllMedicineDetails", authAdmin, async (req, res) => {
+  const { from, to } = req.body;
+  console.log('reached get all med details');
+  console.log(from,to);
+  const fromDate = new Date(from);
+  const toDate = new Date(to);
+  try {
+    const medicines = await Medicine.find();
+    let allMedicineDetails = [];
+    for (let i = 0; i < medicines.length; i++) {
+      let medicine = medicines[i];
+      const stocks = await Stock.find({ 
+        medicine_id: medicine._id,
+        date: { $gte: new Date(fromDate.getTime() - 19800000), $lte: new Date(toDate.getTime() + 66600000) },
+       });
+      console.log("geting all stocks",stocks);
+      let totalQuantity = 0;
+      let totalInitialQuantity = 0;
+      let totalExpendQuantity = 0;
+      for (let j = 0; j < stocks.length; j++) {
+        let stock = stocks[j];
+          totalInitialQuantity += Number(stock.initialQuantity);
+          totalExpendQuantity += Number(stock.initialQuantity - stock.quantity);
+          totalQuantity += Number(stock.quantity);
+      }
+      allMedicineDetails.push({
+        name: medicine.name,
+        type: medicine.type,
+        category:medicine.category,
+        NumberOfStocks: stocks.length,
+        totalInitialQuantity,
+        totalExpendQuantity,
+        totalQuantity,
+      });
+    }
+    res.status(200).send(allMedicineDetails);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Something went wrong");
+  }
+});
+
 // not required
 router.get("/allMedicinesWithQuantity", authAdmin, async (req, res) => {
   try {

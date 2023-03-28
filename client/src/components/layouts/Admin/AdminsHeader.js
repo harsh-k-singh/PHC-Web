@@ -56,6 +56,16 @@ const DoctorsHeader = () => {
                   Add actor
                 </button>
               </li>
+              <li className="nav-item">
+              <button
+                  className={`nav-link ${location.pathname==="/admin/medicineReport"?"fw-bolder text-primary active":""}`}
+                  aria-current='page'
+                  onClick={() => navigate("/admin/medicineReport")}
+                  style={{ borderWidth: "0px", backgroundColor: "transparent" }}
+                >
+                 Medicine Report
+                </button>
+              </li>
               {/* <li className="nav-item">
               <button
                   className={`nav-link ${location.pathname==="/admin/profile"?"fw-bolder text-primary active":""}`}

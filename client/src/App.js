@@ -43,6 +43,8 @@ import AddStock from "./components/layouts/Admin/AddStock";
 import ViewStock from "./components/layouts/Admin/ViewStock";
 import ViewAdminMedicine from "./components/layouts/Admin/ViewAdminMedicine";
 import AddMedicine from "./components/layouts/Admin/AddMedicine";
+import MedicineReport from "./components/layouts/Admin/MedicineReport";
+import ReportContent from "./components/layouts/Admin/ReportContent";
 
 import Patient from "./components/pages/Patient";
 import PatientsProfile from "./components/layouts/Patient/PatientsProfile";
@@ -120,6 +122,8 @@ const App = () => {
                       <Route path='addStock' element={<AddStock />} />
                       <Route path='addMedicine' element={<AddMedicine />} />
                       <Route path='viewStock' element={<ViewStock />} />
+                      <Route path='medicineReport' element={<MedicineReport />} />
+                      <Route path='reportContent' element={<ReportContent />} />
                       <Route
                         path='viewAdminMedicine'
                         element={<ViewAdminMedicine />}
