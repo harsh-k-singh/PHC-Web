@@ -13,6 +13,7 @@ const AdminState = (props) => {
     specific_medicine_stock: null,
     stocks: [],
     actors: {},
+    allMedicineDetails:[]
   };
 
   const { setAlert, clearAlert, setLoading, clearLoading } =
@@ -194,6 +195,31 @@ const AdminState = (props) => {
     }
   };
 
+  const getAllMedicineDetails = async (dates) => {
+    setLoading();
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    console.log("dates in state", dates);
+     try {
+      const res = await axios.post(
+        `/api/admin/getAllMedicineDetails`,
+        dates,
+        config
+      );
+      dispatch({ type: types.GET_ALL_MEDICINE_DETAILS_SUCCESS, payload: res.data });
+      clearLoading();
+    } catch (error) {
+      console.log(error.response.data);
+      dispatch({type: types.GET_ALL_MEDICINE_DETAILS_FAILURE, payload: error.response.data})
+      clearLoading();
+      setAlert({ message: error.response.data, type: "error" });
+      setTimeout(clearAlert, 2000);
+    }
+  };
+
   return (
     <AdminContext.Provider
       value={{
@@ -204,6 +230,8 @@ const AdminState = (props) => {
         getActors,
         addMedicine,
         getMedicines,
+        getAllMedicineDetails,
+        allMedicineDetails: state.allMedicineDetails,
         addStock,
         getStock,
         updateStock,

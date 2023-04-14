@@ -29,11 +29,34 @@ const RecordContent = (props) => {
     };
     setAge(getAge(data.patient_birth));
   }, []);
+
+  const Print = () => {
+    let printContents = document.getElementById(`printDiv${index}`).innerHTML;
+    let originalContents = document.body.innerHTML;
+    let printWindow = window.open('', '_blank', 'width=800,height=600');
+    printWindow.document.write('<html><head><title>Print</title>');
+    printWindow.document.write('<style>table {border-collapse: collapse;} th, td {border: 1px solid black;}</style>');
+    printWindow.document.write('</head><body>');
+    printWindow.document.write(printContents);
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.print();
+    printWindow.addEventListener('afterprint', () => {
+      document.body.innerHTML = originalContents;
+    });
+  };
+
   return (
     <div class='row my-4'>
       <div class='col-xl-8' style={{ margin: "auto" }}>
-        <div class='card'>
-          <div class='card-header text-center'>Prescription</div>
+        <div class='card'  id={`printDiv${index}`}>
+          <div class='card-header text-center'>
+            Prescription
+            <div style={{ float: "right" }}>
+              <i class="fa-solid fa-file-pdf fa-lg mx-2 px-2" onClick={Print}></i>
+            </div>
+            </div>
           <div class='card-body'>
             {data.doctor_name ? (
               <p class='card-text'>Doctor : {data.doctor_name}</p>

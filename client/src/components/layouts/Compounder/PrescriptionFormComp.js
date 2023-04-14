@@ -72,9 +72,10 @@ const PrescriptionFormComp = () => {
       ...inputMedicine,
       {
          name: "", 
+         type:"",
          quantity: "",
          frequency: "",
-         amount: null,
+         amount: "",
          dosage_time: "",
     },
     ]);
@@ -216,6 +217,7 @@ const PrescriptionFormComp = () => {
                               autoComplete
                               autoHighlight
                               freeSolo
+                              value={x.name}
                               name='name'
                               onChange={(e, value) => {
                                 const list = [...inputMedicine];
@@ -238,6 +240,7 @@ const PrescriptionFormComp = () => {
                               <select
                                 class='form-select'
                                 aria-label='Select type'
+                                value={x.type}
                                 name="type"
                                 onChange={(e) => handleInputChange(e, i)}
                               >
@@ -275,6 +278,7 @@ const PrescriptionFormComp = () => {
                                 class='form-select'
                                 aria-label='Select Fequency'
                                 name='frequency'
+                                value={x.frequency}
                                 onChange={(e) => handleInputChange(e, i)}
                               >
                                <option value='' disabled selected hidden>
@@ -307,6 +311,7 @@ const PrescriptionFormComp = () => {
                                 type='number'
                                 placeholder='Enter Amount'
                                 name='amount'
+                                value={x.amount}
                                 onChange={(e) => handleInputChange(e, i)}
                                 />
                           </div>
@@ -315,6 +320,7 @@ const PrescriptionFormComp = () => {
                                 class='form-select'
                                 aria-label='Select dosageTime'
                                 name="dosage_time"
+                                value={x.dosage_time}
                                 onChange={(e) => handleInputChange(e, i)}
                               >
                                 <option value='' disabled selected hidden>

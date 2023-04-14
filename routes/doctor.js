@@ -265,51 +265,7 @@ router.post("/addPrescription", authDoctor, async (req, res) => {
   const source = await Patient.findOne({ roll_number: patient });
   if (!source) return res.status(404).send("Patient not found");
   const patient_id = id;
-
-  for (let i = 0; i < medicines.length; i++) {
-    // check if the medicine details are filled properly
-    if (!medicines[i].name || !medicines[i].quantity || !medicines[i].type)
-      return res.status(400).send("Medicine details are not filled properly");
-
-    // find the medicine in the database
-    let medicine = await Medicine.findOne({
-      name: medicines[i].name,
-      type: medicines[i].type,
-    });
-    // let medicine = await Medicine.findById(medicines[i].medicine_id);
-    if (!medicine) return res.status(404).send("Medicine not found");
-    let req_quantity = medicines[i].quantity;
-
-    // check if the medicine is available in sufficient quantity
-    if (medicine.quantity < req_quantity)
-      return res
-        .status(400)
-        .send(`${medicine.name} not available in sufficient quantity`);
-
-    // find the stocks from the available stocks of the medicine
-    const stocks = await Stock.find({ medicine_id: medicine._id });
-    stocks.sort((a, b) => a.date - b.date);
-    for (let j = 0; j < stocks.length && req_quantity > 0; j++) {
-      let stock = stocks[j];
-
-      if (stock.quantity === 0 || isExpired(stock)) continue;
-
-      if (stock.quantity >= req_quantity) {
-        stock.quantity -= req_quantity;
-        medicine.quantity -= req_quantity;
-        await stock.save();
-        await medicine.save();
-        break;
-      } else {
-        req_quantity -= stock.quantity;
-        medicine.quantity -= stock.quantity;
-        stock.quantity = 0;
-        await stock.save();
-        await medicine.save();
-      }
-    }
-  }
-
+  
   const form = {
     source_id: source._id,
     patient_id,
@@ -320,12 +276,71 @@ router.post("/addPrescription", authDoctor, async (req, res) => {
     remarks,
     medicines,
   };
+
+    for (let i = 0; i < medicines.length; i++) {
+    // check if the medicine details are filled properly
+    if (!medicines[i].name || !medicines[i].quantity || !medicines[i].type)
+      return res.status(400).send(`${i+1}th medicine details are not filled properly`);
+
+    if(medicines[i].quantity<=0)return res.status(400).send(`${medicines[i].type} ${medicines[i].name } quantity should be greater than 0`);
+    // find the medicine in the database
+    let medicine = await Medicine.findOne({
+      name: medicines[i].name,
+      type: medicines[i].type,
+    });
+    // let medicine = await Medicine.findById(medicines[i].medicine_id);
+    if (!medicine) return res.status(404).send(`${medicines[i].type} ${medicines[i].name } not found`);
+    let req_quantity = medicines[i].quantity;
+
+    // check if the medicine is available in sufficient quantity
+    if (medicine.quantity < req_quantity)
+      return res
+        .status(400)
+        .send(`${medicine.name} not available in sufficient quantity`);
+  }
+
   // validate the prescription
   const { error } = validatePrescription(form);
   if (error) return res.status(400).send(error.details[0].message);
 
   // save the prescription in the database
   try {
+
+    for (let i = 0; i < medicines.length; i++) {
+
+      // find the medicine in the database
+      let medicine = await Medicine.findOne({
+        name: medicines[i].name,
+        type: medicines[i].type,
+      });
+
+      let req_quantity = medicines[i].quantity;
+
+  
+      // find the stocks from the available stocks of the medicine
+      const stocks = await Stock.find({ medicine_id: medicine._id });
+      stocks.sort((a, b) => a.date - b.date);
+      for (let j = 0; j < stocks.length && req_quantity > 0; j++) {
+        let stock = stocks[j];
+  
+        if (stock.quantity === 0 || isExpired(stock)) continue;
+  
+        if (stock.quantity >= req_quantity) {
+          stock.quantity -= req_quantity;
+          medicine.quantity -= req_quantity;
+          await stock.save();
+          await medicine.save();
+          break;
+        } else {
+          req_quantity -= stock.quantity;
+          medicine.quantity -= stock.quantity;
+          stock.quantity = 0;
+          await stock.save();
+          await medicine.save();
+        }
+      }
+    }
+
     const prescription = new Prescription(form);
     await prescription.save();
 
@@ -348,7 +363,8 @@ router.post("/addPrescription", authDoctor, async (req, res) => {
     res.status(200).send(prescription);
   } catch (error) {
     console.log(error.message);
-    res.status(500).send("Something went wrong");
+    res.status(500).send(error.message);
+    // res.status(500).send("Something went wrong");
   }
 });
 

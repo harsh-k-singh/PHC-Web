@@ -18,10 +18,6 @@ const PrescriptionForm = () => {
 
   const { getMedicines, medicines, getRelative, relative, addPrescription } =
     doctorContext;
-  // const medOptions = medicines
-  //   ? medicines.map((opt) => ({ label: opt.name, value: opt.name }))
-  //   : null;
-  // const [selectedOption, setSelectedOption] = useState([null]);
 
   const [medicineList, setMedicineList] = useState(
     medicines.map((med) => {
@@ -29,13 +25,6 @@ const PrescriptionForm = () => {
       return medName;
     })
   );
-  // const editSearchTerm = (e) => {
-  //   const { value } = e.target;
-  //   const medicineList = medicines.map((med) => {
-  //     return med.name.toLowerCase();
-  //   });
-  //   setMedicineList(medicineList);
-  // };
 
   const { roll_number } = useParams();
   const [form, setForm] = useState({
@@ -72,9 +61,10 @@ const PrescriptionForm = () => {
       ...inputMedicine,
       {
          name: "", 
+         type:"",
          quantity: "",
          frequency: "",
-         amount: null,
+         amount: "",
          dosage_time: "",
     },
     ]);
@@ -216,6 +206,7 @@ const PrescriptionForm = () => {
                               autoComplete
                               autoHighlight
                               freeSolo
+                              value={x.name}
                               name='name'
                               onChange={(e, value) => {
                                 const list = [...inputMedicine];
@@ -239,6 +230,7 @@ const PrescriptionForm = () => {
                                 class='form-select'
                                 aria-label='Select type'
                                 name="type"
+                                value={x.type}
                                 onChange={(e) => handleInputChange(e, i)}
                               >
                                 <option value='' disabled selected hidden>
@@ -275,6 +267,7 @@ const PrescriptionForm = () => {
                                 class='form-select'
                                 aria-label='Select Fequency'
                                 name='frequency'
+                                value={x.frequency}
                                 onChange={(e) => handleInputChange(e, i)}
                               >
                                <option value='' disabled selected hidden>
@@ -307,6 +300,7 @@ const PrescriptionForm = () => {
                                 type='number'
                                 placeholder='Enter Amount'
                                 name='amount'
+                                value={x.amount}
                                 onChange={(e) => handleInputChange(e, i)}
                                 />
                           </div>
@@ -315,6 +309,7 @@ const PrescriptionForm = () => {
                                 class='form-select'
                                 aria-label='Select dosageTime'
                                 name="dosage_time"
+                                value={x.dosage_time}
                                 onChange={(e) => handleInputChange(e, i)}
                               >
                                 <option value='' disabled selected hidden>

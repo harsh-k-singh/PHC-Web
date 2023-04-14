@@ -43,7 +43,7 @@ const PatientsContentSP = (props) => {
           Patient
         </li>
       </div>
-      <h3 style={{ margin: 8 }}>Details</h3>
+      <h4 style={{ margin: 8 }}>Details</h4>
       <li style={{ fontSize: "1.3rem", margin: 4 }}>Gender - {user ? user.gender : "Gender"}</li>
       <li style={{ fontSize: "1.3rem", margin: 4 }}>Age - {user ? age : "Age"}</li>
     </ul>

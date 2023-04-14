@@ -67,7 +67,25 @@ const DoctorsHeader = () => {
                 </button>
               </li> */}
               <li class="nav-item dropdown">
-                <a class={`nav-link dropdown-toggle  ${(location.pathname==="/admin/viewStock"||location.pathname==="/admin/addStock"||location.pathname==="/admin/viewMedicine")?"fw-bolder text-primary active":""}`} href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a class={`nav-link dropdown-toggle  ${(location.pathname==="/admin/viewAdminMedicine"||location.pathname==="/admin/addMedicine"||location.pathname==="/admin/medicineReport")?"fw-bolder text-primary active":""}`} href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Medicine
+                </a>
+                <ul class="dropdown-menu">
+                  <li className="dropdown-item">
+                  <Link class={`dropdown-item  ${location.pathname==="/admin/viewAdminMedicine"?"fw-bolder":""}`} to="/admin/viewAdminMedicine">View Medicine</Link>
+                  </li>
+                  <li><hr class="dropdown-divider"/></li>
+                  <li className="dropdown-item">
+                  <Link class={`dropdown-item  ${location.pathname==="/admin/medicineReport"?"fw-bolder":""}`} to="/admin/medicineReport">Medicine Report</Link>
+                  </li>
+                  <li><hr class="dropdown-divider"/></li>
+                  <li className="dropdown-item">
+                  <Link class={`dropdown-item  ${location.pathname==="/admin/addMedicine"?"fw-bolder":""}`} to="/admin/addMedicine">Add New Medicine</Link>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a class={`nav-link dropdown-toggle  ${(location.pathname==="/admin/viewStock"||location.pathname==="/admin/addStock")?"fw-bolder text-primary active":""}`} href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Stock
                 </a>
                 <ul class="dropdown-menu">
@@ -76,15 +94,7 @@ const DoctorsHeader = () => {
                   </li>
                   <li><hr class="dropdown-divider"/></li>
                   <li className="dropdown-item">
-                  <Link class={`dropdown-item  ${location.pathname==="/admin/viewAdminMedicine"?"fw-bolder":""}`} to="/admin/viewAdminMedicine">View Medicine</Link>
-                  </li>
-                  <li><hr class="dropdown-divider"/></li>
-                  <li className="dropdown-item">
                   <Link class={`dropdown-item  ${location.pathname==="/admin/addStock"?"fw-bolder":""}`} to="/admin/addStock">Add New Stock</Link>
-                  </li>
-                  <li><hr class="dropdown-divider"/></li>
-                  <li className="dropdown-item">
-                  <Link class={`dropdown-item  ${location.pathname==="/admin/addMedicine"?"fw-bolder":""}`} to="/admin/addMedicine">Add New Medicine</Link>
                   </li>
                 </ul>
               </li>
